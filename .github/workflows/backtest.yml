@@ -17,8 +17,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run backtest
-                        env:
+      - name: Run backtest 
+      env:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
         run: python run_real_backtest.py
