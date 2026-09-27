@@ -124,7 +124,19 @@ def run_backtest(bars: pd.DataFrame, symbol: str, starting_cash: float = 2000.0,
         # default to ATM. That calibration doesn't exist yet without real
         # chain data to test it against; ATM is the honest placeholder.
         strike = round(spot)
-        expiry = now + pd.Timedelta(days=sig.min_days_to_expiry)
+
+        # BUG FIX: expiry must cover at least the full max_hold_hours window
+        # being tested, or a longer-hold variant will hold a position past
+        # its own contract's expiration -- which happened in the first run
+        # of this fix and manufactured several of the largest "wins" by
+        # pricing pure intrinsic value on an option that would no longer
+        # exist in reality. min_days_to_expiry is still respected as a
+        # FLOOR (never buy less runway than Rule #1 calls for); it's just
+        # no longer allowed to be shorter than the hold window itself.
+        import math
+        min_expiry_days_for_hold = math.ceil(max_hold_hours / 24) + 1
+        expiry_days = max(sig.min_days_to_expiry, min_expiry_days_for_hold)
+        expiry = now + pd.Timedelta(days=expiry_days)
 
         theo_entry = price_feed_fn(window, strike, expiry, is_call=(sig.direction == "call"))
         debit = apply_spread_buy(theo_entry) if apply_spread else theo_entry
