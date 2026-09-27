@@ -56,7 +56,8 @@ class ClosedTrade:
 
 
 def run_backtest(bars: pd.DataFrame, symbol: str, starting_cash: float = 2000.0,
-                  price_feed_fn=None, max_hold_hours: float = MAX_HOLD_HOURS) -> pd.DataFrame:
+                  price_feed_fn=None, max_hold_hours: float = MAX_HOLD_HOURS,
+                  apply_spread: bool = True) -> pd.DataFrame:
     """
     bars: DataFrame with open/high/low/close/volume, DatetimeIndex, one symbol.
     price_feed_fn: optional callable(window, strike, expiry, is_call) -> per-
@@ -66,6 +67,10 @@ def run_backtest(bars: pd.DataFrame, symbol: str, starting_cash: float = 2000.0,
     max_hold_hours: exposed as a parameter, NOT hardcoded, specifically so a
         longer-hold ("swing") variant can be run side by side with the
         confirmed 24h rule once real data exists.
+    apply_spread: True by default -- charges the real market bid-ask spread
+        on every entry and exit (see ROUND_TRIP_SPREAD_PCT below). Set False
+        only to reproduce the earlier no-spread numbers for direct comparison,
+        never to represent a "final" result.
 
     Returns a DataFrame with the same columns as Confirmed Trades' core
     fields, so it can be concatenated with real data for comparison.
@@ -89,10 +94,11 @@ def run_backtest(bars: pd.DataFrame, symbol: str, starting_cash: float = 2000.0,
         if open_pos is not None:
             held_hours = (now - open_pos.entry_time).total_seconds() / 3600
             if held_hours >= max_hold_hours:
-                exit_price = price_feed_fn(
+                theo_exit = price_feed_fn(
                     window, open_pos.strike, open_pos.expiry,
                     is_call=(open_pos.signal.direction == "call"),
                 )
+                exit_price = apply_spread_sell(theo_exit) if apply_spread else theo_exit
                 pnl = _pnl(open_pos, exit_price)
                 cash += exit_price * 100 * open_pos.qty
                 state.record(pnl)
@@ -120,7 +126,8 @@ def run_backtest(bars: pd.DataFrame, symbol: str, starting_cash: float = 2000.0,
         strike = round(spot)
         expiry = now + pd.Timedelta(days=sig.min_days_to_expiry)
 
-        debit = price_feed_fn(window, strike, expiry, is_call=(sig.direction == "call"))
+        theo_entry = price_feed_fn(window, strike, expiry, is_call=(sig.direction == "call"))
+        debit = apply_spread_buy(theo_entry) if apply_spread else theo_entry
         quality = debit_quality(debit)
         if quality == "avoid":
             continue  # Rule #8: never take the confirmed-worst premium band
@@ -131,10 +138,11 @@ def run_backtest(bars: pd.DataFrame, symbol: str, starting_cash: float = 2000.0,
 
     # close anything still open at the end of the data window
     if open_pos is not None:
-        exit_price = price_feed_fn(
+        theo_exit = price_feed_fn(
             bars, open_pos.strike, open_pos.expiry,
             is_call=(open_pos.signal.direction == "call"),
         )
+        exit_price = apply_spread_sell(theo_exit) if apply_spread else theo_exit
         pnl = _pnl(open_pos, exit_price)
         closed.append(ClosedTrade(
             date=open_pos.entry_time.date(), symbol=symbol,
@@ -149,6 +157,31 @@ def run_backtest(bars: pd.DataFrame, symbol: str, starting_cash: float = 2000.0,
 
 def _pnl(pos: OpenPosition, exit_price: float) -> float:
     return (exit_price - pos.entry_price) * 100 * pos.qty
+
+
+# ---------------------------------------------------------------------------
+# Bid-ask spread -- NOT a broker fee. This is the market's own buy/sell gap,
+# present no matter who your broker is or what they charge. Black-Scholes
+# only knows the theoretical mid price; a real trade always buys at the ask
+# (above mid) and sells at the bid (below mid). ROUND_TRIP_SPREAD_PCT is an
+# ASSUMPTION, not measured from a real chain (none was reachable) -- it is
+# a stress test to see if the edge survives a realistic cost, not a precise
+# number. 6% round-trip is a reasonable middle estimate for liquid,
+# short-dated, near-the-money single-name and ETF options; genuinely liquid
+# names (QQQ) often run tighter, thinner names can run wider. Calibrate this
+# against a real chain quote the moment one is available.
+# ---------------------------------------------------------------------------
+ROUND_TRIP_SPREAD_PCT = 0.06
+
+
+def apply_spread_buy(theoretical_price: float, spread_pct: float = ROUND_TRIP_SPREAD_PCT) -> float:
+    """What you'd actually pay to open -- the ask side, above theoretical mid."""
+    return theoretical_price * (1 + spread_pct / 2)
+
+
+def apply_spread_sell(theoretical_price: float, spread_pct: float = ROUND_TRIP_SPREAD_PCT) -> float:
+    """What you'd actually receive to close -- the bid side, below theoretical mid."""
+    return theoretical_price * (1 - spread_pct / 2)
 
 
 # ---------------------------------------------------------------------------
@@ -217,13 +250,14 @@ if __name__ == "__main__":
     }, index=idx)
 
     for label, hours in [("24h (confirmed default)", 24), ("120h / 5-day (untested swing variant)", 120)]:
-        trades = run_backtest(bars, "QQQ", starting_cash=2000.0, max_hold_hours=hours)
-        print(f"\n--- {label} ---")
-        print(f"{len(trades)} trades generated over {len(bars)} synthetic bars.")
-        if len(trades):
-            print(trades[["date", "setup", "direction", "qty", "pnl", "exit_reason"]].to_string())
-            print(f"Synthetic P&L (meaningless -- random price series, real B-S math): ${trades['pnl'].sum():.2f}")
+        for spread_label, use_spread in [("WITH spread", True), ("no spread", False)]:
+            trades = run_backtest(bars, "QQQ", starting_cash=2000.0, max_hold_hours=hours,
+                                   apply_spread=use_spread)
+            total = trades["pnl"].sum() if len(trades) else 0.0
+            print(f"{label:40} | {spread_label:12} | {len(trades):3} trades | P&L ${total:,.2f}")
 
-    print("\nBoth variants run cleanly with real time-decay pricing. Point this "
-          "at real bars (as run_real_backtest.py already does) for a result "
-          "that means something.")
+    print("\nCompare the WITH-spread vs no-spread rows for each hold window -- "
+          "the gap between them is exactly what the 6% round-trip spread "
+          "assumption costs. If it wipes out most of the edge, the strategy "
+          "doesn't have margin to survive real execution. Point this at real "
+          "bars (run_real_backtest.py) for a result that means something.")
