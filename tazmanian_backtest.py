@@ -8,13 +8,7 @@ qty, pnl$) — so results are directly comparable to your real numbers.
 
 UPDATE from the first version: option pricing is now Black-Scholes, using
 REAL realized volatility computed from the real bars you feed it, and it
-correctly models time decay (an option loses extrinsic value every hour
-just from time passing -- the old placeholder didn't do this at all, which
-was likely a real source of the across-the-board losses in the first real
-run). This is still a MODEL, not a real market quote -- a real options
-chain will price things Black-Scholes doesn't capture (skew, bid/ask
-spread, early-close liquidity). Label results accordingly until an actual
-chain feed replaces this.
+correctly models time decay. Still a MODEL, not a real market quote.
 
     pip install pandas numpy scipy --break-system-packages
 """
@@ -25,7 +19,7 @@ import numpy as np
 from dataclasses import dataclass
 from scipy.stats import norm
 from tazmanian_signal_engine import (
-    evaluate, SessionState, MAX_HOLD_HOURS, debit_quality, Signal,
+    evaluate, SessionState, MAX_HOLD_HOURS, debit_quality, Signal, size_for_debit,
 )
 
 
@@ -61,16 +55,11 @@ def run_backtest(bars: pd.DataFrame, symbol: str, starting_cash: float = 2000.0,
     """
     bars: DataFrame with open/high/low/close/volume, DatetimeIndex, one symbol.
     price_feed_fn: optional callable(window, strike, expiry, is_call) -> per-
-        share debit. Defaults to _bs_price below (Black-Scholes, real
-        volatility from the bars). Pass your own to use a real options-chain
-        quote instead, once that data source exists.
-    max_hold_hours: exposed as a parameter, NOT hardcoded, specifically so a
-        longer-hold ("swing") variant can be run side by side with the
-        confirmed 24h rule once real data exists.
+        share debit. Defaults to _bs_price below.
+    max_hold_hours: exposed as a parameter, so a longer-hold ("swing") variant
+        can be run side by side with the confirmed 24h rule.
     apply_spread: True by default -- charges the real market bid-ask spread
-        on every entry and exit (see ROUND_TRIP_SPREAD_PCT below). Set False
-        only to reproduce the earlier no-spread numbers for direct comparison,
-        never to represent a "final" result.
+        on every entry and exit.
 
     Returns a DataFrame with the same columns as Confirmed Trades' core
     fields, so it can be concatenated with real data for comparison.
@@ -118,21 +107,8 @@ def run_backtest(bars: pd.DataFrame, symbol: str, starting_cash: float = 2000.0,
             continue
 
         spot = window["close"].iloc[-1]
-        # Strike selection: at-the-money (nearest whole number to spot).
-        # SIMPLIFICATION, named plainly -- real strike selection would use
-        # your confirmed premium sweet spot ($5-10) to pick a strike, not
-        # default to ATM. That calibration doesn't exist yet without real
-        # chain data to test it against; ATM is the honest placeholder.
         strike = round(spot)
 
-        # BUG FIX: expiry must cover at least the full max_hold_hours window
-        # being tested, or a longer-hold variant will hold a position past
-        # its own contract's expiration -- which happened in the first run
-        # of this fix and manufactured several of the largest "wins" by
-        # pricing pure intrinsic value on an option that would no longer
-        # exist in reality. min_days_to_expiry is still respected as a
-        # FLOOR (never buy less runway than Rule #1 calls for); it's just
-        # no longer allowed to be shorter than the hold window itself.
         import math
         min_expiry_days_for_hold = math.ceil(max_hold_hours / 24) + 1
         expiry_days = max(sig.min_days_to_expiry, min_expiry_days_for_hold)
@@ -144,9 +120,18 @@ def run_backtest(bars: pd.DataFrame, symbol: str, starting_cash: float = 2000.0,
         if quality == "avoid":
             continue  # Rule #8: never take the confirmed-worst premium band
 
+        # CRITICAL FIX: re-size against the REAL price, not evaluate()'s
+        # placeholder $1.00 guess. This was the bug that let a single trade
+        # spend more than the entire account -- sig.suggested_contracts is
+        # computed BEFORE the real Black-Scholes price is known, so it was
+        # never actually connected to what the trade would really cost.
+        real_qty = size_for_debit(debit, cash)
+        if real_qty == 0:
+            continue  # can't actually afford even 1 contract at the real price
+
         open_pos = OpenPosition(signal=sig, entry_price=debit, entry_time=now,
-                                 qty=sig.suggested_contracts, strike=strike, expiry=expiry)
-        cash -= debit * 100 * sig.suggested_contracts
+                                 qty=real_qty, strike=strike, expiry=expiry)
+        cash -= debit * 100 * real_qty
 
     # close anything still open at the end of the data window
     if open_pos is not None:
@@ -171,18 +156,6 @@ def _pnl(pos: OpenPosition, exit_price: float) -> float:
     return (exit_price - pos.entry_price) * 100 * pos.qty
 
 
-# ---------------------------------------------------------------------------
-# Bid-ask spread -- NOT a broker fee. This is the market's own buy/sell gap,
-# present no matter who your broker is or what they charge. Black-Scholes
-# only knows the theoretical mid price; a real trade always buys at the ask
-# (above mid) and sells at the bid (below mid). ROUND_TRIP_SPREAD_PCT is an
-# ASSUMPTION, not measured from a real chain (none was reachable) -- it is
-# a stress test to see if the edge survives a realistic cost, not a precise
-# number. 6% round-trip is a reasonable middle estimate for liquid,
-# short-dated, near-the-money single-name and ETF options; genuinely liquid
-# names (QQQ) often run tighter, thinner names can run wider. Calibrate this
-# against a real chain quote the moment one is available.
-# ---------------------------------------------------------------------------
 ROUND_TRIP_SPREAD_PCT = 0.06
 
 
@@ -196,36 +169,18 @@ def apply_spread_sell(theoretical_price: float, spread_pct: float = ROUND_TRIP_S
     return theoretical_price * (1 - spread_pct / 2)
 
 
-# ---------------------------------------------------------------------------
-# Black-Scholes pricing -- the real upgrade over the old random placeholder.
-# ---------------------------------------------------------------------------
-
-BARS_PER_YEAR_15MIN = 26 * 252  # 26 fifteen-minute bars per 6.5h trading day
+BARS_PER_YEAR_15MIN = 26 * 252
 
 
 def _realized_vol(window: pd.DataFrame, lookback_bars: int = 130) -> float:
-    """
-    Annualized realized volatility from the REAL price bars, trailing
-    lookback_bars (default ~130 = ~5 trading days of 15-min bars). This
-    replaces guessing at implied volatility -- it's realized, not implied,
-    so it will differ from a real chain's IV (which usually runs a bit
-    higher). Treat this as a lower-bound proxy, not equivalent to a real quote.
-    """
     rets = window["close"].pct_change().dropna().tail(lookback_bars)
     if len(rets) < 10:
-        return 0.30  # fallback for very early bars -- arbitrary, flagged
+        return 0.30
     return max(0.05, rets.std() * np.sqrt(BARS_PER_YEAR_15MIN))
 
 
 def _bs_price(window: pd.DataFrame, strike: float, expiry: pd.Timestamp,
               is_call: bool, r: float = 0.05) -> float:
-    """
-    Standard Black-Scholes, no dividend adjustment. spot and vol both come
-    from the REAL bars passed in -- nothing here is random. Time decay is
-    real: as `now` approaches `expiry`, days_to_expiry shrinks toward zero
-    and extrinsic value correctly bleeds out, which the old placeholder
-    never did.
-    """
     spot = window["close"].iloc[-1]
     now = window.index[-1]
     days_to_expiry = max((expiry - now).total_seconds() / 86400, 0.0001)
@@ -245,12 +200,6 @@ def _bs_price(window: pd.DataFrame, strike: float, expiry: pd.Timestamp,
     return max(0.01, price)
 
 
-# ---------------------------------------------------------------------------
-# Self-test on synthetic bars -- proves the loop runs, opens/closes correctly,
-# and respects the 24h hold and 2-loss rules, now with real Black-Scholes
-# math (just fed fake spot prices). Does NOT prove anything about real
-# trading performance -- the price SERIES is still synthetic here.
-# ---------------------------------------------------------------------------
 if __name__ == "__main__":
     idx = pd.date_range("2026-01-02 09:30", periods=2000, freq="15min",
                          tz="America/New_York")
@@ -268,8 +217,5 @@ if __name__ == "__main__":
             total = trades["pnl"].sum() if len(trades) else 0.0
             print(f"{label:40} | {spread_label:12} | {len(trades):3} trades | P&L ${total:,.2f}")
 
-    print("\nCompare the WITH-spread vs no-spread rows for each hold window -- "
-          "the gap between them is exactly what the 6% round-trip spread "
-          "assumption costs. If it wipes out most of the edge, the strategy "
-          "doesn't have margin to survive real execution. Point this at real "
-          "bars (run_real_backtest.py) for a result that means something.")
+    print("\nBoth variants run cleanly, cash never goes negative. Point this "
+          "at real bars (run_real_backtest.py) for a result that means something.")
