@@ -54,7 +54,7 @@ def main():
         print(f"{len(bars)} bars fetched.")
 
         for label, hours in HOLD_VARIANTS:
-            trades = run_backtest(bars, symbol, starting_cash=2000.0, max_hold_hours=hours)
+            trades = run_backtest(bars, symbol, starting_cash=200.0, max_hold_hours=hours)
             stats = summarize(trades, len(bars))
             stats.update({"symbol": symbol, "hold_variant": label})
             all_results.append(stats)
