@@ -76,11 +76,8 @@ def rvol_time_matched(bars: pd.DataFrame, lookback_days: int = 20,
     """
     Relative volume, TIME-MATCHED — comparing volume-by-10:30-today against
     volume-by-10:30 on the prior `lookback_days` sessions, NOT full-day
-    averages. This was flagged (in the sister project's notes) as the most
-    common way a homemade RVOL calc silently breaks: comparing a partial
-    trading day against a full-day average always looks artificially low
-    before ~3pm, and a bot using that would systematically under-signal all
-    morning. `bars` must be intraday, one row per `bar_minutes`.
+    averages. This was flagged as the most common way a homemade RVOL calc
+    silently breaks. `bars` must be intraday, one row per `bar_minutes`.
     """
     bars = bars.copy()
     bars["date"] = bars.index.date
@@ -91,7 +88,6 @@ def rvol_time_matched(bars: pd.DataFrame, lookback_days: int = 20,
     for t in bars["time"].unique():
         mask = bars["time"] == t
         hist = bars.loc[mask, "cum_vol_today"]
-        # trailing lookback_days average of cumulative volume AT THIS SAME TIME
         avg_at_time = hist.rolling(lookback_days, min_periods=5).mean().shift(1)
         out.loc[mask] = hist / avg_at_time
     return out.sort_index()
@@ -109,29 +105,21 @@ def stop_loss_level_50sma(close: pd.Series, window: int = 50) -> pd.Series:
 
 # ---------------------------------------------------------------------------
 # 2. SESSION CLASSIFICATION — from the real-fill-time analysis.
-#    Confirmed: setups are NOT uniformly better "late morning" — it's
-#    setup-specific (Strategy tab, section 8). This buckets a timestamp;
-#    callers should look up expected edge per (setup, session) themselves
-#    against the Strategy tab table rather than assuming one blanket window.
 # ---------------------------------------------------------------------------
 
 def session_bucket(ts: pd.Timestamp) -> str:
     t = ts.hour + ts.minute / 60
     if t < 10:
-        return "open"          # 9:30-10:00 ET
+        return "open"
     if t < 12:
-        return "late_morning"  # 10:00-12:00 ET — best OVERALL, but setup-dependent
+        return "late_morning"
     if t < 14:
         return "midday"
     if t < 15:
         return "afternoon"
-    return "power_hour"        # 15:00-16:00 ET
+    return "power_hour"
 
 
-# Setup-specific session edge, hardcoded from the 297-trade confirmed set
-# (Strategy tab §8). Positive = real $, not a probability. Recompute this
-# table from the workbook whenever Confirmed Trades grows meaningfully —
-# it is a snapshot, not a live link.
 SETUP_SESSION_EDGE = {
     "200_sma_magnet":   {"open": 2102, "late_morning": -125, "midday": 0, "afternoon": 0, "power_hour": 0},
     "gap_play":         {"open": 942,  "late_morning": -227, "midday": 553, "afternoon": 0, "power_hour": -64},
@@ -143,39 +131,51 @@ SETUP_SESSION_EDGE = {
 
 
 # ---------------------------------------------------------------------------
-# 3. POSITION SIZING & RISK RULES — from Strategy tab §4-5, the two rules
-#    with the largest confirmed dollar impact of anything in this file.
+# 3. POSITION SIZING & RISK RULES
 # ---------------------------------------------------------------------------
 
-MAX_CONTRACTS = 2          # Rule #4: 3+ contracts confirmed at 25% win rate, -$1,032
-                           # total across 297 confirmed trades (11 trades). 1-2
-                           # contracts: 51% win rate, +$7,899 combined. Hard cap, no
-                           # exceptions regardless of conviction.
+MAX_CONTRACTS = 2          # OLD default: fixed 2-contract cap regardless of balance.
+                           # Rule #4 in the confirmed data (3+ contracts, 25% win
+                           # rate, -$1,032) was measured on your real, mostly small
+                           # ($200-$5,000) account balances at the time -- it's really
+                           # a statement about risking too much relative to the
+                           # account, not a law that "2" is magic forever. Kept here
+                           # as the SIZING_MODE="fixed" option; percentage sizing
+                           # below is now the default, per your explicit call that
+                           # you'd size up with real gains.
+SIZING_MODE = "percent"    # "percent" (default) or "fixed" -- see size_for_debit.
+RISK_PCT_PER_TRADE = 0.50  # Risk 50% of CURRENT balance per trade -- explicit
+                           # instruction: starting at $200, going aggressive on
+                           # purpose to grow faster, sizing scales with real
+                           # gains/losses automatically as the balance moves.
+                           # This is deliberately high-risk BY YOUR OWN CHOICE,
+                           # not a data-derived number. At 50%, two losses in a
+                           # row cuts the account to ~25% of where it started --
+                           # know that going in.
+ABSOLUTE_MAX_CONTRACTS = 20 # Safety ceiling regardless of mode or balance size --
+                           # prevents one pathological signal from committing an
+                           # absurd fraction of a very large future balance in one
+                           # shot. Not from your data; a sanity backstop.
 MAX_LOSSES_PER_SESSION = 2 # Rule #5: ~$47k lifetime swing between before/after this line.
 MIN_DAYS_TO_EXPIRY = 2     # Rule #1: 2-4 day bucket alone cost -$14,590 lifetime when
                            # BOUGHT same/next-day; 5+ day entries made +$4,361 in the
                            # best-documented stretch. Never default to 0DTE.
 MAX_HOLD_HOURS = 24        # Rule #2: exits within 24h (same-day + next-day) are
                            # +$6,312 of the +$6,451 confirmed total, across 281
-                           # trades. Everything past 1 day is thin: 2-4 day holds
-                           # are 13 trades total, mixed; the single 5-day hold
-                           # (+$270) is n=1, not a pattern — do not read it as one.
-                           # Kept as a module-level constant, not baked into
+                           # trades. Kept as a module-level constant, not baked into
                            # evaluate(), so a longer-hold variant can be A/B
                            # tested once real data exists instead of assumed.
 
-# Premium (per-share debit) sweet spot, calibrated against all 297 confirmed
-# trades' actual open_px vs outcome. This DIRECTLY CONTRADICTS the cheap-lotto
-# assumption in the earlier Grok skeleton (MIN_DEBIT/MAX_DEBIT $0.75-$1.50):
-#   <$0.50:  37% win rate, -$323   (worst band — avoid)
+# Premium sweet spot found in your confirmed trades -- DESCRIPTIVE ONLY.
+# Nothing below AVOID_DEBIT_BELOW is the only thing this actually blocks.
+#   <$0.50:  37% win rate, -$323   (worst band -- this is the only one avoided)
 #   $0.50-3: 51-53% win rate, modestly positive
-#   $3-5:    46% win rate, -$549   (unexplained dip — not enough evidence to
-#            act on yet, flagged rather than smoothed over)
-#   $5-10:   61% win rate, +$3,914 (best band by both win rate AND dollars)
-#   $10+:    50% win rate, +$2,154 (only 4 trades — too few to trust alone)
+#   $3-5:    46% win rate, -$549   (unexplained dip, not enough evidence to act on)
+#   $5-10:   61% win rate, +$3,914 (best band, but NOT a requirement -- just a label)
+#   $10+:    50% win rate, +$2,154 (only 4 trades -- too few to trust alone)
 PREFERRED_DEBIT_MIN = 5.00
 PREFERRED_DEBIT_MAX = 10.00
-AVOID_DEBIT_BELOW = 0.50    # confirmed worst band; do not chase cheap lotto contracts
+AVOID_DEBIT_BELOW = 0.50    # confirmed worst band; the ONLY thing this blocks
 
 
 @dataclass
@@ -198,28 +198,41 @@ class SessionState:
 
 
 def size_for_debit(debit_per_share: float, account_cash: float,
-                    max_contracts: int = MAX_CONTRACTS) -> int:
-    """Contracts to buy, capped at MAX_CONTRACTS and by available cash. Returns
-    0 rather than sizing up past the cap under any circumstance — Rule #4 is a
-    hard ceiling, not a suggestion, per the confirmed-trade evidence."""
-    if debit_per_share <= 0:
+                    mode: str = SIZING_MODE,
+                    max_contracts: int = MAX_CONTRACTS,
+                    risk_pct: float = RISK_PCT_PER_TRADE) -> int:
+    """
+    Contracts to buy. Two modes:
+      "fixed"   -- OLD behavior: hard-capped at max_contracts (2), regardless
+                   of balance.
+      "percent" -- NEW default: risk risk_pct of the CURRENT balance, so size
+                   grows with real account growth automatically.
+    Either way, capped at ABSOLUTE_MAX_CONTRACTS as a hard safety ceiling, and
+    never sizes past what account_cash can actually afford.
+    """
+    if debit_per_share <= 0 or account_cash <= 0:
         return 0
     affordable = int(account_cash // (debit_per_share * 100))
-    return max(0, min(affordable, max_contracts))
+    if mode == "fixed":
+        target = max_contracts
+    elif mode == "percent":
+        risk_dollars = account_cash * risk_pct
+        target = int(risk_dollars // (debit_per_share * 100))
+    else:
+        raise ValueError(f"Unknown sizing mode: {mode!r} (use 'fixed' or 'percent')")
+    return max(0, min(affordable, target, ABSOLUTE_MAX_CONTRACTS))
 
 
 def debit_quality(debit_per_share: float) -> str:
     """
     Classifies a candidate contract's premium against the calibrated bands
-    above. Returns 'preferred', 'acceptable', or 'avoid' — callers should
-    weight or skip signals accordingly. This is choosing WHICH contract on
-    the chain to select, once a chain feed exists (open question #3);
-    it does not choose direction or setup.
+    above. Returns 'preferred', 'acceptable', or 'avoid'. Only 'avoid' blocks
+    a trade -- 'preferred' vs 'acceptable' is informational only.
     """
     if debit_per_share < AVOID_DEBIT_BELOW:
-        return "avoid"          # confirmed worst band, 37% win rate
+        return "avoid"
     if PREFERRED_DEBIT_MIN <= debit_per_share <= PREFERRED_DEBIT_MAX:
-        return "preferred"      # confirmed best band, 61% win rate
+        return "preferred"
     return "acceptable"
 
 
@@ -231,7 +244,7 @@ def debit_quality(debit_per_share: float) -> str:
 class Signal:
     timestamp: pd.Timestamp
     symbol: str
-    direction: str          # "call" or "put"
+    direction: str
     setup: str
     session: str
     reason: str
@@ -245,16 +258,11 @@ def evaluate(bars: pd.DataFrame, symbol: str, account_cash: float,
     """
     Run one bar of data through the rule set. `bars` must have at least
     200 rows of history so the 200 SMA is defined. Returns a Signal or None.
-
-    This function does NOT place an order and does NOT know your options
-    chain — per the earlier decision, the bot signals, you (or a later,
-    explicitly-approved execution layer) place the trade. It also refuses to
-    return a signal at all once the session is locked, no override path.
     """
     if not session_state.can_trade():
         return None
     if len(bars) < 200:
-        return None  # not enough history for the 200 SMA yet
+        return None
 
     close = bars["close"]
     last = bars.iloc[-1]
@@ -270,8 +278,6 @@ def evaluate(bars: pd.DataFrame, symbol: str, account_cash: float,
 
     setup, direction, reason = None, None, None
 
-    # Priority order follows confirmed win-rate ranking (Strategy tab §6),
-    # highest-edge setup wins when more than one condition is true at once.
     if macd_cross_up:
         setup, direction = "macd_read", "call"
         reason = f"MACD crossed up through signal ({m['macd'].iloc[-1]:.3f})"
@@ -297,15 +303,12 @@ def evaluate(bars: pd.DataFrame, symbol: str, account_cash: float,
 
     edge = SETUP_SESSION_EDGE.get(setup, {}).get(sess, 0)
     if edge <= 0:
-        # Setup fired, but this setup has NO confirmed edge in this session
-        # window (e.g. 200_sma_magnet after 10am). Do not signal — this is
-        # the precise fix for "late morning" being treated as a blanket rule.
         return None
 
     contracts = size_for_debit(debit_per_share=1.0, account_cash=account_cash)
-    # NOTE: debit_per_share=1.0 is a placeholder until an options-chain feed
-    # is wired in; replace with the actual ask price of the contract you'd
-    # select once that data source exists.
+    # NOTE: debit_per_share=1.0 is STILL a placeholder -- evaluate() runs
+    # before the real Black-Scholes price is known. Contract counts here are
+    # approximate until this is wired to the actual computed premium.
     if contracts == 0:
         return None
 
@@ -316,27 +319,19 @@ def evaluate(bars: pd.DataFrame, symbol: str, account_cash: float,
 
 
 # ---------------------------------------------------------------------------
-# 5. WHAT'S STILL OPEN — do not silently paper over these.
+# 5. WHAT'S STILL OPEN
 # ---------------------------------------------------------------------------
 OPEN_QUESTIONS = """
-1. No verified OHLC feed reachable from this environment (Stooq blocked,
-   Nasdaq chart endpoint not fetchable). Every function above is correct in
-   isolation but UNTESTED against real bars. First real task once a feed
-   (Alpaca paper / IEX, per the sister project) is wired in: backtest each
-   setup's fire rate and win rate against 2025-2026 history and compare to
-   the confirmed-trade numbers in the workbook. If they don't roughly agree,
-   a threshold above is wrong and needs adjusting from real data, not guessed
-   again.
-2. is_gap()'s 0.5% threshold is not derived from your data — it's a
-   reasonable default. Needs calibration against your 140 gap-play mentions.
-3. The options-chain side (which strike, which expiry, what it actually
-   costs) is entirely unbuilt. evaluate() signals direction and setup; it
-   does not yet pick a contract. That's the next module, once a chain feed
-   exists.
-4. SETUP_SESSION_EDGE is a frozen snapshot of 297 trades. Small numbers in
-   some cells (e.g. death_golden_cross has only 10 total trades) mean real
-   noise — don't treat -$162 at the open as proof the setup fails there,
-   treat it as "not enough evidence yet."
+1. No verified OHLC feed originally -- now fixed via Alpaca. Compare each
+   setup's fire rate and win rate against the confirmed-trade numbers.
+2. is_gap()'s 0.5% threshold needs calibration against your 140 gap-play
+   mentions.
+3. The options-chain side is still a Black-Scholes MODEL, not a real quote.
+4. SETUP_SESSION_EDGE is a frozen snapshot of 297 trades -- small-sample
+   cells are noise, not proof.
+5. evaluate()'s sizing call uses a placeholder $1.00 debit, not the real
+   computed premium -- contract counts are approximate until wired to the
+   actual price the backtest computes.
 """
 
 if __name__ == "__main__":
