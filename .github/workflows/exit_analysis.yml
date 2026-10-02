@@ -1,4 +1,3 @@
-"""
 Tazmanian Trader - Exit Analysis
 Uses Taz's REAL trades (Exact Entry-Exit Times tab) + expirations (Raw Fills tab)
 + REAL Alpaca historical option bars. No mock data.
