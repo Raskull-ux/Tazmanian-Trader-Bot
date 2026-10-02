@@ -1,0 +1,29 @@
+name: Run Minute Exit Test
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  minute-exit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy openpyxl databento tabulate
+      - name: Run minute-level exit test
+        env:
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY || vars.DATABENTO_API_KEY }}
+          MAX_COST_USD: "15"
+        run: python exit_minute.py "Tazmanian_Trade_Record (2).xlsx"
+      - name: Save results + minute cache (always, even on failure)
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add results_minute/ || true
+          git commit -m "Minute exit test results + cache" || echo "nothing to commit"
+          git pull --rebase -X ours || true
+          git push
