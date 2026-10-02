@@ -1,7 +1,7 @@
 """
 Tazmanian Trader - Exit Analysis
 Uses Taz's REAL trades (Exact Entry-Exit Times tab) + expirations (Raw Fills tab)
-+ REAL Alpaca historical option bars. No mock data.
++ REAL OPRA historical option bars (Databento). No mock data.
 
 For every trade it measures:
   - peak gain while held (did it go green before he sold?)
@@ -10,22 +10,20 @@ For every trade it measures:
 Then it replays a set of fixed exit rules on the same entries.
 
 Run:  python exit_analysis.py Tazmanian_Trade_Record.xlsx
-Env:  ALPACA_API_KEY, ALPACA_SECRET_KEY
+Env:  DATABENTO_API_KEY (optional MAX_COST_USD, default 100)
 """
 import os, sys, time, math, json
 from datetime import timedelta
-import requests
 import pandas as pd
 import numpy as np
 
 XLSX = sys.argv[1] if len(sys.argv) > 1 else "Tazmanian_Trade_Record.xlsx"
 OUT = "results"
-TF = "15Min"                 # bar size
+TF = "1-hour"                # bar size (Databento ohlcv-1h)
 POST_EXIT_DAYS = 35          # how far past exit to look (capped at expiry)
 GREEN_THRESHOLD = 0.20       # "went green" = at least +20% on a bar close
-KEY, SEC = os.environ.get("ALPACA_API_KEY"), os.environ.get("ALPACA_SECRET_KEY")
-URL = "https://data.alpaca.markets/v1beta1/options/bars"
 ET = "America/New_York"
+DATA_START = pd.Timestamp("2023-03-28")   # OPRA history on Databento starts here
 
 # ---------------- load the workbook ----------------
 def read_tab(path, sheet, must_have):
@@ -100,7 +98,7 @@ def from_exact_tab(sh):
 def from_fills_fifo(f):
     """Rebuild round trips from raw fills, FIFO per contract per account.
     Positions never sold are closed at expiry at $0 (exit_kind='expired') -> these are the 'went to zero' trades."""
-    f = f[f.d >= pd.Timestamp("2024-02-01")].copy()           # Alpaca option history starts Feb 2024
+    f = f[f.d >= DATA_START].copy()                           # Databento OPRA history starts Mar 28 2023
     f["is_buy"] = f.side.str.contains("buy|bto")
     f["is_sell"] = f.side.str.contains("sell|stc")
     f = f[f.is_buy | f.is_sell]
@@ -166,35 +164,64 @@ print(f"Trades to analyze: {len(trades)}", flush=True)
 def occ(sym, exp, cp, strike):
     return f"{sym}{exp:%y%m%d}{cp}{int(round(strike * 1000)):08d}"
 
-# ---------------- Alpaca bars (real data) ----------------
-S = requests.Session()
-S.headers.update({"APCA-API-KEY-ID": KEY or "", "APCA-API-SECRET-KEY": SEC or ""})
-_cache = {}
+# ---------------- Databento OPRA bars (real consolidated options data) ----------------
+import databento as db
+DB_KEY = os.environ.get("DATABENTO_API_KEY")
+MAX_COST = float(os.environ.get("MAX_COST_USD", "100"))   # hard stop so the free $125 credit is never exceeded
+DATASET, SCHEMA = "OPRA.PILLAR", "ohlcv-1h"
+_bars = {}                                                    # occ -> DataFrame
+_err = {}
 
-def get_bars(symbol, start, end):
-    key = (symbol, start, end)
-    if key in _cache: return _cache[key]
-    out, token = [], None
-    while True:
-        p = {"symbols": symbol, "timeframe": TF, "start": start, "end": end, "limit": 10000, "sort": "asc"}
-        if token: p["page_token"] = token
-        for attempt in range(5):
-            r = S.get(URL, params=p, timeout=30)
-            if r.status_code == 429: time.sleep(3 * (attempt + 1)); continue
-            break
-        if r.status_code != 200:
-            _cache[key] = (None, f"HTTP {r.status_code}: {r.text[:120]}"); return _cache[key]
-        j = r.json()
-        out += j.get("bars", {}).get(symbol, [])
-        token = j.get("next_page_token")
-        time.sleep(0.32)  # stay under free-tier 200 req/min
-        if not token: break
-    if not out:
-        _cache[key] = (None, "no bars returned"); return _cache[key]
-    df = pd.DataFrame(out)
-    df["t"] = pd.to_datetime(df["t"], utc=True).dt.tz_convert(ET)
-    _cache[key] = (df[["t", "o", "h", "l", "c", "v"]], "ok")
-    return _cache[key]
+def raw_osi(occ_sym):
+    root, rest = occ_sym[:-15], occ_sym[-15:]
+    return root.ljust(6) + rest
+
+def fetch_all(first_in):
+    """Group contracts by expiry, one request per group (<=500 symbols). Checks cost first."""
+    client = db.Historical(DB_KEY)
+    groups = {}
+    for occ_sym, t_in in first_in.items():
+        exp = pd.Timestamp("20" + occ_sym[-15:-13] + "-" + occ_sym[-13:-11] + "-" + occ_sym[-11:-9])
+        groups.setdefault(exp, []).append((occ_sym, t_in))
+    jobs = []
+    for exp, items in sorted(groups.items()):
+        for k in range(0, len(items), 500):
+            chunk = items[k:k + 500]
+            start = min(t for _, t in chunk).tz_convert("UTC") - timedelta(hours=1)
+            end = min((exp + timedelta(days=1)).tz_localize("UTC"),
+                      pd.Timestamp.now(tz="UTC").normalize() - timedelta(days=1))   # data is T+1
+            jobs.append((chunk, start, end))
+    print(f"Databento: {len(jobs)} requests for {len(first_in)} contracts. Checking cost first...", flush=True)
+    total = 0.0
+    for chunk, start, end in jobs:
+        total += client.metadata.get_cost(dataset=DATASET, schema=SCHEMA, stype_in="raw_symbol",
+                                          symbols=[raw_osi(c) for c, _ in chunk], start=start, end=end)
+    print(f"Estimated cost: ${total:.2f} (limit ${MAX_COST:.0f})", flush=True)
+    if total > MAX_COST:
+        raise SystemExit(f"Estimated cost ${total:.2f} exceeds MAX_COST_USD=${MAX_COST:.0f}. Nothing was downloaded.")
+    for j, (chunk, start, end) in enumerate(jobs, 1):
+        syms = {raw_osi(c): c for c, _ in chunk}
+        try:
+            store = client.timeseries.get_range(dataset=DATASET, schema=SCHEMA, stype_in="raw_symbol",
+                                                symbols=list(syms), start=start, end=end)
+            df = store.to_df()
+        except Exception as e:
+            for c, _ in chunk: _err[c] = f"request error: {str(e)[:120]}"
+            print(f"  request {j}/{len(jobs)} failed: {str(e)[:160]}", flush=True)
+            continue
+        if not df.empty:
+            df = df.reset_index()
+            df["t"] = pd.to_datetime(df["ts_event"], utc=True).dt.tz_convert(ET)
+            df = df.rename(columns={"open": "o", "high": "h", "low": "l", "close": "c", "volume": "v"})
+            for raw, g in df.groupby("symbol"):
+                c = syms.get(raw) or syms.get(raw.strip())
+                if c: _bars[c] = g[["t", "o", "h", "l", "c", "v"]].sort_values("t").reset_index(drop=True)
+        if j % 20 == 0: print(f"  {j}/{len(jobs)} requests done", flush=True)
+    print(f"Contracts with bars: {len(_bars)} of {len(first_in)}", flush=True)
+
+def contract_bars(sym):
+    if sym in _bars: return _bars[sym], "ok"
+    return None, _err.get(sym, "no trades printed for this contract in the window")
 
 # ---------------- exit rule replay ----------------
 def simulate(path, entry, rule):
@@ -247,17 +274,12 @@ for t1 in (0.5, 1.0):
         for tr in (0.3, 0.5):
             RULES[f"scale_half@{int(t1*100)}_be_trail{int(tr*100)}_sl{'none' if sl is None else int(sl*100)}"] = {"kind": "scale", "t1": t1, "trail": tr, "sl": sl}
 
-# one fetch per contract: from earliest entry on that contract to its expiry
 FIRST_IN = {}
-def contract_bars(sym):
-    exp = pd.Timestamp("20" + sym[-15:-9][:2] + "-" + sym[-15:-9][2:4] + "-" + sym[-15:-9][4:6]).tz_localize(ET) + timedelta(hours=16)
-    start = FIRST_IN.get(sym[:-15] + sym[-15:], None)
-    return get_bars(sym, (start - timedelta(minutes=30)).isoformat(), exp.isoformat())
 
 # ---------------- main loop ----------------
 def main():
-    if not KEY or not SEC:
-        raise SystemExit("Missing ALPACA_API_KEY / ALPACA_SECRET_KEY")
+    if not DB_KEY:
+        raise SystemExit("Missing DATABENTO_API_KEY secret")
     os.makedirs(OUT, exist_ok=True)
     rows, paths = [], {}
     n = len(trades)
@@ -266,7 +288,8 @@ def main():
         for root in ((r.sym, r.sym + "W") if r.sym in ("SPX", "NDX") else (r.sym,)):
             k = occ(root, pd.Timestamp(r.exp), r.cp, r.strike)
             FIRST_IN[k] = min(FIRST_IN.get(k, t_in), t_in)
-    print(f"Unique contracts to fetch: {len({k for k in FIRST_IN if not k.startswith(('SPXW','NDXW'))})}", flush=True)
+    print(f"Unique contracts to fetch: {len(FIRST_IN)}", flush=True)
+    fetch_all(FIRST_IN)
     for i, r in trades.iterrows():
         rec = {"sym": r.sym, "strike": r.strike, "type": r.cp, "entry_time": r.t_in, "exit_time": r.t_out,
                "entry_px": r.px_in, "exit_px": r.px_out, "expiry": r.exp, "expiry_match": r.exp_match,
@@ -287,7 +310,11 @@ def main():
         if bars is not None:
             bars = bars[bars.t <= window_end]
         rec["status"] = status
-        if bars is None: rows.append(rec); continue
+        if bars is None:
+            rows.append(rec)
+            if sum(1 for x in rows if x.get("status") not in ("ok", None)) <= 5:
+                print(f"  no data for {sym}: {status}", flush=True)
+            continue
         held = bars[(bars.t >= t_in - timedelta(minutes=15)) & (bars.t <= t_out)]
         after = bars[bars.t > t_out]
         fwd = bars[bars.t >= t_in - timedelta(minutes=15)]
@@ -307,8 +334,17 @@ def main():
         if (i + 1) % 25 == 0: print(f"{i+1}/{n} trades processed", flush=True)
 
     df = pd.DataFrame(rows)
+    os.makedirs(OUT, exist_ok=True)
+    df.to_csv(f"{OUT}/exit_trades_all.csv", index=False)
+    print("\nData status per trade:", flush=True)
+    print(df["status"].value_counts().to_string(), flush=True)
     ok = df["status"] == "ok"
     d = df[ok].copy()
+    if d.empty or "peak_while_held_pct" not in d:
+        raise SystemExit("No trades had usable option bars - see status counts above.")
+    for col in ("peak_while_held_pct", "peak_high_while_held_pct", "worst_while_held_pct",
+                "peak_after_exit_pct", "last_close_in_window_pct", "went_to_zero_after"):
+        if col not in d: d[col] = np.nan
     d["captured_of_peak"] = np.where(d.peak_while_held_pct > 0, d.realized_pct / d.peak_while_held_pct, np.nan)
     d["green_then_loss"] = (d.peak_while_held_pct >= GREEN_THRESHOLD) & (d.realized_pct < 0)
     d["sold_then_ran_2x_more"] = (d.peak_after_exit_pct >= d.realized_pct + 1.0)
@@ -345,8 +381,8 @@ def main():
 
     # plain-English report
     L = []
-    L.append("# Exit Analysis - Tazmanian Trader (real trades, real Alpaca option bars)\n")
-    L.append(f"Trades in tab: {len(trades)} | with expiry found: {int(df.expiry.notna().sum())} | with Alpaca bars: {int(ok.sum())}")
+    L.append("# Exit Analysis - Tazmanian Trader (real trades, real OPRA option bars via Databento)\n")
+    L.append(f"Trades in tab: {len(trades)} | with expiry found: {int(df.expiry.notna().sum())} | with option bars: {int(ok.sum())}")
     L.append(f"Bar size: {TF}. Peaks measured on bar CLOSES (conservative). Window: entry to min(expiry, exit + {POST_EXIT_DAYS} days).\n")
     L.append("## How the trades actually went")
     L.append(f"- Realized avg return: {d.realized_pct.mean()*100:.1f}% | median {d.realized_pct.median()*100:.1f}% | win rate {(d.realized_pct>0).mean()*100:.1f}%")
