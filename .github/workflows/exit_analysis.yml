@@ -6,7 +6,7 @@ permissions:
 jobs:
   exit-analysis:
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -24,16 +24,19 @@ jobs:
       - name: Run exit analysis
         env:
           DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY || vars.DATABENTO_API_KEY }}
-          MAX_COST_USD: "100"
+          MAX_COST_USD: "70"
         run: python exit_analysis.py Tazmanian_Trade_Record.xlsx
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: exit-analysis-results
           path: results/
-      - name: Commit results to repo
+      - name: Commit results + bar cache to repo (runs even if the analysis fails or is cancelled)
+        if: always()
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git add results/
-          git commit -m "Exit analysis results" || echo "nothing to commit"
+          git pull --rebase || true
+          git commit -m "Exit analysis results + cache" || echo "nothing to commit"
           git push
