@@ -49,30 +49,93 @@ def num(x):
     try: return float(str(x).replace(",", "").replace("$", ""))
     except: return np.nan
 
-trades = read_tab(XLSX, "Exact Entry-Exit Times", ["Symbol", "Strike", "Entry Time", "Exit Time"])
-fills  = read_tab(XLSX, "Raw Fills (All Accounts)", ["Symbol", "Expiry", "Strike"])
 
-trades["sym"]    = trades["Symbol"].astype(str).str.strip().str.upper()
-trades["strike"] = trades["Strike"].map(num)
-trades["cp"]     = trades["Type"].map(norm_type)
-trades["t_in"]   = pd.to_datetime(trades["Entry Time"], errors="coerce")
-trades["t_out"]  = pd.to_datetime(trades["Exit Time"], errors="coerce")
-trades["px_in"]  = trades["Entry $"].map(num)
-trades["px_out"] = trades["Exit $"].map(num)
-trades = trades.dropna(subset=["sym", "strike", "cp", "t_in", "t_out", "px_in", "px_out"])
-trades = trades[trades["px_in"] > 0].reset_index(drop=True)
+xl = pd.ExcelFile(XLSX)
+print("Sheets found in workbook:", xl.sheet_names, flush=True)
 
-fills["sym"]    = fills["Symbol"].astype(str).str.strip().str.upper()
-fills["strike"] = fills["Strike"].map(num)
-fills["cp"]     = fills["Type"].map(norm_type)
-fills["exp"]    = pd.to_datetime(fills["Expiry"], errors="coerce").dt.normalize()
-fills["d"]      = pd.to_datetime(fills["Date"], errors="coerce").dt.normalize()
-fills["side"]   = fills.get("Side", pd.Series("", index=fills.index)).astype(str).str.lower()
-fills["acct"]   = fills.get("Account", pd.Series("", index=fills.index)).astype(str).str.lower()
-fills["px"]     = fills["Price"].map(num) if "Price" in fills else np.nan
-fills = fills.dropna(subset=["exp", "d", "strike", "cp"])
+def find_sheet(*words):
+    for n in xl.sheet_names:
+        if all(w in n.lower() for w in words): return n
+    return None
 
-# ---------------- attach expiration to each trade ----------------
+def prep_fills():
+    sh = find_sheet("raw", "fill")
+    if sh is None:
+        raise SystemExit(f"No 'Raw Fills' sheet. Sheets present: {xl.sheet_names}. "
+                         "Upload the workbook version that has the Raw Fills (All Accounts) tab.")
+    f = read_tab(XLSX, sh, ["Symbol", "Expiry", "Strike"])
+    f["sym"]    = f["Symbol"].astype(str).str.strip().str.upper()
+    f["strike"] = f["Strike"].map(num)
+    f["cp"]     = f["Type"].map(norm_type)
+    f["exp"]    = pd.to_datetime(f["Expiry"], errors="coerce").dt.normalize()
+    f["d"]      = pd.to_datetime(f["Date"], errors="coerce").dt.normalize()
+    f["side"]   = f["Side"].astype(str).str.lower() if "Side" in f else ""
+    f["acct"]   = f["Account"].astype(str).str.lower() if "Account" in f else ""
+    f["px"]     = f["Price"].map(num) if "Price" in f else np.nan
+    f["qty"]    = f["Qty"].map(num).abs().fillna(1) if "Qty" in f else 1.0
+    tcol = next((c for c in f.columns if c.lower().startswith("time") and "source" not in c.lower()), None)
+    tt = f[tcol].astype(str).str.strip() if tcol else pd.Series("", index=f.index)
+    has_t = tt.str.match(r"^\d{1,2}:\d{2}")
+    f["ts"] = pd.NaT
+    f.loc[has_t, "ts"] = pd.to_datetime(f.loc[has_t, "d"].dt.strftime("%Y-%m-%d") + " " + tt[has_t], errors="coerce")
+    f["exact_time"] = f["ts"].notna()
+    return f.dropna(subset=["exp", "d", "strike", "cp"])
+
+fills = prep_fills()
+
+def from_exact_tab(sh):
+    t = read_tab(XLSX, sh, ["Symbol", "Strike", "Entry Time", "Exit Time"])
+    t["sym"] = t["Symbol"].astype(str).str.strip().str.upper()
+    t["strike"] = t["Strike"].map(num); t["cp"] = t["Type"].map(norm_type)
+    t["t_in"] = pd.to_datetime(t["Entry Time"], errors="coerce")
+    t["t_out"] = pd.to_datetime(t["Exit Time"], errors="coerce")
+    t["px_in"] = t["Entry $"].map(num); t["px_out"] = t["Exit $"].map(num)
+    t["time_quality"] = "exact"; t["exit_kind"] = "sold"
+    t = t.dropna(subset=["sym", "strike", "cp", "t_in", "t_out", "px_in", "px_out"])
+    t = t[t.px_in > 0].reset_index(drop=True)
+    res = t.apply(find_expiry, axis=1, result_type="expand")
+    t["exp"], t["exp_match"] = res[0], res[1]
+    return t
+
+def from_fills_fifo(f):
+    """Rebuild round trips from raw fills, FIFO per contract per account.
+    Positions never sold are closed at expiry at $0 (exit_kind='expired') -> these are the 'went to zero' trades."""
+    f = f[f.d >= pd.Timestamp("2024-02-01")].copy()           # Alpaca option history starts Feb 2024
+    f["is_buy"] = f.side.str.contains("buy|bto")
+    f["is_sell"] = f.side.str.contains("sell|stc")
+    f = f[f.is_buy | f.is_sell]
+    f["when"] = f.ts.fillna(f.d + pd.Timedelta(hours=9, minutes=45))
+    f.loc[f.is_sell & ~f.exact_time, "when"] = f.d + pd.Timedelta(hours=15, minutes=45)
+    out = []
+    for key, g in f.sort_values(["when"]).groupby(["acct", "sym", "exp", "cp", "strike"], sort=False):
+        lots = []                                              # [buy_row, remaining_qty, matched list]
+        for _, r in g.iterrows():
+            if r.is_buy:
+                lots.append([r, r.qty, []]); continue
+            q = r.qty
+            for lot in lots:
+                if q <= 0: break
+                take = min(lot[1], q)
+                if take > 0:
+                    lot[1] -= take; q -= take; lot[2].append((take, r.px, r.when, r.exact_time))
+        for b, rem, matched in lots:
+            legs = list(matched)
+            if rem > 0 and key[2] + pd.Timedelta(hours=16) < pd.Timestamp.now():
+                legs.append((rem, 0.0, key[2] + pd.Timedelta(hours=16), True))
+            if not legs: continue                              # still open
+            qty = sum(x[0] for x in legs)
+            out.append({"sym": key[1], "exp": key[2], "cp": key[3], "strike": key[4],
+                        "t_in": b.when, "px_in": b.px,
+                        "t_out": max(x[2] for x in legs),
+                        "px_out": sum(x[0] * x[1] for x in legs) / qty,
+                        "qty": qty,
+                        "exit_kind": "expired" if rem > 0 and len(legs) == 1 else ("partly expired" if rem > 0 else "sold"),
+                        "time_quality": "exact" if b.exact_time and all(x[3] for x in legs) else "date-only (approx 9:45 in / 15:45 out)",
+                        "exp_match": "from fill"})
+    t = pd.DataFrame(out)
+    t = t[(t.px_in > 0) & (t.t_out >= t.t_in)].reset_index(drop=True)
+    return t
+
 def find_expiry(r):
     day = r.t_in.normalize()
     m = fills[(fills.sym == r.sym) & (fills.strike == r.strike) & (fills.cp == r.cp) & (fills.d == day)]
@@ -90,8 +153,15 @@ def find_expiry(r):
         return exps[0], "matched"
     return m.exp.value_counts().idxmax(), f"ambiguous ({len(exps)} expiries, took most common)"
 
-res = trades.apply(find_expiry, axis=1, result_type="expand")
-trades["exp"], trades["exp_match"] = res[0], res[1]
+exact_sheet = find_sheet("entry", "exit")
+if exact_sheet:
+    print(f"Using '{exact_sheet}' tab (exact times).", flush=True)
+    trades = from_exact_tab(exact_sheet)
+else:
+    print("No Entry-Exit tab -> rebuilding round trips from Raw Fills (FIFO). "
+          "Exact-time and date-only trades are reported separately.", flush=True)
+    trades = from_fills_fifo(fills)
+print(f"Trades to analyze: {len(trades)}", flush=True)
 
 def occ(sym, exp, cp, strike):
     return f"{sym}{exp:%y%m%d}{cp}{int(round(strike * 1000)):08d}"
@@ -177,6 +247,13 @@ for t1 in (0.5, 1.0):
         for tr in (0.3, 0.5):
             RULES[f"scale_half@{int(t1*100)}_be_trail{int(tr*100)}_sl{'none' if sl is None else int(sl*100)}"] = {"kind": "scale", "t1": t1, "trail": tr, "sl": sl}
 
+# one fetch per contract: from earliest entry on that contract to its expiry
+FIRST_IN = {}
+def contract_bars(sym):
+    exp = pd.Timestamp("20" + sym[-15:-9][:2] + "-" + sym[-15:-9][2:4] + "-" + sym[-15:-9][4:6]).tz_localize(ET) + timedelta(hours=16)
+    start = FIRST_IN.get(sym[:-15] + sym[-15:], None)
+    return get_bars(sym, (start - timedelta(minutes=30)).isoformat(), exp.isoformat())
+
 # ---------------- main loop ----------------
 def main():
     if not KEY or not SEC:
@@ -184,10 +261,17 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     rows, paths = [], {}
     n = len(trades)
+    for _, r in trades.dropna(subset=["exp"]).iterrows():
+        t_in = r.t_in.tz_localize(ET) if r.t_in.tzinfo is None else r.t_in
+        for root in ((r.sym, r.sym + "W") if r.sym in ("SPX", "NDX") else (r.sym,)):
+            k = occ(root, pd.Timestamp(r.exp), r.cp, r.strike)
+            FIRST_IN[k] = min(FIRST_IN.get(k, t_in), t_in)
+    print(f"Unique contracts to fetch: {len({k for k in FIRST_IN if not k.startswith(('SPXW','NDXW'))})}", flush=True)
     for i, r in trades.iterrows():
         rec = {"sym": r.sym, "strike": r.strike, "type": r.cp, "entry_time": r.t_in, "exit_time": r.t_out,
                "entry_px": r.px_in, "exit_px": r.px_out, "expiry": r.exp, "expiry_match": r.exp_match,
-               "realized_pct": r.px_out / r.px_in - 1}
+               "realized_pct": r.px_out / r.px_in - 1,
+               "exit_kind": r.get("exit_kind", "sold"), "time_quality": r.get("time_quality", "exact")}
         if pd.isna(r.exp):
             rec["status"] = "no expiry"; rows.append(rec); continue
         t_in = r.t_in.tz_localize(ET) if r.t_in.tzinfo is None else r.t_in
@@ -196,10 +280,12 @@ def main():
         window_end = min(exp_close, t_out + timedelta(days=POST_EXIT_DAYS))
         sym = occ(r.sym, pd.Timestamp(r.exp), r.cp, r.strike)
         rec["occ"] = sym
-        bars, status = get_bars(sym, (t_in - timedelta(minutes=15)).isoformat(), window_end.isoformat())
+        bars, status = contract_bars(sym)
         if bars is None and r.sym in ("SPX", "NDX"):
             sym = occ(r.sym + "W", pd.Timestamp(r.exp), r.cp, r.strike)
-            bars, status = get_bars(sym, (t_in - timedelta(minutes=15)).isoformat(), window_end.isoformat())
+            bars, status = contract_bars(sym)
+        if bars is not None:
+            bars = bars[bars.t <= window_end]
         rec["status"] = status
         if bars is None: rows.append(rec); continue
         held = bars[(bars.t >= t_in - timedelta(minutes=15)) & (bars.t <= t_out)]
@@ -269,7 +355,14 @@ def main():
     L.append(f"- Median peak while held: {d.peak_while_held_pct.median()*100:.1f}% vs median realized {d.realized_pct.median()*100:.1f}%")
     L.append(f"- Winners: median share of peak captured: {d.loc[d.realized_pct>0,'captured_of_peak'].median()*100:.0f}%")
     L.append(f"- After exit, contract later reached at least +100 points more than your exit: {int(d.sold_then_ran_2x_more.sum())} trades")
-    L.append(f"- After exit, contract ended the window near zero: {int(d.went_to_zero_after.fillna(False).sum())} trades\n")
+    L.append(f"- After exit, contract ended the window near zero: {int(d.went_to_zero_after.fillna(False).sum())} trades")
+    exp_ = d[d.exit_kind.astype(str).str.contains("expired")]
+    if len(exp_):
+        L.append(f"- Held to expiry and EXPIRED (never sold): {len(exp_)} trades. Of those, went >= +{int(GREEN_THRESHOLD*100)}% green first: {int((exp_.peak_while_held_pct>=GREEN_THRESHOLD).sum())}; went >= +50% green first: {int((exp_.peak_while_held_pct>=0.5).sum())}")
+    L.append("\n### Split by timing quality")
+    for q, g in d.groupby("time_quality"):
+        L.append(f"- {q}: {len(g)} trades | realized avg {g.realized_pct.mean()*100:.1f}% | went +{int(GREEN_THRESHOLD*100)}% green {(g.peak_while_held_pct>=GREEN_THRESHOLD).mean()*100:.0f}% | green-then-red {int(g.green_then_loss.sum())}")
+    L.append("Date-only trades assume a 9:45 entry and 15:45 exit, so their in-trade peaks are approximate. Trust the exact-time group more.\n")
     L.append("## Exit rules replayed on your exact entries (sorted by avg log return = compounding growth)")
     L.append("| Rule | Trades | Avg % | Median % | Win % | $ (1 contract each) | t-stat | 1st half avg % | 2nd half avg % |")
     L.append("|---|---|---|---|---|---|---|---|---|")
