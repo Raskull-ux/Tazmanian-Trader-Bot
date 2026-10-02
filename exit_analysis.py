@@ -195,6 +195,12 @@ def _retry(fn, what, tries=6):
             time.sleep(wait)
 
 CHUNK = 100   # symbols per request (smaller = fewer gateway timeouts)
+CACHE_DIR = "results/bar_cache"   # every downloaded batch is saved here; reruns reuse it and pay nothing for it
+import hashlib
+
+def _cache_path(syms, start, end):
+    h = hashlib.md5(("|".join(sorted(syms)) + str(start)).encode()).hexdigest()[:16]
+    return os.path.join(CACHE_DIR, f"{h}.pkl.gz")
 
 def fetch_all(first_in):
     """One pass: for each batch, price it, add to running total, stop before exceeding MAX_COST, then download."""
@@ -213,11 +219,16 @@ def fetch_all(first_in):
             if end > start: jobs.append((chunk, start, end))
     print(f"Databento: {len(jobs)} batches for {len(first_in)} contracts. Cost is checked batch by batch "
           f"(hard stop at ${MAX_COST:.0f}).", flush=True)
-    spent, failed = 0.0, 0
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    spent, failed, reused = 0.0, 0, 0
     for j, (chunk, start, end) in enumerate(jobs, 1):
         syms = {raw_osi(c): c for c, _ in chunk}
         kw = dict(dataset=DATASET, schema=SCHEMA, stype_in="raw_symbol", symbols=list(syms), start=start, end=end)
-        try:
+        cp = _cache_path(syms, start, end)
+        if os.path.exists(cp):
+            df = pd.read_pickle(cp); reused += 1
+        else:
+          try:
             cost = _retry(lambda: client.metadata.get_cost(**kw), f"batch {j} cost")
             if spent + cost > MAX_COST:
                 print(f"STOPPING: batch {j} would take spend to ${spent + cost:.2f} > ${MAX_COST:.0f}. "
@@ -227,7 +238,8 @@ def fetch_all(first_in):
                 break
             df = _retry(lambda: client.timeseries.get_range(**kw).to_df(), f"batch {j} download")
             spent += cost
-        except Exception as e:
+            df.to_pickle(cp)
+          except Exception as e:
             failed += 1
             for c, _ in chunk: _err[c] = f"request error: {str(e)[:120]}"
             print(f"  batch {j} failed after retries: {str(e)[:160]}", flush=True)
@@ -240,9 +252,9 @@ def fetch_all(first_in):
                 c = syms.get(raw) or syms.get(str(raw).strip())
                 if c: _bars[c] = g[["t", "o", "h", "l", "c", "v"]].sort_values("t").reset_index(drop=True)
         if j % 20 == 0 or j == len(jobs):
-            print(f"  {j}/{len(jobs)} batches done | spent ${spent:.2f} | contracts with bars {len(_bars)}", flush=True)
+            print(f"  {j}/{len(jobs)} batches done | spent this run ${spent:.2f} | reused from cache {reused} | contracts with bars {len(_bars)}", flush=True)
     print(f"Download finished. Spent ${spent:.2f}. Contracts with bars: {len(_bars)} of {len(first_in)}. "
-          f"Failed batches: {failed}", flush=True)
+          f"Failed batches: {failed}. Batches reused from cache (free): {reused}", flush=True)
 
 def contract_bars(sym):
     if sym in _bars: return _bars[sym], "ok"
