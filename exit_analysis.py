@@ -181,8 +181,23 @@ def raw_osi(occ_sym):
     root, rest = occ_sym[:-15], occ_sym[-15:]
     return root.ljust(6) + rest
 
+def _retry(fn, what, tries=6):
+    """Databento gateway can time out (504) on busy moments: back off and retry."""
+    for k in range(tries):
+        try:
+            return fn()
+        except Exception as e:
+            msg = str(e)
+            if k == tries - 1:
+                raise
+            wait = min(60, 5 * 2 ** k)
+            print(f"    {what}: {msg[:90]} -> retry {k+1}/{tries-1} in {wait}s", flush=True)
+            time.sleep(wait)
+
+CHUNK = 100   # symbols per request (smaller = fewer gateway timeouts)
+
 def fetch_all(first_in):
-    """Group contracts by expiry, one request per group (<=500 symbols). Checks cost first."""
+    """One pass: for each batch, price it, add to running total, stop before exceeding MAX_COST, then download."""
     client = db.Historical(DB_KEY)
     groups = {}
     for occ_sym, t_in in first_in.items():
@@ -190,39 +205,44 @@ def fetch_all(first_in):
         groups.setdefault(exp, []).append((occ_sym, t_in))
     jobs = []
     for exp, items in sorted(groups.items()):
-        for k in range(0, len(items), 500):
-            chunk = items[k:k + 500]
+        for k in range(0, len(items), CHUNK):
+            chunk = items[k:k + CHUNK]
             start = min(t for _, t in chunk).tz_convert("UTC") - timedelta(hours=1)
             end = min((exp + timedelta(days=1)).tz_localize("UTC"),
                       pd.Timestamp.now(tz="UTC").normalize() - timedelta(days=1))   # data is T+1
-            jobs.append((chunk, start, end))
-    print(f"Databento: {len(jobs)} requests for {len(first_in)} contracts. Checking cost first...", flush=True)
-    total = 0.0
-    for chunk, start, end in jobs:
-        total += client.metadata.get_cost(dataset=DATASET, schema=SCHEMA, stype_in="raw_symbol",
-                                          symbols=[raw_osi(c) for c, _ in chunk], start=start, end=end)
-    print(f"Estimated cost: ${total:.2f} (limit ${MAX_COST:.0f})", flush=True)
-    if total > MAX_COST:
-        raise SystemExit(f"Estimated cost ${total:.2f} exceeds MAX_COST_USD=${MAX_COST:.0f}. Nothing was downloaded.")
+            if end > start: jobs.append((chunk, start, end))
+    print(f"Databento: {len(jobs)} batches for {len(first_in)} contracts. Cost is checked batch by batch "
+          f"(hard stop at ${MAX_COST:.0f}).", flush=True)
+    spent, failed = 0.0, 0
     for j, (chunk, start, end) in enumerate(jobs, 1):
         syms = {raw_osi(c): c for c, _ in chunk}
+        kw = dict(dataset=DATASET, schema=SCHEMA, stype_in="raw_symbol", symbols=list(syms), start=start, end=end)
         try:
-            store = client.timeseries.get_range(dataset=DATASET, schema=SCHEMA, stype_in="raw_symbol",
-                                                symbols=list(syms), start=start, end=end)
-            df = store.to_df()
+            cost = _retry(lambda: client.metadata.get_cost(**kw), f"batch {j} cost")
+            if spent + cost > MAX_COST:
+                print(f"STOPPING: batch {j} would take spend to ${spent + cost:.2f} > ${MAX_COST:.0f}. "
+                      f"Analyzing what was downloaded.", flush=True)
+                for jj in jobs[j - 1:]:
+                    for c, _ in jj[0]: _err.setdefault(c, "skipped: cost limit")
+                break
+            df = _retry(lambda: client.timeseries.get_range(**kw).to_df(), f"batch {j} download")
+            spent += cost
         except Exception as e:
+            failed += 1
             for c, _ in chunk: _err[c] = f"request error: {str(e)[:120]}"
-            print(f"  request {j}/{len(jobs)} failed: {str(e)[:160]}", flush=True)
+            print(f"  batch {j} failed after retries: {str(e)[:160]}", flush=True)
             continue
         if not df.empty:
             df = df.reset_index()
             df["t"] = pd.to_datetime(df["ts_event"], utc=True).dt.tz_convert(ET)
             df = df.rename(columns={"open": "o", "high": "h", "low": "l", "close": "c", "volume": "v"})
             for raw, g in df.groupby("symbol"):
-                c = syms.get(raw) or syms.get(raw.strip())
+                c = syms.get(raw) or syms.get(str(raw).strip())
                 if c: _bars[c] = g[["t", "o", "h", "l", "c", "v"]].sort_values("t").reset_index(drop=True)
-        if j % 20 == 0: print(f"  {j}/{len(jobs)} requests done", flush=True)
-    print(f"Contracts with bars: {len(_bars)} of {len(first_in)}", flush=True)
+        if j % 20 == 0 or j == len(jobs):
+            print(f"  {j}/{len(jobs)} batches done | spent ${spent:.2f} | contracts with bars {len(_bars)}", flush=True)
+    print(f"Download finished. Spent ${spent:.2f}. Contracts with bars: {len(_bars)} of {len(first_in)}. "
+          f"Failed batches: {failed}", flush=True)
 
 def contract_bars(sym):
     if sym in _bars: return _bars[sym], "ok"
