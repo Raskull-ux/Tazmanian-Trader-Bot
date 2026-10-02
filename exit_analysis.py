@@ -165,7 +165,12 @@ def occ(sym, exp, cp, strike):
     return f"{sym}{exp:%y%m%d}{cp}{int(round(strike * 1000)):08d}"
 
 # ---------------- Databento OPRA bars (real consolidated options data) ----------------
-import databento as db
+try:
+    import databento as db
+except ImportError:                       # workflow didn't install it -> install it here
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "databento"])
+    import databento as db
 DB_KEY = os.environ.get("DATABENTO_API_KEY")
 MAX_COST = float(os.environ.get("MAX_COST_USD", "100"))   # hard stop so the free $125 credit is never exceeded
 DATASET, SCHEMA = "OPRA.PILLAR", "ohlcv-1h"
