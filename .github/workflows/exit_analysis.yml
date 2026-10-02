@@ -12,11 +12,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install pandas numpy openpyxl requests
+      - run: pip install pandas numpy openpyxl databento
+      - name: Check Databento key is visible (never prints the key)
+        env:
+          S: ${{ secrets.DATABENTO_API_KEY }}
+          V: ${{ vars.DATABENTO_API_KEY }}
+        run: |
+          if [ -n "$S" ]; then echo "Found DATABENTO_API_KEY as a repository SECRET"; fi
+          if [ -n "$V" ]; then echo "Found DATABENTO_API_KEY as a repository VARIABLE"; fi
+          if [ -z "$S$V" ]; then echo "DATABENTO_API_KEY NOT FOUND as secret or variable in this repo"; exit 1; fi
       - name: Run exit analysis
         env:
-          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
-          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          DATABENTO_API_KEY: ${{ secrets.DATABENTO_API_KEY || vars.DATABENTO_API_KEY }}
+          MAX_COST_USD: "100"
         run: python exit_analysis.py Tazmanian_Trade_Record.xlsx
       - uses: actions/upload-artifact@v4
         with:
