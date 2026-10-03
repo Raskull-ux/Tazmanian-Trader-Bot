@@ -56,10 +56,21 @@ GAUGES = {
 
 
 def headers():
-    k, s = os.environ.get("ALPACA_API_KEY_ID"), os.environ.get("ALPACA_API_SECRET_KEY")
+    k = (os.environ.get("ALPACA_API_KEY_ID") or "").strip()
+    s = (os.environ.get("ALPACA_API_SECRET_KEY") or "").strip()
     if not k or not s:
-        sys.exit("ALPACA_API_KEY_ID / ALPACA_API_SECRET_KEY not set.")
+        sys.exit("ALPACA_API_KEY / ALPACA_SECRET_KEY secrets are empty or missing in THIS repo "
+                 "(Settings -> Secrets and variables -> Actions).")
     return {"APCA-API-KEY-ID": k, "APCA-API-SECRET-KEY": s}
+
+
+def key_diagnostic():
+    """Safe facts only: never prints the key itself."""
+    k = (os.environ.get("ALPACA_API_KEY_ID") or "").strip()
+    s = (os.environ.get("ALPACA_API_SECRET_KEY") or "").strip()
+    kind = {"PK": "PAPER", "AK": "LIVE"}.get(k[:2], "UNKNOWN prefix")
+    return (f"key id: {len(k)} chars, type {kind}; secret: {len(s)} chars "
+            f"(normal: key id 20, secret 40)")
 
 
 def get(url, params=None, tries=5):
@@ -95,8 +106,18 @@ def load_traded(path: str | None) -> pd.DataFrame:
 
 
 def load_assets() -> pd.DataFrame:
-    r = get(f"{TRADING_API}/v2/assets", {"status": "active", "asset_class": "us_equity"})
-    r.raise_for_status()
+    print(key_diagnostic())
+    params = {"status": "active", "asset_class": "us_equity"}
+    r = None
+    for base in ("https://paper-api.alpaca.markets", "https://api.alpaca.markets"):
+        r = get(f"{base}/v2/assets", params)
+        print(f"assets via {base}: HTTP {r.status_code}")
+        if r.status_code == 200:
+            break
+    if r.status_code != 200:
+        sys.exit("Alpaca rejected these keys on both paper and live (401 = wrong/expired key "
+                 "or secret, or key and secret from different key pairs). Regenerate a PAPER "
+                 "key pair in the Alpaca dashboard and paste BOTH into this repo's secrets.")
     a = pd.DataFrame(r.json())
     a["has_options"] = a["attributes"].apply(lambda x: "has_options" in (x or []))
     a = a[a["tradable"] & a["exchange"].isin(LISTED_EXCHANGES)]
