@@ -37,7 +37,7 @@ DATA_API = "https://data.alpaca.markets"
 TARGET_SIZE = int(os.environ.get("TARGET_SIZE", 1000))
 MIN_PRICE = float(os.environ.get("MIN_PRICE", 5))
 MIN_DOLLAR_VOL = float(os.environ.get("MIN_DOLLAR_VOL", 25e6))
-MIN_SHARE_VOL = float(os.environ.get("MIN_SHARE_VOL", 1e6))
+MIN_SHARE_VOL = float(os.environ.get("MIN_SHARE_VOL", 0))  # dollar volume is the liquidity test; a share floor wrongly drops high-priced names (DPZ, ULTA)
 CORE_MIN_DOLLAR_VOL = float(os.environ.get("CORE_MIN_DOLLAR_VOL", 10e6))
 LOOKBACK_DAYS = 20
 LISTED_EXCHANGES = {"NYSE", "NASDAQ", "ARCA", "AMEX", "BATS"}
@@ -70,7 +70,7 @@ def key_diagnostic():
     s = (os.environ.get("ALPACA_API_SECRET_KEY") or "").strip()
     kind = {"PK": "PAPER", "AK": "LIVE"}.get(k[:2], "UNKNOWN prefix")
     return (f"key id: {len(k)} chars, type {kind}; secret: {len(s)} chars "
-            f"(normal: key id 20, secret 40)")
+            "")
 
 
 def get(url, params=None, tries=5):
@@ -182,7 +182,9 @@ def main():
     def passes(df, min_dv):
         ok = (df["last_close"] >= MIN_PRICE) & (df["days"] >= LOOKBACK_DAYS * 0.75)
         if floors_on:
-            ok &= (df["avg_dollar_vol"] >= min_dv) & (df["avg_volume"] >= MIN_SHARE_VOL)
+            ok &= df["avg_dollar_vol"] >= min_dv
+            if MIN_SHARE_VOL > 0:
+                ok &= df["avg_volume"] >= MIN_SHARE_VOL
         return ok
 
     # --- core: Taz's traded tickers -------------------------------------
@@ -233,8 +235,7 @@ def main():
                  "volume, so dollar-volume floors were OFF and names were ranked only.**")
     L.append(f"\nTotal: **{len(uni)}** = core {len(core)} + gauges {len(gauge)} + broad {len(broad)}")
     L.append(f"\nRules: options listed; price ≥ ${MIN_PRICE:g}; ≥{int(LOOKBACK_DAYS*0.75)} of last "
-             f"{LOOKBACK_DAYS} sessions traded; broad ≥ ${MIN_DOLLAR_VOL/1e6:g}M/day and "
-             f"≥{MIN_SHARE_VOL/1e6:g}M shares/day; core ≥ ${CORE_MIN_DOLLAR_VOL/1e6:g}M/day.")
+             f"{LOOKBACK_DAYS} sessions traded; broad ≥ ${MIN_DOLLAR_VOL/1e6:g}M/day; core ≥ ${CORE_MIN_DOLLAR_VOL/1e6:g}M/day.")
     if len(broad):
         L.append(f"\nSmallest broad name kept: {broad.iloc[-1]['symbol']} at "
                  f"${broad.iloc[-1]['avg_dollar_vol']/1e6:.1f}M/day. "
