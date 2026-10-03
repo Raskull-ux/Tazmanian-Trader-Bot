@@ -1,0 +1,34 @@
+name: Build Universe
+on:
+  workflow_dispatch:
+    inputs:
+      target_size:
+        description: "Total names to keep"
+        default: "1000"
+  schedule:
+    - cron: "0 12 * * 0"   # Sundays 8am ET — refresh weekly
+permissions:
+  contents: write
+jobs:
+  universe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas openpyxl requests
+      - name: Build universe
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          TARGET_SIZE: ${{ github.event.inputs.target_size || '1000' }}
+        run: python universe_builder.py
+      - name: Commit universe
+        run: |
+          git config user.name "universe-bot"
+          git config user.email "universe-bot@users.noreply.github.com"
+          git add universe/
+          git diff --cached --quiet || git commit -m "Universe refresh $(date -u +%F)"
+          git push
