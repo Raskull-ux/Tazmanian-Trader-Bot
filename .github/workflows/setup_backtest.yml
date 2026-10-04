@@ -8,6 +8,9 @@ on:
       months:
         description: "Months of history"
         default: "9"
+      debug_day:
+        description: "Dump one day of bars, e.g. QQQ:2026-02-18 (optional)"
+        default: ""
 permissions:
   contents: write
 jobs:
@@ -26,6 +29,7 @@ jobs:
           ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
           SYMBOLS: ${{ github.event.inputs.symbols }}
           MONTHS: ${{ github.event.inputs.months || '9' }}
+          DEBUG_DAY: ${{ github.event.inputs.debug_day }}
         run: python setup_backtest.py
       - name: Save results
         if: always()
