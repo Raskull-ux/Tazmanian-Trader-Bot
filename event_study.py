@@ -301,9 +301,18 @@ def main():
         u = u[u["group"] != "gauge"].sort_values("avg_dollar_vol", ascending=False)
         syms = u["symbol"].head(MAX_SYMBOLS).tolist()
     print(f"Event study {s} -> {e[:10]}, {len(syms)} symbols")
-    ev = []
-    for ci in range(0, len(syms), CHUNK):
-        ch = syms[ci:ci + CHUNK]
+    # resume: progress is saved after every chunk, so a cancelled or timed-out run
+    # picks up where it stopped (delete results/event_study/ to start fresh)
+    os.makedirs(OUT, exist_ok=True)
+    part, donef = f"{OUT}/events_partial.csv", f"{OUT}/done_symbols.txt"
+    ev, done = [], set()
+    if os.path.exists(part) and os.path.exists(donef):
+        ev = pd.read_csv(part).to_dict("records")
+        done = set(open(donef).read().split())
+        print(f"Resuming: {len(done)} symbols already done, {len(ev)} events loaded")
+    syms_todo = [x for x in syms if x not in done]
+    for ci in range(0, len(syms_todo), CHUNK):
+        ch = syms_todo[ci:ci + CHUNK]
         try:
             m5 = sb.fetch(ch, "5Min", warm.date().isoformat(), e)
             h1 = sb.fetch(ch, "1Hour", (warm - timedelta(days=60)).date().isoformat(), e)
@@ -316,7 +325,10 @@ def main():
                                                     d1[d1.symbol == sym]) if x["date"] >= s]
             except Exception as ex:
                 print(f"  {sym}: {ex}")
-        print(f"  {min(ci + CHUNK, len(syms))}/{len(syms)} symbols, {len(ev)} events")
+        pd.DataFrame(ev).to_csv(part, index=False)
+        done |= set(ch)
+        open(donef, "w").write("\n".join(sorted(done)))
+        print(f"  {len(done)}/{len(syms)} symbols done, {len(ev)} events (progress saved)")
     df = pd.DataFrame(ev)
     if df.empty:
         print("No events."); return
