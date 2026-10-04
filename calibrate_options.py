@@ -24,6 +24,12 @@ import pandas as pd
 from scipy.special import ndtr
 import setup_backtest as sb
 
+try:                       # the cached bars need pyarrow to unpickle; install it if missing
+    import pyarrow  # noqa: F401
+except ImportError:
+    import subprocess, sys
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "pyarrow"])
+
 OUT = "results/calibration"
 MAX_DTE, MAX_MONEY = 30, 0.10    # contracts up to 30 days out, strikes within 10% of spot
 MIN_VOL = 5
