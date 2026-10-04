@@ -47,7 +47,9 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     P = positions()
     start = (pd.Timestamp(min(P.entry)) - pd.Timedelta(days=5)).date().isoformat()
-    end = (pd.Timestamp(max(P.entry)) + pd.Timedelta(days=14)).date().isoformat()
+    # Free Alpaca plan only serves SIP data older than 15 minutes: never ask past (now - 20 min)
+    cap = pd.Timestamp.now(tz="UTC") - pd.Timedelta(minutes=20)
+    end = min(pd.Timestamp(max(P.entry)).tz_localize("UTC") + pd.Timedelta(days=14), cap).isoformat()
     syms = sorted(set(P.symbol) | {"SPY"})
     D = {}
     for i in range(0, len(syms), 50):
@@ -62,6 +64,8 @@ def main():
                 x["day"] = x["t"].dt.tz_convert(sb.NY).dt.date
                 D[s] = x.sort_values("day").reset_index(drop=True)
         print(f"  {min(i + 50, len(syms))}/{len(syms)}")
+    if "SPY" not in D:
+        raise SystemExit("SPY prices could not be downloaded; see the fetch errors above.")
     spy = D["SPY"].set_index("day")
     rows = []
     for _, p in P.iterrows():
