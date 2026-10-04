@@ -21,6 +21,7 @@ Approved definitions (Oct 3 2026; every number is a setting below):
   targets        levels below entry: low of day, yesterday's low, yesterday's close
                  (gap fill), daily 8 SMA, hourly 50/100/200 SMA. T1 nearest, T2 next.
   v2 change      trigger must ALSO close below the lowest low of the 12-bar box
+  v4 change      zones measured in each stock's 5-min ATR(14), not fixed % (fixed % never fired on TSLA/META/AMD)
   management     half off at T1, stop on the rest moves to breakeven, rest off at T2,
                  anything left exits at 15:55. (Stock-move test, not option P&L yet.)
 
@@ -49,6 +50,9 @@ P = dict(
     ENTRY_START="09:45", ENTRY_END="15:30", EOD_EXIT="15:55",
     MIN_TARGET_GAP=0.001,
     BREAK_BOX=True,   # v2: trigger must close below the consolidation box low
+    HOD_ATR=1.5,      # v4: zones scale with each stock's own 5-min ATR(14)
+    SMA_ATR=1.0,
+    MIN_ROOM_ATR=0.0, # v4: skip if T1 is closer than this many ATRs below entry
 )
 MONTHS = int(os.environ.get("MONTHS", 9))
 MAX_SYMBOLS = int(os.environ.get("MAX_SYMBOLS", 1000))
@@ -110,6 +114,9 @@ def prep_5m(b: pd.DataFrame) -> pd.DataFrame:
         b = b[b["rth"]].reset_index(drop=True)
     for n in (10, 20, 50, 200):
         b[f"sma{n}"] = b["c"].rolling(n).mean()
+    pc = b["c"].shift()
+    tr = np.maximum(b["h"] - b["l"], np.maximum((b["h"] - pc).abs(), (b["l"] - pc).abs()))
+    b["atr"] = tr.rolling(14).mean()
     b["rsi"] = rsi(b["c"], P["RSI_LEN"])
     b["rsima"] = b["rsi"].rolling(P["RSI_MA"]).mean()
     b["day"] = b["t"].dt.date
@@ -138,6 +145,7 @@ def signals_for_symbol(sym, b5, b1h, b1d):
     c, h, l = b["c"].values, b["h"].values, b["l"].values
     s10, s20, s50, s200 = (b[f"sma{n}"].values for n in (10, 20, 50, 200))
     r, rma = b["rsi"].values, b["rsima"].values
+    atr = b["atr"].values
     cross_dn = (s10 < s20) & (np.roll(s10, 1) >= np.roll(s20, 1))
 
     # daily context: prior-day low/close, daily 8 SMA as of prior close
@@ -183,10 +191,13 @@ def signals_for_symbol(sym, b5, b1h, b1d):
             cons = idx[j - K:j]
             hod_prev = hod_run[j - 1]
             setup = None
-            if (c[cons] >= hod_prev * (1 - P["HOD_ZONE"])).all():
+            a = atr[i]
+            if not a > 0:
+                continue
+            if (c[cons] >= hod_prev - P["HOD_ATR"] * a).all():
                 setup = "HOD"
             elif (not np.isnan(s200[i]) and c[i] < s200[i]
-                  and (np.abs(c[cons] / s200[cons] - 1) <= P["SMA_ZONE"]).all()):
+                  and (np.abs(c[cons] - s200[cons]) <= P["SMA_ATR"] * atr[cons]).all()):
                 setup = "SMA200"
             if setup is None:
                 continue
@@ -205,6 +216,9 @@ def signals_for_symbol(sym, b5, b1h, b1d):
             below = sorted([(v, k) for k, v in levels.items()
                             if v == v and v < entry * (1 - P["MIN_TARGET_GAP"])], reverse=True)
             t1 = below[0] if below else (np.nan, None)
+            if P["MIN_ROOM_ATR"] > 0 and not (t1[0] == t1[0] and entry - t1[0] >= P["MIN_ROOM_ATR"] * a):
+                fired = False
+                continue
             t2 = below[1] if len(below) > 1 else (np.nan, None)
             res = manage(b, idx, j, entry, t1[0], t2[0], s50,
                          setup_high=h[cons].max())
@@ -336,7 +350,7 @@ HDR = ("| Signals | Win | Avg stock move (put direction) | t-stat | Hit T1 | Hit
 def report(df, start, end, n_syms, feed_note):
     os.makedirs(OUT, exist_ok=True)
     df.to_csv(f"{OUT}/signals.csv", index=False)
-    L = [f"# Setup Backtest v3 — {start} to {end}",
+    L = [f"# Setup Backtest v4 — {start} to {end}",
          f"\nUniverse scanned: {n_syms} names, 5-min SIP bars. {feed_note}",
          "\nStock-move test only: tells whether the setup picks moves in the right "
          "direction and reaches its targets. Option P&L comes next.\n",
@@ -387,8 +401,8 @@ def report(df, start, end, n_syms, feed_note):
 
 
 # ----------------------------------------------------------------- tuning grid
-GRID = dict(CONSOL_BARS=[6, 9, 12], HOD_ZONE=[0.003, 0.005],
-            DIV_RSI_PTS=[0.0, 3.0], BREAK_BOX=[True, False])
+GRID = dict(CONSOL_BARS=[6, 12], HOD_ATR=[1.0, 1.5, 2.0],
+            DIV_RSI_PTS=[0.0, 3.0], BREAK_BOX=[True, False], MIN_ROOM_ATR=[0.0, 2.0])
 METRIC = "opt1_50"      # 1-day ATM put, +50% target, average return per trade
 
 
@@ -423,16 +437,16 @@ def grid_report(gr, split_date):
     L = [f"\n## Tuning grid (walk-forward) — metric: {METRIC} (1-day put, +50% target)\n",
          f"Settings are picked on signals BEFORE {split_date} (train) and judged on signals "
          "AFTER it (test). Only the test column counts; the train column is where tuning can fool itself.\n",
-         "| Box bars | HOD zone | RSI div pts | Box break | Train n | Train avg | Train t | Test n | Test avg | Test t |",
-         "|---|---|---|---|---|---|---|---|---|---|"]
+         "| Box bars | HOD zone (ATR) | RSI div pts | Box break | Min room (ATR) | Train n | Train avg | Train t | Test n | Test avg | Test t |",
+         "|---|---|---|---|---|---|---|---|---|---|---|"]
     ok = gr[gr["train_n"] >= 20].sort_values("train_avg", ascending=False)
     for _, r in ok.head(8).iterrows():
-        L.append(f"| {r.CONSOL_BARS} | {r.HOD_ZONE:.1%} | {r.DIV_RSI_PTS:g} | {r.BREAK_BOX} | "
+        L.append(f"| {r.CONSOL_BARS} | {r.HOD_ATR:g} | {r.DIV_RSI_PTS:g} | {r.BREAK_BOX} | {r.MIN_ROOM_ATR:g} | "
                  f"{r.train_n} | {r.train_avg*100:+.1f}% | {r.train_t:.2f} | {r.test_n} | "
                  f"{r.test_avg*100:+.1f}% | {r.test_t:.2f} |")
     if len(ok):
         best = ok.iloc[0]
-        L.append(f"\nBest on train: box {best.CONSOL_BARS} bars, zone {best.HOD_ZONE:.1%}, "
+        L.append(f"\nBest on train: box {best.CONSOL_BARS} bars, zone {best.HOD_ATR:g} ATR, room {best.MIN_ROOM_ATR:g} ATR, "
                  f"RSI div {best.DIV_RSI_PTS:g}, box break {best.BREAK_BOX} -> "
                  f"TEST {best.test_avg*100:+.1f}% per trade on {best.test_n} signals (t {best.test_t:.2f}).")
     return L
