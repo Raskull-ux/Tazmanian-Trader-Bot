@@ -4,10 +4,13 @@ on:
     inputs:
       symbols:
         description: "Tickers to test (comma list). Leave blank for the full universe."
-        default: "QQQ,SPY"
+        default: "QQQ,SPY,TSLA,NVDA,META,AMD,PLTR,MU,COIN,AAPL"
       months:
         description: "Months of history"
         default: "9"
+      grid:
+        description: "Run the tuning grid (1 = yes). Only runs when 60 or fewer symbols."
+        default: "1"
       debug_day:
         description: "Dump one day of bars, e.g. QQQ:2026-02-18 (optional)"
         default: ""
@@ -30,6 +33,7 @@ jobs:
           SYMBOLS: ${{ github.event.inputs.symbols }}
           MONTHS: ${{ github.event.inputs.months || '9' }}
           DEBUG_DAY: ${{ github.event.inputs.debug_day }}
+          GRID: ${{ github.event.inputs.grid || '1' }}
         run: python setup_backtest.py
       - name: Save results
         if: always()
