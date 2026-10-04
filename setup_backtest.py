@@ -151,6 +151,9 @@ def signals_for_symbol(sym, b5, b1h, b1d):
     for n in (50, 100, 200):
         hh[f"h{n}"] = hh["c"].rolling(n).mean()
     hh["avail"] = hh["t"] + pd.Timedelta(hours=1)
+    # IV proxy: 20-day realized vol of daily closes (as of prior day) x 1.15, floor 15%
+    d["rv"] = (np.log(d["c"]).diff().rolling(20).std() * math.sqrt(252) * 1.15).shift()
+    ivmap = dict(zip(d["day"], d["rv"].clip(lower=0.15)))
     h_t = hh["avail"].values
 
     K, R, PR = P["CONSOL_BARS"], P["DIV_RECENT"], P["DIV_PRIOR"]
@@ -205,10 +208,76 @@ def signals_for_symbol(sym, b5, b1h, b1d):
             t2 = below[1] if len(below) > 1 else (np.nan, None)
             res = manage(b, idx, j, entry, t1[0], t2[0], s50,
                          setup_high=h[cons].max())
+            iv = ivmap.get(day, np.nan)
+            if iv == iv:
+                res.update(option_sim(b, idx, j, entry, float(iv), s50, h[cons].max()))
+                res["iv_proxy"] = round(float(iv), 3)
             out.append(dict(symbol=sym, date=str(day), time=tod, setup=setup,
                             entry=round(entry, 4), t1=t1[0], t1_name=t1[1],
                             t2=t2[0], t2_name=t2[1], **res))
     return out
+
+
+# ----------------------------------------------------------------- option estimate
+DTES = [0, 1, 3, 7, 14]
+TARGETS = [0.30, 0.50, 1.00]
+COST = float(os.environ.get("OPT_COST", 0.04))   # round-trip spread/slippage, share of premium
+_SQ2 = math.sqrt(2.0)
+
+
+def _ncdf(x):
+    return 0.5 * (1.0 + math.erf(x / _SQ2))
+
+
+def bs_put(S, K, T, sig):
+    if T <= 0 or sig <= 0:
+        return max(K - S, 0.0)
+    v = sig * math.sqrt(T)
+    d1 = (math.log(S / K) + 0.5 * v * v) / v
+    return K * _ncdf(-(d1 - v)) - S * _ncdf(-d1)
+
+
+def t_years(tod, dte):
+    hh, mm = map(int, tod.split(":"))
+    mins = max(16 * 60 - (hh * 60 + mm), 5)
+    return (mins + 390 * dte) / (390 * 252)
+
+
+def stop_bar(b, idx, j, s50, setup_high):
+    """Bar position (in idx) where the stock stop or 15:55 exit happens."""
+    c, tod = b["c"].values, b["tod"].values
+    below50 = c[idx[j]] < s50[idx[j]]
+    for k in range(j + 1, len(idx)):
+        i = idx[k]
+        if c[i] < s50[i]:
+            below50 = True
+        if (c[i] > s50[i]) if below50 else (c[i] > setup_high):
+            return k, "stop"
+        if tod[i] >= P["EOD_EXIT"]:
+            return k, "eod"
+    return len(idx) - 1, "eod"
+
+
+def option_sim(b, idx, j, entry, sig, s50, setup_high):
+    """ATM put estimate (Black-Scholes, IV proxy) for each expiry x profit target.
+    Exits at the target (checked on 5-min closes), else at the stock stop / 15:55."""
+    c, tod = b["c"].values, b["tod"].values
+    ks, _ = stop_bar(b, idx, j, s50, setup_high)
+    res = {}
+    for dte in DTES:
+        p0 = bs_put(entry, entry, t_years(tod[idx[j]], dte), sig)
+        if p0 <= 0.01:
+            continue
+        path = [bs_put(c[idx[k]], entry, t_years(tod[idx[k]], dte), sig) / p0 - 1
+                for k in range(j + 1, ks + 1)]
+        best = max(path) if path else 0.0
+        res[f"opt{dte}_best"] = round(best, 4)
+        for tg in TARGETS:
+            hit = next((x for x in path if x >= tg), None)
+            r = (tg if hit is not None else (path[-1] if path else 0.0)) - COST
+            res[f"opt{dte}_{int(tg*100)}"] = round(r, 4)
+            res[f"opt{dte}_{int(tg*100)}_hit"] = hit is not None
+    return res
 
 
 def manage(b, idx, j, entry, t1, t2, s50, setup_high):
@@ -267,7 +336,7 @@ HDR = ("| Signals | Win | Avg stock move (put direction) | t-stat | Hit T1 | Hit
 def report(df, start, end, n_syms, feed_note):
     os.makedirs(OUT, exist_ok=True)
     df.to_csv(f"{OUT}/signals.csv", index=False)
-    L = [f"# Setup Backtest v2 — {start} to {end}",
+    L = [f"# Setup Backtest v3 — {start} to {end}",
          f"\nUniverse scanned: {n_syms} names, 5-min SIP bars. {feed_note}",
          "\nStock-move test only: tells whether the setup picks moves in the right "
          "direction and reaches its targets. Option P&L comes next.\n",
@@ -291,10 +360,82 @@ def report(df, start, end, n_syms, feed_note):
         L += ["\n## Most frequent names\n", "| Ticker | Signals | Avg |", "|---|---|---|"]
         for s, row in g.iterrows():
             L.append(f"| {s} | {int(row['size'])} | {row['mean']*100:+.2f}% |")
+    if len(df) and "opt1_50" in df:
+        L += ["\n## Option estimate — ATM put, by expiry and profit target\n",
+              "Each cell: % of signals that hit the target / average option return per trade "
+              f"(after {COST:.0%} round-trip cost) / t-stat. Misses exit at the stock stop or 3:55 pm.\n",
+              "| Expiry | +30% target | +50% target | +100% target | Avg best option gain |",
+              "|---|---|---|---|---|"]
+        for dte in DTES:
+            cells = []
+            for tg in TARGETS:
+                col = f"opt{dte}_{int(tg*100)}"
+                if col not in df:
+                    cells.append("—"); continue
+                x = df[col].dropna(); hit = df[col + "_hit"].dropna().astype(bool)
+                t = x.mean() / (x.std(ddof=1) / math.sqrt(len(x))) if len(x) > 1 and x.std() > 0 else float("nan")
+                cells.append(f"{hit.mean():.0%} / {x.mean()*100:+.1f}% / t {t:.2f}")
+            bcol = f"opt{dte}_best"
+            L.append(f"| {dte} day{'s' if dte != 1 else ''} | " + " | ".join(cells) +
+                     f" | {df[bcol].mean()*100:+.0f}% |")
+        L.append("\nEstimate only: Black-Scholes with a realized-vol IV proxy, no real fills. "
+                 "Real option P&L (Databento) confirms whatever survives.")
     L.append("\nPass bar before trusting any setup: t-stat ≥ 3 on enough signals "
              "(roughly 400+), then option P&L must confirm.")
     open(f"{OUT}/report.md", "w").write("\n".join(L) + "\n")
     print("\n".join(L[:12]))
+
+
+# ----------------------------------------------------------------- tuning grid
+GRID = dict(CONSOL_BARS=[6, 9, 12], HOD_ZONE=[0.003, 0.005],
+            DIV_RSI_PTS=[0.0, 3.0], BREAK_BOX=[True, False])
+METRIC = "opt1_50"      # 1-day ATM put, +50% target, average return per trade
+
+
+def run_grid(cache, start, split_date):
+    import itertools
+    base = dict(P)
+    keys = list(GRID)
+    rows = []
+    for combo in itertools.product(*[GRID[k] for k in keys]):
+        P.update(dict(zip(keys, combo)))
+        sig = []
+        for sym, (m5, h1, d1) in cache.items():
+            try:
+                sig += [x for x in signals_for_symbol(sym, m5, h1, d1) if x["date"] >= start]
+            except Exception:
+                pass
+        g = pd.DataFrame(sig)
+        row = dict(zip(keys, combo))
+        for name, part in (("train", g[g.date < split_date] if len(g) else g),
+                           ("test", g[g.date >= split_date] if len(g) else g)):
+            x = part[METRIC].dropna() if len(part) and METRIC in part else pd.Series(dtype=float)
+            row[f"{name}_n"] = len(x)
+            row[f"{name}_avg"] = x.mean() if len(x) else np.nan
+            row[f"{name}_t"] = (x.mean() / (x.std(ddof=1) / math.sqrt(len(x)))
+                                if len(x) > 2 and x.std() > 0 else np.nan)
+        rows.append(row)
+    P.clear(); P.update(base)
+    return pd.DataFrame(rows)
+
+
+def grid_report(gr, split_date):
+    L = [f"\n## Tuning grid (walk-forward) — metric: {METRIC} (1-day put, +50% target)\n",
+         f"Settings are picked on signals BEFORE {split_date} (train) and judged on signals "
+         "AFTER it (test). Only the test column counts; the train column is where tuning can fool itself.\n",
+         "| Box bars | HOD zone | RSI div pts | Box break | Train n | Train avg | Train t | Test n | Test avg | Test t |",
+         "|---|---|---|---|---|---|---|---|---|---|"]
+    ok = gr[gr["train_n"] >= 20].sort_values("train_avg", ascending=False)
+    for _, r in ok.head(8).iterrows():
+        L.append(f"| {r.CONSOL_BARS} | {r.HOD_ZONE:.1%} | {r.DIV_RSI_PTS:g} | {r.BREAK_BOX} | "
+                 f"{r.train_n} | {r.train_avg*100:+.1f}% | {r.train_t:.2f} | {r.test_n} | "
+                 f"{r.test_avg*100:+.1f}% | {r.test_t:.2f} |")
+    if len(ok):
+        best = ok.iloc[0]
+        L.append(f"\nBest on train: box {best.CONSOL_BARS} bars, zone {best.HOD_ZONE:.1%}, "
+                 f"RSI div {best.DIV_RSI_PTS:g}, box break {best.BREAK_BOX} -> "
+                 f"TEST {best.test_avg*100:+.1f}% per trade on {best.test_n} signals (t {best.test_t:.2f}).")
+    return L
 
 
 # ----------------------------------------------------------------- main
@@ -312,6 +453,8 @@ def main():
         syms = u["symbol"].head(MAX_SYMBOLS).tolist()
     print(f"Backtest {s} -> {e[:10]}, {len(syms)} symbols, extended={EXTENDED}")
 
+    do_grid = os.environ.get("GRID", "1") == "1" and len(syms) <= 60
+    cache = {}
     allsig = []
     for ci in range(0, len(syms), CHUNK):
         ch = syms[ci:ci + CHUNK]
@@ -323,8 +466,10 @@ def main():
             print(f"  chunk {ci}: fetch failed: {ex}"); continue
         for sym in ch:
             try:
-                sig = signals_for_symbol(sym, m5[m5.symbol == sym], h1[h1.symbol == sym],
-                                         d1[d1.symbol == sym])
+                parts = (m5[m5.symbol == sym], h1[h1.symbol == sym], d1[d1.symbol == sym])
+                if do_grid:
+                    cache[sym] = parts
+                sig = signals_for_symbol(sym, *parts)
                 allsig += [x for x in sig if x["date"] >= s]
             except Exception as ex:
                 print(f"  {sym}: {ex}")
@@ -334,6 +479,15 @@ def main():
         df = pd.DataFrame(columns=["symbol", "date", "time", "setup", "entry", "t1", "t1_name",
                                    "t2", "t2_name", "ret", "exit", "hit_t1", "hit_t2", "mfe"])
     report(df, s, e[:10], len(syms), f"Extended-hours indicators: {EXTENDED}.")
+    if do_grid and cache:
+        dates = sorted(df["date"].unique()) if len(df) else []
+        split = (pd.Timestamp(s) + (pd.Timestamp(e[:10]) - pd.Timestamp(s)) * 2 / 3).date().isoformat()
+        print(f"Running tuning grid on {len(cache)} symbols, split {split} ...")
+        gr = run_grid(cache, s, split)
+        gr.to_csv(f"{OUT}/grid.csv", index=False)
+        G = grid_report(gr, split)
+        open(f"{OUT}/report.md", "a").write("\n".join(G) + "\n")
+        print("\n".join(G))
 
 
 if __name__ == "__main__":
