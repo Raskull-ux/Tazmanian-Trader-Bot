@@ -1,0 +1,42 @@
+name: Event Study
+on:
+  workflow_dispatch:
+    inputs:
+      max_symbols:
+        description: "How many of the most liquid universe names to scan"
+        default: "300"
+      symbols:
+        description: "Optional comma list (overrides the universe)"
+        default: ""
+      months:
+        description: "Months of history"
+        default: "9"
+permissions:
+  contents: write
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy requests scipy
+      - name: Run event study
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          MAX_SYMBOLS: ${{ github.event.inputs.max_symbols || '300' }}
+          SYMBOLS: ${{ github.event.inputs.symbols }}
+          MONTHS: ${{ github.event.inputs.months || '9' }}
+        run: python event_study.py
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name "backtest-bot"
+          git config user.email "backtest-bot@users.noreply.github.com"
+          git add results/event_study/ || true
+          git diff --cached --quiet || git commit -m "Event study $(date -u +%F)"
+          git pull --rebase || true
+          git push
