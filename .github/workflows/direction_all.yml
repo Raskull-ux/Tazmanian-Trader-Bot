@@ -1,0 +1,30 @@
+name: Direction Test All Accounts
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install "pandas>=3.0" pyarrow numpy requests scipy openpyxl
+      - name: Was the stock moving your way?
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python direction_all.py
+      - name: Save results
+        if: always()
+        run: |
+          [ -d results/direction_all ] || exit 0
+          git config user.name "backtest-bot"
+          git config user.email "backtest-bot@users.noreply.github.com"
+          git add results/direction_all/
+          git diff --cached --quiet || git commit -m "Direction test all accounts $(date -u +%F)"
+          git pull --rebase || true
+          git push
