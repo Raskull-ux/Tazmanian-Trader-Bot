@@ -20,6 +20,7 @@ Approved definitions (Oct 3 2026; every number is a setting below):
                  under the 50 (otherwise every HOD entry stops out instantly).
   targets        levels below entry: low of day, yesterday's low, yesterday's close
                  (gap fill), daily 8 SMA, hourly 50/100/200 SMA. T1 nearest, T2 next.
+  v2 change      trigger must ALSO close below the lowest low of the 12-bar box
   management     half off at T1, stop on the rest moves to breakeven, rest off at T2,
                  anything left exits at 15:55. (Stock-move test, not option P&L yet.)
 
@@ -47,6 +48,7 @@ P = dict(
     CROSS_LOOKBACK=3, RSI_LEN=14, RSI_MA=14,
     ENTRY_START="09:45", ENTRY_END="15:30", EOD_EXIT="15:55",
     MIN_TARGET_GAP=0.001,
+    BREAK_BOX=True,   # v2: trigger must close below the consolidation box low
 )
 MONTHS = int(os.environ.get("MONTHS", 9))
 MAX_SYMBOLS = int(os.environ.get("MAX_SYMBOLS", 1000))
@@ -121,6 +123,18 @@ def signals_for_symbol(sym, b5, b1h, b1d):
     if len(b5) < 300:
         return out
     b = prep_5m(b5)
+    dbg = os.environ.get("DEBUG_DAY", "")          # e.g. QQQ:2026-02-18
+    if dbg and dbg.split(":")[0].upper() == sym:
+        dd = dbg.split(":")[1]
+        x = b[b["t"].dt.strftime("%Y-%m-%d") == dd].copy()
+        os.makedirs(OUT, exist_ok=True)
+        x["t"] = x["t"].dt.strftime("%Y-%m-%d %H:%M")
+        x.drop(columns=["day"]).round(3).to_csv(f"{OUT}/debug_{sym}_{dd}.csv", index=False)
+        r_ = x[x["rth"]]
+        if len(r_):
+            print(f"DEBUG {sym} {dd} regular session: open {r_['o'].iloc[0]:.2f} "
+                  f"high {r_['h'].max():.2f} at {r_.loc[r_['h'].idxmax(),'t']} "
+                  f"low {r_['l'].min():.2f} close {r_['c'].iloc[-1]:.2f} | bars {len(x)}")
     c, h, l = b["c"].values, b["h"].values, b["l"].values
     s10, s20, s50, s200 = (b[f"sma{n}"].values for n in (10, 20, 50, 200))
     r, rma = b["rsi"].values, b["rsima"].values
@@ -172,6 +186,9 @@ def signals_for_symbol(sym, b5, b1h, b1d):
                   and (np.abs(c[cons] / s200[cons] - 1) <= P["SMA_ZONE"]).all()):
                 setup = "SMA200"
             if setup is None:
+                continue
+            # v2: the rejection must break the bottom of the consolidation box
+            if P["BREAK_BOX"] and not c[i] < l[cons].min():
                 continue
             fired = True
             entry = c[i]
@@ -250,7 +267,7 @@ HDR = ("| Signals | Win | Avg stock move (put direction) | t-stat | Hit T1 | Hit
 def report(df, start, end, n_syms, feed_note):
     os.makedirs(OUT, exist_ok=True)
     df.to_csv(f"{OUT}/signals.csv", index=False)
-    L = [f"# Setup Backtest v1 — {start} to {end}",
+    L = [f"# Setup Backtest v2 — {start} to {end}",
          f"\nUniverse scanned: {n_syms} names, 5-min SIP bars. {feed_note}",
          "\nStock-move test only: tells whether the setup picks moves in the right "
          "direction and reaches its targets. Option P&L comes next.\n",
