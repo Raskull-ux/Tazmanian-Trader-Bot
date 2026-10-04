@@ -37,14 +37,21 @@ def bs(S, K, T, sig, put):
 
 
 def load_options():
-    frames = []
-    for f in sorted(glob.glob("results/bar_cache/*.pkl.gz")):
+    files = sorted(glob.glob("results/bar_cache/*.pkl.gz"))
+    print(f"pandas {pd.__version__}; cache files found: {len(files)}")
+    frames, errors = [], []
+    for f in files:
         try:
             d = pickle.load(gzip.open(f))
             if isinstance(d, pd.DataFrame) and len(d):
                 frames.append(d[["close", "volume", "symbol"]].reset_index())
-        except Exception:
-            pass
+        except Exception as ex:
+            errors.append(f"{os.path.basename(f)}: {type(ex).__name__}: {ex}")
+    print(f"loaded {len(frames)} files, {len(errors)} failed")
+    for e in errors[:3]:
+        print("  load error ->", e)
+    if not frames:
+        raise SystemExit("No cache files could be read (see load errors above).")
     d = pd.concat(frames, ignore_index=True)
     d = d.groupby(["symbol", "ts_event"]).agg(close=("close", "median"),
                                               volume=("volume", "sum")).reset_index()
