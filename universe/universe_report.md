@@ -1,4 +1,4 @@
-# Universe — built 2026-10-03  (feed: SIP)
+# Universe — built 2026-10-04  (feed: SIP)
 
 Total: **1000** = core 145 + gauges 15 + broad 840
 
@@ -12,20 +12,20 @@ Smallest broad name kept: IFF at $148.1M/day. Eligible broad names not kept (bey
 |---|---|---|---|
 | QQQ | 1541 | 8,340 | $24,795M |
 | SPY | 879 | 1,460 | $35,314M |
-| AAPL | 329 | -3,821 | $14,056M |
+| AAPL | 329 | -3,821 | $14,043M |
 | TSLA | 301 | -1,170 | $13,993M |
 | META | 291 | 8,739 | $16,662M |
-| NVDA | 261 | 725 | $24,955M |
+| NVDA | 261 | 725 | $24,954M |
 | AMD | 250 | 979 | $12,903M |
-| WMT | 237 | 75 | $2,391M |
+| WMT | 237 | 75 | $2,390M |
 | MCD | 155 | 779 | $1,492M |
-| BA | 137 | 2,207 | $1,664M |
+| BA | 137 | 2,207 | $1,663M |
 | NFLX | 115 | -4,989 | $2,613M |
-| MSFT | 114 | -3,838 | $10,738M |
+| MSFT | 114 | -3,838 | $10,724M |
 | BABA | 113 | -1,512 | $901M |
 | COIN | 99 | -2,268 | $1,791M |
 | PLTR | 94 | 824 | $4,147M |
-| AMZN | 83 | 4,712 | $8,865M |
+| AMZN | 83 | 4,712 | $8,863M |
 | ROKU | 78 | -39 | $320M |
 | INTC | 67 | -745 | $12,549M |
 | KRE | 64 | 445 | $1,106M |
@@ -36,21 +36,21 @@ Smallest broad name kept: IFF at $148.1M/day. Eligible broad names not kept (bey
 | DIS | 43 | 2,757 | $909M |
 | GOOG | 43 | 135 | $6,080M |
 | AVGO | 41 | -2,075 | $8,886M |
-| MRK | 40 | -603 | $1,449M |
+| MRK | 40 | -603 | $1,445M |
 | FUBO | 39 | -621 | $13M |
 | SNAP | 38 | 542 | $180M |
-| BAC | 36 | 38 | $2,252M |
-| MU | 36 | 2,907 | $27,231M |
-| T | 30 | 141 | $971M |
+| BAC | 36 | 38 | $2,251M |
+| MU | 36 | 2,907 | $27,205M |
+| T | 30 | 141 | $966M |
 | UNH | 29 | -657 | $1,936M |
 | MARA | 26 | 425 | $541M |
-| PANW | 23 | 926 | $2,332M |
+| PANW | 23 | 926 | $2,331M |
 | SHOP | 23 | -1,112 | $1,448M |
 | TEVA | 22 | -378 | $218M |
 | CVNA | 20 | 2,085 | $514M |
 | BYND | 20 | 438 | $13M |
 | JPM | 20 | -561 | $2,903M |
-| IWM | 20 | -1,230 | $6,917M |
+| IWM | 20 | -1,230 | $6,916M |
 | CRSR | 18 | -716 | $14M |
 | RKLB | 17 | 467 | $1,447M |
 | LMT | 17 | -667 | $646M |
@@ -68,7 +68,7 @@ Smallest broad name kept: IFF at $148.1M/day. Eligible broad names not kept (bey
 | LUV | 13 | -468 | $252M |
 | AFRM | 13 | 4,229 | $284M |
 | AAL | 11 | -375 | $935M |
-| MO | 10 | -147 | $540M |
+| MO | 10 | -147 | $539M |
 | COST | 9 | -1,099 | $2,195M |
 | UNP | 9 | -490 | $693M |
 | RKT | 9 | 686 | $468M |
@@ -79,13 +79,13 @@ Smallest broad name kept: IFF at $148.1M/day. Eligible broad names not kept (bey
 | C | 8 | 275 | $1,304M |
 | LOW | 8 | -187 | $636M |
 | UVXY | 8 | 502 | $137M |
-| NOK | 8 | -100 | $916M |
+| NOK | 8 | -100 | $913M |
 | SNOW | 8 | -82 | $1,480M |
 | HD | 7 | -80 | $1,530M |
 | DIA | 7 | -101 | $1,782M |
 | LYFT | 7 | -75 | $147M |
 | ULTA | 7 | 3,028 | $268M |
-| TGT | 7 | -178 | $551M |
+| TGT | 7 | -178 | $550M |
 | KHC | 7 | -72 | $526M |
 | LVS | 7 | 291 | $241M |
 | M | 6 | -140 | $156M |
@@ -93,15 +93,15 @@ Smallest broad name kept: IFF at $148.1M/day. Eligible broad names not kept (bey
 | RIVN | 6 | -154 | $371M |
 | IBM | 6 | -250 | $1,378M |
 | JD | 5 | 40 | $160M |
-| JNJ | 5 | -35 | $1,779M |
+| JNJ | 5 | -35 | $1,770M |
 | CLF | 5 | 8 | $170M |
-| CRM | 5 | -186 | $2,917M |
+| CRM | 5 | -186 | $2,916M |
 | AI | 5 | -396 | $51M |
 | HIMX | 5 | -41 | $15M |
 | XLF | 5 | -30 | $2,105M |
 | BX | 5 | 43 | $541M |
 | MMM | 5 | 6 | $507M |
-| PDD | 4 | 229 | $503M |
+| PDD | 4 | 229 | $501M |
 | PEP | 4 | -151 | $1,216M |
 | CAT | 4 | -87 | $1,893M |
 | DKNG | 4 | 172 | $311M |
@@ -117,9 +117,9 @@ Smallest broad name kept: IFF at $148.1M/day. Eligible broad names not kept (bey
 | CRWV | 3 | -88 | $2,663M |
 | FSLY | 3 | -63 | $214M |
 | RIOT | 3 | -520 | $354M |
-| KO | 3 | -17 | $1,400M |
+| KO | 3 | -17 | $1,397M |
 | JNUG | 3 | -300 | $41M |
-| SMCI | 3 | -462 | $1,554M |
+| SMCI | 3 | -462 | $1,550M |
 | AA | 2 | -120 | $175M |
 | UNG | 2 | -254 | $293M |
 | ABNB | 2 | -286 | $815M |
@@ -128,7 +128,7 @@ Smallest broad name kept: IFF at $148.1M/day. Eligible broad names not kept (bey
 | CZR | 2 | 42 | $138M |
 | TLT | 2 | -82 | $3,810M |
 | NKE | 2 | 10 | $1,574M |
-| ORCL | 2 | -201 | $5,341M |
+| ORCL | 2 | -201 | $5,306M |
 | PINS | 2 | 238 | $285M |
 | RCL | 2 | -115 | $831M |
 | EXPE | 2 | 36 | $674M |
@@ -137,11 +137,11 @@ Smallest broad name kept: IFF at $148.1M/day. Eligible broad names not kept (bey
 | DPZ | 2 | -122 | $228M |
 | FCEL | 2 | 26 | $100M |
 | LUMN | 2 | 100 | $84M |
-| ABBV | 1 | -18 | $1,120M |
+| ABBV | 1 | -18 | $1,116M |
 | AXSM | 1 | -32 | $144M |
 | BBY | 1 | 12 | $307M |
 | GM | 1 | -3 | $651M |
-| LITE | 1 | -105 | $4,653M |
+| LITE | 1 | -105 | $4,650M |
 | CVS | 1 | -28 | $709M |
 | DOW | 1 | -26 | $263M |
 | BIIB | 1 | -35 | $236M |
