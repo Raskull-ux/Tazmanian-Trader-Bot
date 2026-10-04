@@ -1,0 +1,30 @@
+name: Entries Study
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install "pandas>=3.0" pyarrow numpy requests scipy openpyxl
+      - name: Measure conditions at your real entries
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python entries_study.py
+      - name: Save results
+        if: always()
+        run: |
+          [ -d results/entries_study ] || exit 0
+          git config user.name "backtest-bot"
+          git config user.email "backtest-bot@users.noreply.github.com"
+          git add results/entries_study/
+          git diff --cached --quiet || git commit -m "Entries study $(date -u +%F)"
+          git pull --rebase || true
+          git push
