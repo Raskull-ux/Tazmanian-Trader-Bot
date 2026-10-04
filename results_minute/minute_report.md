@@ -1,6 +1,6 @@
 # Minute-level exit test — exact Robinhood fill times, real 1-minute OPRA bars
 
-Trades: 576 with bars (of 576). Spent this run: $1.98.
+Trades: 576 with bars (of 576). Spent this run: $0.00.
 
 - Hold time: median 321 min
 - Actual: avg -11.2% | median -35.1% | win 31.6%
