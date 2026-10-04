@@ -101,7 +101,13 @@ def main():
     def block(title, cols, labels):
         L = [f"\n## {title}\n", "| Group | Positions | " + " | ".join(labels) + " | Your option result (median) |",
              "|---|---|" + "---|" * len(labels) + "---|"]
-        groups = [("ALL", R)] + [(str(y), g) for y, g in R.groupby("year")] + \
+        best = (R.entry >= pd.Timestamp("2025-11-01").date()) & (R.entry <= pd.Timestamp("2026-04-30").date())
+        groups = [("**BEST RUN: Nov 2025 - Apr 2026**", R[best]),
+                  ("Best run, puts", R[best & R.put]), ("Best run, calls", R[best & ~R.put])] + \
+                 [(f"Best run, {a}", g) for a, g in R[best].groupby("account")] + \
+                 [("Before Nov 2025", R[R.entry < pd.Timestamp("2025-11-01").date()]),
+                  ("After Apr 2026", R[R.entry > pd.Timestamp("2026-04-30").date()])] + \
+                 [("ALL", R)] + [(str(y), g) for y, g in R.groupby("year")] + \
                  [(a, g) for a, g in R.groupby("account")] + \
                  [("puts", R[R.put]), ("calls", R[~R.put])] + \
                  [(f"{a} {y}", g) for (a, y), g in R[R.year >= 2025].groupby(["account", "year"])]
