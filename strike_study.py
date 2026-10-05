@@ -13,7 +13,7 @@ at the moment of entry, three ways:
 
 Stock price at entry:
   - fills with a real time (Robinhood emails): the 5-min bar at that minute
-  - fills with a date only: that day's VWAP (labelled; less precise)
+  - fills with a date only: that day's OPEN (no after-entry information; noisier)
 Prices are UNADJUSTED for splits, so they match the strikes as traded.
 
 Then: results by delta / distance bucket within each expiry group, the same
@@ -153,7 +153,9 @@ def main():
         if d is None or p.entry not in d.index:
             continue
         row = d.loc[p.entry]
-        S, src = row.vw if row.vw == row.vw else (row.h + row.l + row.c) / 3, "day VWAP"
+        # Date-only fills: use the day's OPEN. The day's VWAP leaks the move AFTER entry
+        # (a put that worked makes the strike look in-the-money), which inflated v1's results.
+        S, src = row.o, "day open"
         if pd.notna(p.entry_t) and p.symbol in M:
             m = M[p.symbol]
             k = np.searchsorted(m.end.values, np.datetime64(p.entry_t.tz_convert("UTC").tz_localize(None)), side="right") - 1
@@ -197,7 +199,7 @@ def report(R):
     exact = R.s_source.eq("exact minute").mean()
     L = ["# Strike-distance study — how far out of the money should you buy?",
          f"\n{len(R)} positions since 2024, all accounts. Stock price at entry: exact minute for "
-         f"{exact:.0%}, that day's VWAP for the rest. Delta from implied vol backed out of YOUR fill price "
+         f"{exact:.0%}, that day's OPEN for the rest (no after-entry information). Delta from implied vol backed out of YOUR fill price "
          f"(available for {R.delta.notna().mean():.0%}). Avg return capped at +500% per trade; t clustered by day.\n",
          "## 1. By delta (all expiries)\n", H]
     L += [f"| {lab} " + fmt(R[R.db == lab]) for lab in DL]
@@ -227,8 +229,14 @@ def report(R):
           "| Nov 2025+, everything " + fmt(te[te.delta.notna()]),
           f"| Nov 2025+, delta >= {best:.2f} " + fmt(te[te.delta >= best]),
           f"| Nov 2025+, delta < {best:.2f} " + fmt(te[te.delta < best])]
+    L += ["\n## 6. Precision check: exact-minute fills only (the cleanest data)\n", H]
+    ex = R[R.s_source == "exact minute"]
+    L += [f"| {lab} " + fmt(ex[ex.db == lab]) for lab in DL if (ex.db == lab).sum()]
+    L += ["\n## 7. Date-only fills (stock price = day open)\n", H]
+    do = R[R.s_source != "exact minute"]
+    L += [f"| {lab} " + fmt(do[do.db == lab]) for lab in DL if (do.db == lab).sum()]
     L += ["\n## Notes\n",
-          "- Exact-minute prices make delta precise; VWAP-based rows can be off when the stock moved a lot that day.",
+          "- Exact-minute prices make delta precise. Day-open rows are unbiased but noisier (the stock moves before you enter).",
           "- Positions with no delta: fill at or below intrinsic value, or an unrealistic implied vol.",
           "- This measures what WAS bought; it doesn't prove a deeper strike would have won on the same idea, "
           "but it shows where your results come from."]
