@@ -31,12 +31,14 @@ import setup_backtest as sb
 
 OUT = "results/gap_replay"
 MONTHS = int(os.environ.get("MONTHS", 6))
+PERIODS = [("2022-01 to 2026-03 (incl. the 2022 bear market)", "2022-01-01", "2026-03-31"),
+           ("2026-04 to now (the original 6 months)", "2026-04-01", "2099-01-01")]
 MAX_SYMBOLS = int(os.environ.get("MAX_SYMBOLS", 1000))
 
 
 # ------------------------------------------------------------------ gap engine
 class Gap:
-    __slots__ = ("lo", "hi", "born", "kind", "open", "skipped", "filled_on")
+    __slots__ = ("lo", "hi", "born", "kind", "open", "skipped", "filled_on", "born_i")
 
     def __init__(self, lo, hi, born, kind):
         self.lo, self.hi, self.born, self.kind = lo, hi, born, kind
@@ -62,20 +64,34 @@ class Gap:
         return [x for p in self.open for x in p]
 
 
+class Snap:
+    __slots__ = ("open", "skipped")
+
+    def __init__(self, open_, skipped):
+        self.open, self.skipped = open_, skipped
+
+    def edges(self):
+        return [x for p in self.open for x in p]
+
+
 def build_gaps(df, kind):
     """Walk candles in order; return per-bar snapshot of open gaps (list) BEFORE that bar."""
     gaps, snaps = [], []
     prev = None
     for i, r in enumerate(df.itertuples()):
-        snaps.append([g for g in gaps if g.is_open])
+        if kind == "daily":
+            gaps = [g for g in gaps if g.is_open and (i - g.born_i) <= 260]
+        # SNAPSHOT copies: the state of each open gap as of this bar. (Storing the live
+        # objects would leak later fills into earlier bars = look-ahead.)
+        snaps.append([Snap(list(g.open), g.skipped) for g in gaps if g.is_open])
         blo, bhi = min(r.o, r.c), max(r.o, r.c)
         if prev is not None:
             plo, phi = prev
             new = None
             if blo > phi:
-                new = Gap(phi, blo, r.Index, kind)
+                new = Gap(phi, blo, r.Index, kind); new.born_i = i
             elif bhi < plo:
-                new = Gap(bhi, plo, r.Index, kind)
+                new = Gap(bhi, plo, r.Index, kind); new.born_i = i
             # bodies that jump clean across an open gap = skipped
             jlo, jhi = (phi, blo) if blo > phi else ((bhi, plo) if bhi < plo else (None, None))
             for g in gaps:
@@ -144,11 +160,14 @@ def events_for(sym, d, start):
     wsnaps = build_gaps(W.set_index("end")[["o", "h", "l", "c"]], "weekly")
     wk_of = d.index.to_period("W-FRI")
     wpos = {wk: k for k, wk in enumerate(W.index)}
+    cur_wk, touched_before = None, False
     for i in range(1, len(d)):
         day = d.index[i]
-        if day < start:
-            continue
         r = d.iloc[i]; prev_c = d.c.iloc[i - 1]
+        if day < start:
+            if wk_of[i] != cur_wk:
+                cur_wk, touched_before = wk_of[i], False
+            continue
         k = wpos[wk_of[i]]
         if k == 0:
             continue
@@ -159,10 +178,12 @@ def events_for(sym, d, start):
         last_wc = W.c.iloc[k - 1]
         wk_open = W.o.iloc[k]
         first_day = d.index[i] == W.start.iloc[k]
-        # only the first touch of the week counts
-        wk_days = d[(wk_of == wk_of[i]) & (d.index < day)]
-        touched_before = ((wk_days.l <= last_wc) & (wk_days.h >= last_wc)).any() if len(wk_days) else False
+        # only the first touch of the week counts (tracked incrementally)
+        if wk_of[i] != cur_wk:
+            cur_wk, touched_before = wk_of[i], False
         touch = (r.l <= last_wc <= r.h) and not touched_before
+        if r.l <= last_wc <= r.h:
+            touched_before = True
         if touch:
             gapped = abs(wk_open / last_wc - 1) >= 0.0025
             direction = -1 if wk_open < last_wc else 1     # gap down -> puts, gap up -> calls
@@ -178,18 +199,37 @@ def events_for(sym, d, start):
         if abs(gp) >= 1.0:
             up = gp > 0
             into = False
+            ref = None      # edge the close must stay beyond for the gap to "hold"
             for g in boxes:
                 for lo, hi in g.open:
                     if up and lo > prev_c and r.o >= lo:      # opened into or above a box overhead
                         into = True
+                        e = hi if r.o >= hi else lo
+                        ref = e if ref is None else max(ref, e)
                     if not up and hi < prev_c and r.o <= hi:  # opened into or below a box underneath
                         into = True
+                        e = lo if r.o <= lo else hi
+                        ref = e if ref is None else min(ref, e)
             direction = -1 if up else 1                        # fade the gap
             tgt = prev_c                                       # gap fill = back to prior close
             res = outcome(d, i, r.o, direction, tgt, r.o * (1.01 if up else 0.99))
             size = "1-2%" if abs(gp) < 2 else ("2-4%" if abs(gp) < 4 else "4%+")
             out.append(dict(symbol=sym, date=day, setup="B_gap_into_box" if into else "B_control_no_box",
                             side="puts" if up else "calls", gap_pct=gp, size=size, entry=r.o, target=tgt, **res))
+            # continuation from the open (the flip side of the fade)
+            if into:
+                cres = {k: (-v if isinstance(v, float) and k != "target_first" else v) for k, v in res.items()}
+                cres["target_first"] = np.nan
+                out.append(dict(symbol=sym, date=day, setup="C_continuation_from_open",
+                                side="calls" if up else "puts", gap_pct=gp, size=size, entry=r.o, **cres))
+                # held vs failed, decided at the close; trade entered at that close
+                failed = (r.c < ref) if up else (r.c > ref)
+                direction2 = (-1 if up else 1) if failed else (1 if up else -1)
+                res2 = outcome(d, i, r.c, direction2, np.nan, r.c)
+                res2["same_day"] = np.nan
+                out.append(dict(symbol=sym, date=day, setup="D_failed_gap" if failed else "D_held_gap",
+                                side=("puts" if up else "calls") if failed else ("calls" if up else "puts"),
+                                gap_pct=gp, size=size, entry=r.c, **res2))
     return out
 
 
@@ -214,6 +254,37 @@ def rows(E, label_col, labels):
         tf = x.target_first.dropna()
         L.append(f"| {lab} | {len(x)} | {len(x)/ndays:.1f} | {cell(x,'same_day')} | {cell(x,'d1')} | "
                  f"{cell(x,'d3')} | {cell(x,'d5')} | {tf.mean():.0%} (n {len(tf)}) |")
+    return L
+
+
+def tstat_day(x, col):
+    x = x[[col, "date"]].dropna()
+    if len(x) < 3:
+        return np.nan, np.nan, 0
+    dm = x.groupby("date")[col].mean()
+    t = dm.mean() / (dm.std(ddof=1) / math.sqrt(len(dm))) if len(dm) > 2 and dm.std() > 0 else np.nan
+    return x[col].mean(), t, len(x)
+
+
+def period_block(E, title):
+    L = [f"\n# PERIOD: {title}\n"]
+    for scope, X in (("Full universe", E), ("Your core tickers", E[E.core])):
+        C = X[X.setup == "C_continuation_from_open"]; D = X[X.setup.str.startswith("D_")]
+        L += [f"\n## {scope}\n", "### C. Gap into/over an open box — ride the gap (entered at the open)\n"]
+        L += rows(C, "setup", [("Gap UP over box -> calls", C.side == "calls"),
+                               ("Gap DOWN under box -> puts", C.side == "puts"),
+                               ("Gap UP 4%+ -> calls", (C.side == "calls") & (C["size"] == "4%+")),
+                               ("Gap UP 2-4% -> calls", (C.side == "calls") & (C["size"] == "2-4%")),
+                               ("Gap UP 1-2% -> calls", (C.side == "calls") & (C["size"] == "1-2%"))])
+        L += ["\n### D. Held vs failed at the close (entered at that day's close)\n"]
+        L += rows(D, "setup", [("Gap UP held above box -> calls", (D.setup == "D_held_gap") & (D.side == "calls")),
+                               ("Gap UP FAILED back into/below box -> puts (INTC trap)", (D.setup == "D_failed_gap") & (D.side == "puts")),
+                               ("Gap DOWN held below box -> puts", (D.setup == "D_held_gap") & (D.side == "puts")),
+                               ("Gap DOWN FAILED back into/above box -> calls", (D.setup == "D_failed_gap") & (D.side == "calls"))])
+        B = X[X.setup == "B_control_no_box"]
+        L += ["\n### Control: same-size gaps with no box, ride the gap (= minus the fade numbers)\n"]
+        L += rows(B.assign(**{k: -B[k] for k in ["same_day", "d1", "d3", "d5"]}), "setup",
+                  [("Gap UP, no box -> calls", B.side == "puts"), ("Gap DOWN, no box -> puts", B.side == "calls")])
     return L
 
 
@@ -247,6 +318,21 @@ def report(E, nsym, core_n):
         per = pd.concat([a, b]).groupby("date").size().reindex(sorted(X.date.unique()), fill_value=0)
         L += [f"\n**Alert load ({scope.lower()}):** A + B together: average {per.mean():.1f} per day, "
               f"median {per.median():.0f}, busiest day {per.max()}, quiet days (0 alerts): {(per == 0).mean():.0%}."]
+    checks = []
+    for title, a, b in PERIODS:
+        X = E[(E.date >= pd.Timestamp(a)) & (E.date <= pd.Timestamp(b))]
+        if X.empty:
+            continue
+        L += period_block(X, title)
+        c = X[(X.setup == "C_continuation_from_open") & (X.side == "calls")]
+        f = X[(X.setup == "D_failed_gap") & (X.side == "puts")]
+        cm, ct, cn = tstat_day(c, "d3"); fm, ft, fn = tstat_day(f, "d3")
+        checks.append((title, cm, ct, cn, fm, ft, fn))
+    L += ["\n# PASS CHECKS (set before running, 3-day move, full universe)\n",
+          "| Period | Gap-up-over-box calls (pass: t >= 3) | Failed gap-up puts, INTC trap (pass: t >= 2) |", "|---|---|---|"]
+    for title, cm, ct, cn, fm, ft, fn in checks:
+        L.append(f"| {title} | {cm:+.2f}%, t {ct:.1f}, n {cn} -> {'PASS' if ct >= 3 and cm > 0 else 'FAIL'} | "
+                 f"{fm:+.2f}%, t {ft:.1f}, n {fn} -> {'PASS' if ft >= 2 and fm > 0 else 'FAIL'} |")
     L += ["\n## How to read\n",
           "- Per trading day = how many alerts that rule would have sent.",
           "- A setup is worth alerting if it beats its control and moves your way clearly (t >= 2 suggestive, >= 3 strong).",
@@ -261,8 +347,8 @@ def main():
     core = set(u[u.group == "core"].symbol)
     syms = u.symbol.tolist()
     cap = pd.Timestamp.now(tz="UTC") - pd.Timedelta(minutes=20)
-    start_hist = (cap - pd.Timedelta(days=540)).date().isoformat()
-    start = (cap - pd.Timedelta(days=int(MONTHS * 30.5))).tz_localize(None).normalize()
+    start_hist = "2020-06-01"
+    start = pd.Timestamp(PERIODS[0][1])
     E = []
     for i in range(0, len(syms), 100):
         ch = syms[i:i + 100]
