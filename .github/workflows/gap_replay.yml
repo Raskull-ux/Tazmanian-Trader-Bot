@@ -1,0 +1,30 @@
+name: Gap Replay
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install "pandas>=3.0" pyarrow numpy requests scipy openpyxl
+      - name: Replay gap alerts over the last 6 months
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+        run: python gap_replay.py
+      - name: Save results
+        if: always()
+        run: |
+          [ -d results/gap_replay ] || exit 0
+          git config user.name "backtest-bot"
+          git config user.email "backtest-bot@users.noreply.github.com"
+          git add results/gap_replay/
+          git diff --cached --quiet || git commit -m "Gap replay $(date -u +%F)"
+          git pull --rebase || true
+          git push
