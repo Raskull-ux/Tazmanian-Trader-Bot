@@ -290,7 +290,7 @@ def period_block(E, title):
 
 def report(E, nsym, core_n):
     os.makedirs(OUT, exist_ok=True)
-    E.to_csv(f"{OUT}/events.csv", index=False)
+    E.to_csv(f"{OUT}/events.csv.gz", index=False, compression="gzip")   # plain CSV was 115 MB, over the GitHub limit
     days = E.date.nunique()
     L = ["# Gap replay — how often would it alert, and what happened next?",
          f"\n{nsym} names ({core_n} of them your core tickers), {days} trading days "
