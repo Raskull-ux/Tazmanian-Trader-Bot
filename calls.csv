@@ -1,0 +1,1054 @@
+ts_utc,server,channel,ticker,dir,option_alert,announce,day,tier
+2023-11-02 17:48:14,Tazmanian Trader,onis-floor-🔫,PANW,bear,False,False,2023-11-02,B
+2024-03-11 03:56:25,Tazmanian Trader,the-big-short-🐻,SPY,bull,False,False,2024-03-10,B
+2024-03-24 18:21:27,Tazmanian Trader,onis-floor-🔫,AAPL,bull,False,True,2024-03-24,B
+2024-03-25 06:17:55,Tazmanian Trader,onis-floor-🔫,META,bear,False,False,2024-03-25,B
+2024-03-26 12:44:38,Tazmanian Trader,onis-floor-🔫,AAPL,bull,False,True,2024-03-26,A
+2024-03-26 13:42:09,TA Study,trading-floor,TSLA,bull,False,False,2024-03-26,B
+2024-03-26 14:09:40,Tazmanian Trader,onis-floor-🔫,AMZN,bear,True,True,2024-03-26,A
+2024-03-27 13:35:33,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,True,2024-03-27,B
+2024-03-27 14:26:09,TA Study,trading-floor,AMZN,bear,False,False,2024-03-27,B
+2024-04-01 13:39:33,Tazmanian Trader,onis-floor-🔫,AMD,bear,False,True,2024-04-01,B
+2024-04-02 13:40:01,Tazmanian Trader,the-big-short-🐻,WMT,bear,False,True,2024-04-02,B
+2024-04-03 13:33:15,Tazmanian Trader,onis-floor-🔫,UNH,bull,False,True,2024-04-03,A
+2024-04-03 13:36:36,Tazmanian Trader,onis-floor-🔫,UNH,bear,False,True,2024-04-03,B
+2024-04-04 13:52:37,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2024-04-04,A
+2024-04-09 14:10:58,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,True,2024-04-09,B
+2024-04-11 12:51:55,Tazmanian Trader,onis-floor-🔫,MSFT,bull,False,True,2024-04-11,B
+2024-04-15 18:58:12,Tazmanian Trader,onis-floor-🔫,MSFT,bull,False,True,2024-04-15,B
+2024-04-16 11:18:24,Tazmanian Trader,onis-floor-🔫,GLD,bear,False,False,2024-04-16,B
+2024-04-22 14:05:00,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2024-04-22,A
+2024-04-23 17:54:15,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,True,2024-04-23,B
+2024-04-24 17:44:25,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2024-04-24,B
+2024-04-26 01:09:37,Tazmanian Trader,onis-floor-🔫,UNH,bull,False,False,2024-04-25,A
+2024-04-26 16:08:04,TA Study,trading-floor,TSLA,bear,True,False,2024-04-26,A
+2024-04-30 00:05:38,TA Study,trading-floor,UNH,bear,False,False,2024-04-29,B
+2024-05-03 05:02:22,Tazmanian Trader,onis-floor-🔫,WMT,bear,False,False,2024-05-03,B
+2024-05-03 13:58:24,Tazmanian Trader,onis-floor-🔫,KRE,bear,False,False,2024-05-03,A
+2024-05-06 13:36:31,Tazmanian Trader,onis-floor-🔫,CMG,bear,False,True,2024-05-06,A
+2024-05-09 19:57:37,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2024-05-09,A
+2024-05-16 17:16:50,Tazmanian Trader,onis-floor-🔫,UNH,bear,False,True,2024-05-16,A
+2024-05-24 13:48:14,Tazmanian Trader,onis-floor-🔫,UNH,bull,True,True,2024-05-24,A
+2024-05-28 01:58:02,Tazmanian Trader,onis-floor-🔫,ES,bear,False,True,2024-05-27,B
+2024-05-28 13:23:46,TA Study,trading-floor,SQ,bear,False,False,2024-05-28,B
+2024-05-30 06:51:54,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,False,2024-05-30,B
+2024-05-30 06:52:14,Tazmanian Trader,onis-floor-🔫,SHOP,bear,False,False,2024-05-30,B
+2024-05-30 07:01:47,Tazmanian Trader,onis-floor-🔫,WMT,bear,False,False,2024-05-30,B
+2024-06-03 18:00:53,Tazmanian Trader,onis-floor-🔫,NVDA,bear,True,True,2024-06-03,A
+2024-06-11 15:30:20,TA Study,trading-floor,WMT,bear,False,False,2024-06-11,A
+2024-06-11 15:50:50,TA Study,trading-floor,BA,bear,False,False,2024-06-11,B
+2024-06-19 00:40:18,TA Study,trading-floor,WMT,bull,False,False,2024-06-18,B
+2024-07-02 17:25:14,Tazmanian Trader,onis-floor-🔫,NVDA,bull,False,False,2024-07-02,A
+2024-07-10 14:00:10,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,True,2024-07-10,B
+2024-07-15 14:55:20,Tazmanian Trader,onis-floor-🔫,AVGO,bear,True,True,2024-07-15,A
+2024-07-15 17:38:42,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,False,2024-07-15,B
+2024-07-17 17:38:13,TA Study,trading-floor,WMT,bear,False,False,2024-07-17,A
+2024-07-17 18:03:58,Tazmanian Trader,onis-floor-🔫,UNH,bear,True,True,2024-07-17,A
+2024-07-24 13:55:58,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,True,2024-07-24,A
+2024-07-25 13:53:24,Tazmanian Trader,onis-floor-🔫,SPY,bear,True,True,2024-07-25,A
+2024-07-25 16:35:39,TA Study,trading-floor,NFLX,bear,False,False,2024-07-25,B
+2024-08-02 15:23:36,Tazmanian Trader,onis-floor-🔫,AMD,bull,False,False,2024-08-02,B
+2024-08-03 18:20:30,Tazmanian Trader,onis-floor-🔫,AAPL,bear,False,True,2024-08-03,B
+2024-08-05 19:29:20,TA Study,trading-floor,USO,bull,False,False,2024-08-05,B
+2024-08-05 19:50:39,Tazmanian Trader,onis-floor-🔫,AAPL,bear,False,True,2024-08-05,B
+2024-08-08 14:56:24,Tazmanian Trader,onis-floor-🔫,SPY,bear,True,True,2024-08-08,A
+2024-08-08 19:56:07,Tazmanian Trader,onis-floor-🔫,AAPL,bull,False,True,2024-08-08,B
+2024-08-13 15:29:35,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2024-08-13,B
+2024-08-19 15:46:54,TA Study,trading-floor,SPY,bear,False,False,2024-08-19,B
+2024-08-29 14:04:11,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2024-08-29,B
+2024-09-05 13:32:12,Tazmanian Trader,onis-floor-🔫,WMT,bear,True,True,2024-09-05,A
+2024-09-11 14:55:41,TA Study,trading-floor,KRE,bear,False,False,2024-09-11,B
+2024-09-16 15:10:09,Tazmanian Trader,onis-floor-🔫,WMT,bear,True,True,2024-09-16,A
+2024-09-30 19:07:14,TA Study,trading-floor,AMZN,bull,False,False,2024-09-30,B
+2024-10-01 20:15:16,TA Study,trading-floor,TSLA,bull,False,False,2024-10-01,B
+2024-10-07 11:17:27,Tazmanian Trader,onis-floor-🔫,MSFT,bear,False,False,2024-10-07,B
+2024-10-16 15:24:59,TA Study,trading-floor,COIN,bear,False,False,2024-10-16,B
+2024-10-18 17:00:43,TA Study,trading-floor,MSFT,bear,False,False,2024-10-18,B
+2024-10-18 17:03:40,TA Study,trading-floor,MSFT,bull,False,False,2024-10-18,B
+2024-10-21 19:46:45,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,True,2024-10-21,A
+2024-10-23 18:32:45,Tazmanian Trader,onis-floor-🔫,CVNA,bear,True,True,2024-10-23,A
+2024-10-28 02:14:56,Tazmanian Trader,onis-floor-🔫,USO,bull,False,True,2024-10-27,B
+2024-10-28 05:00:36,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,True,2024-10-28,B
+2024-10-29 02:21:30,Tazmanian Trader,onis-floor-🔫,WMT,bear,True,True,2024-10-28,A
+2024-10-29 13:39:51,TA Study,trading-floor,AMD,bear,False,False,2024-10-29,A
+2024-10-29 14:31:14,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,True,2024-10-29,B
+2024-10-31 15:04:09,TA Study,trading-floor,AMD,bear,False,False,2024-10-31,B
+2024-10-31 18:10:51,Tazmanian Trader,onis-floor-🔫,CVNA,bear,True,True,2024-10-31,A
+2024-10-31 19:16:59,TA Study,trading-floor,NVDA,bull,False,False,2024-10-31,B
+2024-11-01 18:39:47,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,True,2024-11-01,B
+2024-11-04 15:09:39,Tazmanian Trader,onis-floor-🔫,AVGO,bear,True,True,2024-11-04,A
+2024-11-04 15:39:00,Tazmanian Trader,onis-floor-🔫,AVGO,bull,False,True,2024-11-04,B
+2024-11-04 16:37:41,Tazmanian Trader,onis-floor-🔫,CVNA,bear,False,True,2024-11-04,A
+2024-11-05 14:31:51,Tazmanian Trader,onis-floor-🔫,AVGO,bear,False,True,2024-11-05,A
+2024-11-07 14:55:24,TA Study,trading-floor,PLTR,bear,False,False,2024-11-07,A
+2024-11-08 14:42:31,TA Study,trading-floor,COIN,bear,False,False,2024-11-08,B
+2024-11-08 15:19:08,TA Study,trading-floor,MSTR,bull,False,False,2024-11-08,B
+2024-11-08 15:29:12,Tazmanian Trader,onis-floor-🔫,COIN,bull,False,False,2024-11-08,A
+2024-11-12 14:47:58,TA Study,trading-floor,CVNA,bear,False,False,2024-11-12,B
+2024-11-12 19:42:38,Tazmanian Trader,onis-floor-🔫,NVDA,bull,False,True,2024-11-12,B
+2024-11-13 13:46:06,TA Study,trading-floor,NVDA,bear,False,False,2024-11-13,B
+2024-11-13 17:25:45,Tazmanian Trader,onis-floor-🔫,AMZN,bear,False,True,2024-11-13,B
+2024-11-14 14:56:01,TA Study,trading-floor,NVDA,bear,True,False,2024-11-14,A
+2024-11-16 14:32:53,Tazmanian Trader,onis-floor-🔫,NFLX,bear,False,False,2024-11-16,B
+2024-11-16 17:45:18,Tazmanian Trader,onis-floor-🔫,MSTR,bear,False,False,2024-11-16,B
+2024-11-18 17:45:03,Tazmanian Trader,onis-floor-🔫,QQQ,bear,True,False,2024-11-18,A
+2024-11-19 14:33:30,TA Study,trading-floor,TSLA,bear,False,False,2024-11-19,B
+2024-11-19 17:54:32,TA Study,trading-floor,NVDA,bear,False,False,2024-11-19,B
+2024-11-20 03:33:12,Tazmanian Trader,onis-floor-🔫,NFLX,bear,False,True,2024-11-19,B
+2024-11-20 14:57:06,TA Study,trading-floor,NVDA,bear,False,False,2024-11-20,B
+2024-11-22 13:26:01,Tazmanian Trader,onis-floor-🔫,TSLA,bear,True,True,2024-11-22,A
+2024-11-26 02:10:53,TA Study,trading-floor,NVDA,bear,False,False,2024-11-25,B
+2024-11-26 15:18:07,TA Study,trading-floor,TSLA,bear,False,False,2024-11-26,B
+2024-11-26 16:30:40,TA Study,tazmanian-trades,RDDT,bear,True,True,2024-11-26,A
+2024-11-27 14:19:50,TA Study,trading-floor,NVDA,bear,True,False,2024-11-27,A
+2024-11-27 18:10:51,Tazmanian Trader,onis-floor-🔫,UNH,bear,False,True,2024-11-27,A
+2024-11-27 18:11:07,Tazmanian Trader,onis-floor-🔫,TSLA,bull,False,False,2024-11-27,A
+2024-11-29 06:26:42,Tazmanian Trader,onis-floor-🔫,META,bear,False,False,2024-11-29,A
+2024-12-02 03:46:40,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,False,2024-12-01,B
+2024-12-02 17:30:35,Tazmanian Trader,onis-floor-🔫,AMD,bear,False,False,2024-12-02,B
+2024-12-02 19:57:02,TA Study,tazmanian-trades,PLTR,bear,True,False,2024-12-02,A
+2024-12-03 13:14:03,TA Study,trading-floor,TSLA,bear,False,False,2024-12-03,B
+2024-12-04 09:00:29,Tazmanian Trader,onis-floor-🔫,PLTR,bear,True,True,2024-12-04,A
+2024-12-04 19:59:40,Tazmanian Trader,onis-floor-🔫,QQQ,bear,True,True,2024-12-04,A
+2024-12-05 17:17:37,Tazmanian Trader,onis-floor-🔫,META,bear,True,True,2024-12-05,A
+2024-12-05 17:26:20,Tazmanian Trader,onis-floor-🔫,MSFT,bear,False,False,2024-12-05,B
+2024-12-06 15:08:03,Tazmanian Trader,onis-floor-🔫,TSLA,bull,False,False,2024-12-06,B
+2024-12-06 15:17:50,TA Study,trading-floor,TSLA,bear,False,False,2024-12-06,B
+2024-12-09 16:55:13,TA Study,trading-floor,PLTR,bear,False,False,2024-12-09,B
+2024-12-10 17:28:52,Tazmanian Trader,onis-floor-🔫,RDDT,bull,False,True,2024-12-10,B
+2024-12-11 02:35:07,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,True,2024-12-10,B
+2024-12-11 20:14:30,TA Study,trading-floor,META,bear,False,False,2024-12-11,A
+2024-12-12 15:43:24,TA Study,trading-floor,SPY,bear,False,False,2024-12-12,B
+2024-12-16 01:18:31,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,False,2024-12-15,B
+2024-12-16 05:50:22,Tazmanian Trader,onis-floor-🔫,USO,bear,False,False,2024-12-16,B
+2024-12-16 14:00:43,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2024-12-16,B
+2024-12-17 17:10:36,TA Study,trading-floor,TSLA,bear,False,False,2024-12-17,B
+2024-12-18 18:02:06,Tazmanian Trader,onis-floor-🔫,COIN,bull,True,True,2024-12-18,A
+2024-12-19 21:17:29,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,False,2024-12-19,B
+2024-12-20 14:45:22,Tazmanian Trader,onis-floor-🔫,USO,bull,False,True,2024-12-20,A
+2024-12-23 14:14:30,Tazmanian Trader,onis-floor-🔫,MCD,bear,True,True,2024-12-23,A
+2024-12-23 16:29:34,TA Study,trading-floor,NVDA,bear,False,False,2024-12-23,B
+2024-12-23 16:38:43,TA Study,trading-floor,NVDA,bull,False,False,2024-12-23,B
+2024-12-23 18:06:42,Tazmanian Trader,onis-floor-🔫,MCD,bull,False,False,2024-12-23,B
+2024-12-24 15:02:52,Tazmanian Trader,onis-floor-🔫,MCD,bear,False,True,2024-12-24,A
+2024-12-24 15:19:17,TA Study,trading-floor,NVDA,bear,False,False,2024-12-24,A
+2024-12-25 04:12:43,Tazmanian Trader,onis-floor-🔫,AMZN,bear,False,True,2024-12-24,A
+2024-12-26 15:17:59,TA Study,trading-floor,NVDA,bear,False,False,2024-12-26,B
+2024-12-26 15:51:45,TA Study,tazmanian-trades,AMZN,bear,False,False,2024-12-26,A
+2024-12-26 17:16:49,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2024-12-26,A
+2024-12-30 15:19:18,TA Study,trading-floor,PLTR,bull,False,False,2024-12-30,B
+2024-12-30 20:26:09,Tazmanian Trader,onis-floor-🔫,USO,bull,False,False,2024-12-30,A
+2024-12-30 21:22:43,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,True,2024-12-30,B
+2025-01-01 00:03:07,Tazmanian Trader,onis-floor-🔫,AVGO,bear,False,True,2024-12-31,A
+2025-01-02 17:19:06,TA Study,tazmanian-trades,NVDA,bear,True,False,2025-01-02,A
+2025-01-03 15:36:12,TA Study,trading-floor,NVDA,bull,False,False,2025-01-03,B
+2025-01-03 18:43:10,TA Study,trading-floor,TSLA,bull,False,False,2025-01-03,B
+2025-01-06 17:40:54,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,True,2025-01-06,A
+2025-01-06 17:42:49,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,False,2025-01-06,B
+2025-01-06 19:06:15,Tazmanian Trader,onis-floor-🔫,MCD,bear,False,True,2025-01-06,B
+2025-01-07 16:12:48,Tazmanian Trader,onis-floor-🔫,MCD,bull,False,True,2025-01-07,B
+2025-01-08 15:15:07,Tazmanian Trader,onis-floor-🔫,AVGO,bear,True,False,2025-01-08,A
+2025-01-08 16:49:31,Tazmanian Trader,onis-floor-🔫,QQQ,bull,False,True,2025-01-08,B
+2025-01-08 17:03:37,Tazmanian Trader,onis-floor-🔫,MCD,bear,False,False,2025-01-08,B
+2025-01-08 17:11:11,Tazmanian Trader,onis-floor-🔫,CMG,bear,False,False,2025-01-08,B
+2025-01-08 17:33:23,TA Study,trading-floor,NVDA,bear,False,False,2025-01-08,B
+2025-01-08 18:20:31,Tazmanian Trader,onis-floor-🔫,SPY,bull,False,True,2025-01-08,B
+2025-01-09 15:18:08,Tazmanian Trader,onis-floor-🔫,SPY,bull,False,True,2025-01-09,A
+2025-01-10 14:42:28,TA Study,trading-floor,AVGO,bear,False,False,2025-01-10,B
+2025-01-13 14:35:22,Tazmanian Trader,onis-floor-🔫,NVDA,bull,False,True,2025-01-13,A
+2025-01-13 17:50:45,TA Study,tazmanian-trades,MCD,bull,True,False,2025-01-13,A
+2025-01-13 20:06:21,TA Study,tazmanian-trades,NVDA,bear,False,True,2025-01-13,A
+2025-01-14 02:26:14,Tazmanian Trader,onis-floor-🔫,USO,bear,False,True,2025-01-13,B
+2025-01-14 13:23:17,TA Study,trading-floor,NVDA,bull,False,False,2025-01-14,A
+2025-01-14 14:08:55,TA Study,tazmanian-trades,NVDA,bear,False,True,2025-01-14,B
+2025-01-14 16:22:31,TA Study,trading-floor,TSLA,bear,False,False,2025-01-14,B
+2025-01-15 16:46:40,Tazmanian Trader,onis-floor-🔫,META,bear,True,False,2025-01-15,A
+2025-01-15 20:19:29,Tazmanian Trader,onis-floor-🔫,USO,bear,False,False,2025-01-15,A
+2025-01-16 14:18:18,TA Study,trading-floor,BA,bear,False,False,2025-01-16,B
+2025-01-16 19:35:24,Tazmanian Trader,onis-floor-🔫,NVDA,bear,True,False,2025-01-16,A
+2025-01-17 17:37:13,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,True,2025-01-17,B
+2025-01-18 16:52:50,Tazmanian Trader,onis-floor-🔫,PLTR,bear,False,False,2025-01-18,B
+2025-01-18 16:53:39,Tazmanian Trader,onis-floor-🔫,META,bear,False,False,2025-01-18,B
+2025-01-20 18:17:51,Tazmanian Trader,onis-floor-🔫,AVGO,bull,False,True,2025-01-20,B
+2025-01-21 14:20:51,Tazmanian Trader,onis-floor-🔫,INTC,bull,False,False,2025-01-21,B
+2025-01-21 14:34:31,Tazmanian Trader,onis-floor-🔫,AVGO,bear,False,True,2025-01-21,B
+2025-01-22 04:42:21,Tazmanian Trader,onis-floor-🔫,QQQ,bull,False,True,2025-01-21,B
+2025-01-22 05:12:15,Tazmanian Trader,onis-floor-🔫,MSFT,bear,False,False,2025-01-22,B
+2025-01-22 14:37:22,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,True,2025-01-22,B
+2025-01-23 13:01:40,Tazmanian Trader,onis-floor-🔫,RDDT,bear,False,True,2025-01-23,B
+2025-01-23 14:13:51,Tazmanian Trader,onis-floor-🔫,PDD,bull,False,True,2025-01-23,A
+2025-01-24 17:55:45,Tazmanian Trader,onis-floor-🔫,PDD,bull,True,True,2025-01-24,A
+2025-01-27 03:07:50,Tazmanian Trader,onis-floor-🔫,TSLA,bull,False,False,2025-01-26,B
+2025-01-27 14:53:41,TA Study,tazmanian-trades,NVDA,bull,False,True,2025-01-27,B
+2025-01-27 14:57:00,TA Study,trading-floor,TSLA,bear,False,False,2025-01-27,B
+2025-01-27 15:10:13,TA Study,trading-floor,PDD,bull,False,False,2025-01-27,B
+2025-01-27 16:37:27,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,False,2025-01-27,A
+2025-01-27 21:18:12,Tazmanian Trader,onis-floor-🔫,AAPL,bull,False,False,2025-01-27,B
+2025-01-28 01:56:39,Tazmanian Trader,onis-floor-🔫,KRE,bear,False,True,2025-01-27,A
+2025-01-28 15:41:46,Tazmanian Trader,onis-floor-🔫,AAPL,bull,False,False,2025-01-28,A
+2025-01-28 17:35:15,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,True,2025-01-28,B
+2025-01-28 22:36:46,Tazmanian Trader,onis-floor-🔫,KRE,bear,False,False,2025-01-28,B
+2025-01-28 22:37:24,Tazmanian Trader,onis-floor-🔫,CMG,bear,False,False,2025-01-28,B
+2025-01-29 13:45:18,TA Study,tazmanian-trades,NVDA,bear,False,True,2025-01-29,A
+2025-01-29 16:09:56,Tazmanian Trader,onis-floor-🔫,KRE,bear,False,True,2025-01-29,B
+2025-01-30 02:17:36,Tazmanian Trader,onis-floor-🔫,NVDA,bull,False,False,2025-01-29,B
+2025-01-30 15:13:19,Tazmanian Trader,onis-floor-🔫,AMZN,bear,False,False,2025-01-30,B
+2025-01-30 15:13:24,Tazmanian Trader,onis-floor-🔫,AVGO,bull,False,False,2025-01-30,B
+2025-01-30 15:20:06,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,True,2025-01-30,A
+2025-01-31 17:56:52,Tazmanian Trader,onis-floor-🔫,KRE,bear,False,False,2025-01-31,B
+2025-01-31 19:22:15,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2025-01-31,B
+2025-02-01 02:08:52,TA Study,trading-floor,TSLA,bear,False,False,2025-01-31,B
+2025-02-02 18:16:00,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,False,2025-02-02,B
+2025-02-02 23:53:08,Tazmanian Trader,onis-floor-🔫,KRE,bull,False,True,2025-02-02,B
+2025-02-03 15:19:28,Tazmanian Trader,onis-floor-🔫,KRE,bull,False,True,2025-02-03,B
+2025-02-03 15:20:50,Tazmanian Trader,onis-floor-🔫,AAPL,bull,False,False,2025-02-03,B
+2025-02-05 14:26:51,TA Study,tazmanian-trades,NVDA,bear,False,True,2025-02-05,A
+2025-02-06 16:25:43,Tazmanian Trader,onis-floor-🔫,PLTR,bear,False,False,2025-02-06,A
+2025-02-07 08:06:05,Tazmanian Trader,onis-floor-🔫,NFLX,bull,False,False,2025-02-07,B
+2025-02-07 15:50:42,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2025-02-07,B
+2025-02-07 16:29:56,TA Study,tazmanian-trades,NVDA,bear,False,True,2025-02-07,B
+2025-02-07 20:46:53,TA Study,tazmanian-trades,PLTR,bear,True,True,2025-02-07,A
+2025-02-10 04:09:43,Tazmanian Trader,onis-floor-🔫,PLTR,bear,False,False,2025-02-09,B
+2025-02-10 08:52:26,Tazmanian Trader,onis-floor-🔫,MSFT,bull,False,False,2025-02-10,A
+2025-02-10 15:31:37,TA Study,trading-floor,NVDA,bear,False,False,2025-02-10,B
+2025-02-10 15:31:49,TA Study,trading-floor,PLTR,bear,False,False,2025-02-10,B
+2025-02-11 05:15:52,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,False,2025-02-11,B
+2025-02-11 05:48:25,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,False,2025-02-11,B
+2025-02-11 06:36:01,Tazmanian Trader,onis-floor-🔫,NVDA,bull,False,False,2025-02-11,B
+2025-02-11 19:02:08,TA Study,trading-floor,SPY,bull,False,False,2025-02-11,B
+2025-02-12 18:14:24,Tazmanian Trader,onis-floor-🔫,MSFT,bear,False,True,2025-02-12,A
+2025-02-12 20:14:02,Tazmanian Trader,onis-floor-🔫,TSLA,bull,False,True,2025-02-12,B
+2025-02-13 14:13:47,Tazmanian Trader,onis-floor-🔫,MSFT,bear,False,True,2025-02-13,A
+2025-02-13 16:03:40,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,False,2025-02-13,A
+2025-02-14 15:22:07,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,False,2025-02-14,B
+2025-02-14 16:52:12,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-02-14,B
+2025-02-18 13:29:59,Tazmanian Trader,onis-floor-🔫,NVDA,bull,False,False,2025-02-18,B
+2025-02-18 17:53:57,Tazmanian Trader,onis-floor-🔫,AMZN,bear,False,False,2025-02-18,B
+2025-02-18 18:58:30,Tazmanian Trader,onis-floor-🔫,KRE,bear,True,True,2025-02-18,A
+2025-02-18 20:19:18,Tazmanian Trader,onis-floor-🔫,AMZN,bull,False,False,2025-02-18,B
+2025-02-19 03:30:50,Tazmanian Trader,onis-floor-🔫,TSLA,bull,False,True,2025-02-18,B
+2025-02-19 14:35:15,Tazmanian Trader,onis-floor-🔫,PLTR,bear,False,True,2025-02-19,A
+2025-02-19 17:07:39,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,False,2025-02-19,B
+2025-02-20 14:33:14,Tazmanian Trader,onis-floor-🔫,NVDA,bear,True,True,2025-02-20,A
+2025-02-21 02:28:05,Tazmanian Trader,onis-floor-🔫,SPY,bull,False,True,2025-02-20,B
+2025-02-21 14:32:24,Tazmanian Trader,onis-floor-🔫,NVDA,bear,True,True,2025-02-21,A
+2025-02-22 06:55:17,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2025-02-22,A
+2025-02-22 17:24:58,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,False,2025-02-22,B
+2025-02-23 17:22:06,Tazmanian Trader,onis-floor-🔫,PLTR,bear,False,False,2025-02-23,B
+2025-02-23 18:27:11,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,False,2025-02-23,B
+2025-02-24 00:54:08,Tazmanian Trader,onis-floor-🔫,COIN,bull,False,True,2025-02-23,B
+2025-02-25 15:00:34,Tazmanian Trader,onis-floor-🔫,AAPL,bear,False,True,2025-02-25,B
+2025-02-25 15:01:00,Tazmanian Trader,onis-floor-🔫,NVDA,bear,False,False,2025-02-25,B
+2025-02-26 14:40:02,Tazmanian Trader,📊-vip-trade-writeups,META,bear,True,True,2025-02-26,A
+2025-02-26 14:43:09,Tazmanian Trader,onis-floor-🔫,AAPL,bear,False,True,2025-02-26,B
+2025-02-26 14:54:07,Tazmanian Trader,onis-floor-🔫,COIN,bull,True,True,2025-02-26,A
+2025-02-26 15:24:59,TA Study,trading-floor,TSLA,bull,False,False,2025-02-26,B
+2025-02-27 14:32:15,Tazmanian Trader,onis-floor-🔫,BABA,bull,False,True,2025-02-27,A
+2025-02-27 16:26:02,Tazmanian Trader,📊-vip-trade-writeups,QQQ,bear,False,True,2025-02-27,A
+2025-02-27 16:36:08,Tazmanian Trader,onis-floor-🔫,META,bull,False,False,2025-02-27,B
+2025-02-28 06:38:07,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-02-28,B
+2025-02-28 14:54:47,Tazmanian Trader,onis-floor-🔫,QQQ,bull,False,True,2025-02-28,B
+2025-02-28 18:21:45,TA Study,trading-floor,SPY,bull,False,False,2025-02-28,B
+2025-02-28 23:47:46,Tazmanian Trader,onis-floor-🔫,USO,bear,False,False,2025-02-28,B
+2025-03-03 15:30:14,TA Study,tazmanian-trades,AAPL,bear,True,True,2025-03-03,A
+2025-03-03 17:19:32,TA Study,trading-floor,NVDA,bear,False,False,2025-03-03,B
+2025-03-03 18:45:58,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,False,2025-03-03,B
+2025-03-03 18:46:16,Tazmanian Trader,onis-floor-🔫,SPY,bull,False,False,2025-03-03,B
+2025-03-04 04:15:55,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2025-03-03,B
+2025-03-04 15:10:20,Tazmanian Trader,onis-floor-🔫,QQQ,bull,False,True,2025-03-04,A
+2025-03-04 18:26:21,Tazmanian Trader,📊-vip-trade-writeups,AAPL,bear,True,True,2025-03-04,A
+2025-03-05 19:19:12,TA Study,tazmanian-trades,QQQ,bear,False,True,2025-03-05,B
+2025-03-06 15:11:25,Tazmanian Trader,onis-floor-🔫,QQQ,bull,False,True,2025-03-06,B
+2025-03-06 20:18:30,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-03-06,B
+2025-03-07 03:04:41,Tazmanian Trader,onis-floor-🔫,TSLA,bull,False,False,2025-03-06,B
+2025-03-07 14:05:08,TA Study,trading-floor,TSLA,bear,False,False,2025-03-07,B
+2025-03-07 15:20:06,TA Study,tazmanian-trades,META,bear,True,True,2025-03-07,A
+2025-03-07 17:47:40,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-03-07,B
+2025-03-08 23:20:20,Tazmanian Trader,onis-floor-🔫,KRE,bull,False,False,2025-03-08,A
+2025-03-10 13:48:53,Tazmanian Trader,📊-vip-trade-writeups,BABA,bear,False,True,2025-03-10,A
+2025-03-10 13:49:43,Tazmanian Trader,📊-vip-trade-writeups,MCD,bear,False,True,2025-03-10,A
+2025-03-10 16:55:00,Tazmanian Trader,onis-floor-🔫,TSLA,bull,True,True,2025-03-10,A
+2025-03-10 18:55:11,Tazmanian Trader,onis-floor-🔫,COIN,bull,False,True,2025-03-10,A
+2025-03-11 01:35:35,Tazmanian Trader,onis-floor-🔫,SPY,bull,False,False,2025-03-10,B
+2025-03-11 03:28:26,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,False,2025-03-10,B
+2025-03-11 13:32:42,Tazmanian Trader,📊-vip-trade-writeups,COIN,bear,False,True,2025-03-11,A
+2025-03-11 13:52:22,Tazmanian Trader,onis-floor-🔫,COIN,bull,False,True,2025-03-11,B
+2025-03-13 07:43:28,Tazmanian Trader,onis-floor-🔫,META,bear,False,False,2025-03-13,A
+2025-03-13 13:27:43,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-03-13,B
+2025-03-13 14:24:33,Tazmanian Trader,📊-vip-trade-writeups,NVDA,bear,True,False,2025-03-13,A
+2025-03-13 18:03:20,Tazmanian Trader,onis-floor-🔫,COIN,bull,True,True,2025-03-13,A
+2025-03-13 18:59:48,Tazmanian Trader,onis-floor-🔫,COIN,bear,True,True,2025-03-13,A
+2025-03-14 13:34:35,Tazmanian Trader,onis-floor-🔫,QQQ,bull,False,True,2025-03-14,B
+2025-03-14 19:05:44,Tazmanian Trader,onis-floor-🔫,SPY,bull,True,True,2025-03-14,A
+2025-03-17 01:32:39,Tazmanian Trader,onis-floor-🔫,QQQ,bull,False,True,2025-03-16,B
+2025-03-17 17:47:58,TA Study,tazmanian-trades,SPY,bear,True,True,2025-03-17,A
+2025-03-17 20:01:25,Tazmanian Trader,onis-floor-🔫,DK,bull,False,False,2025-03-17,B
+2025-03-18 13:35:42,Tazmanian Trader,onis-floor-🔫,NVDA,bear,True,True,2025-03-18,A
+2025-03-18 15:17:42,Tazmanian Trader,onis-floor-🔫,USO,bear,True,True,2025-03-18,A
+2025-03-18 16:28:25,Tazmanian Trader,onis-floor-🔫,USO,bull,False,False,2025-03-18,B
+2025-03-18 18:43:30,Tazmanian Trader,onis-floor-🔫,META,bull,False,True,2025-03-18,B
+2025-03-19 18:35:40,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-03-19,A
+2025-03-19 19:17:18,Tazmanian Trader,📊-vip-trade-writeups,NFLX,bull,False,True,2025-03-19,B
+2025-03-20 12:19:53,Tazmanian Trader,onis-floor-🔫,AAPL,bear,False,False,2025-03-20,A
+2025-03-20 19:59:17,Tazmanian Trader,onis-floor-🔫,BABA,bear,False,True,2025-03-20,A
+2025-03-20 20:22:59,Tazmanian Trader,onis-floor-🔫,NFLX,bear,False,True,2025-03-20,A
+2025-03-21 02:18:19,Tazmanian Trader,onis-floor-🔫,ULTA,bear,False,False,2025-03-20,B
+2025-03-21 12:57:44,Tazmanian Trader,onis-floor-🔫,BABA,bear,False,False,2025-03-21,A
+2025-03-23 20:41:32,Tazmanian Trader,onis-floor-🔫,BABA,bull,False,False,2025-03-23,B
+2025-03-24 13:28:39,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,True,2025-03-24,B
+2025-03-24 13:51:58,Tazmanian Trader,onis-floor-🔫,BABA,bear,False,True,2025-03-24,B
+2025-03-24 14:17:38,Tazmanian Trader,onis-floor-🔫,AAPL,bull,True,True,2025-03-24,A
+2025-03-24 17:02:17,TA Study,trading-floor,TSLA,bear,False,False,2025-03-24,B
+2025-03-24 17:52:33,Tazmanian Trader,onis-floor-🔫,SPY,bull,False,True,2025-03-24,B
+2025-03-24 18:54:50,Tazmanian Trader,onis-floor-🔫,AMD,bear,False,False,2025-03-24,A
+2025-03-25 13:23:50,Tazmanian Trader,onis-floor-🔫,BABA,bear,False,False,2025-03-25,B
+2025-03-25 18:29:03,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-03-25,B
+2025-03-25 19:19:54,Tazmanian Trader,onis-floor-🔫,AMD,bear,False,False,2025-03-25,B
+2025-03-25 20:36:34,Tazmanian Trader,onis-floor-🔫,ULTA,bull,False,False,2025-03-25,B
+2025-03-26 14:26:58,Tazmanian Trader,📊-vip-trade-writeups,META,bear,False,False,2025-03-26,B
+2025-03-26 17:30:34,Tazmanian Trader,onis-floor-🔫,SPY,bull,False,False,2025-03-26,B
+2025-03-27 17:38:28,Tazmanian Trader,onis-floor-🔫,AAPL,bear,False,True,2025-03-27,B
+2025-03-27 18:20:39,Tazmanian Trader,onis-floor-🔫,META,bear,False,False,2025-03-27,B
+2025-03-31 11:45:58,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2025-03-31,A
+2025-03-31 13:32:51,Tazmanian Trader,onis-floor-🔫,GOOG,bear,False,True,2025-03-31,A
+2025-03-31 14:04:01,Tazmanian Trader,onis-floor-🔫,TSLA,bull,False,False,2025-03-31,A
+2025-04-01 03:11:33,Tazmanian Trader,onis-floor-🔫,CVNA,bear,False,True,2025-03-31,A
+2025-04-01 14:56:38,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2025-04-01,B
+2025-04-02 15:06:06,TA Study,tazmanian-trades,META,bear,False,True,2025-04-02,A
+2025-04-03 00:06:30,Tazmanian Trader,onis-floor-🔫,SLV,bull,False,False,2025-04-02,A
+2025-04-03 13:28:02,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2025-04-03,A
+2025-04-03 14:11:56,Tazmanian Trader,onis-floor-🔫,ES,bear,False,False,2025-04-03,B
+2025-04-03 18:08:35,Tazmanian Trader,onis-floor-🔫,META,bull,False,True,2025-04-03,B
+2025-04-04 15:04:32,Tazmanian Trader,onis-floor-🔫,MSFT,bull,False,True,2025-04-04,B
+2025-04-05 22:46:26,Tazmanian Trader,onis-floor-🔫,BA,bull,False,True,2025-04-05,B
+2025-04-06 01:24:30,Tazmanian Trader,onis-floor-🔫,MSFT,bull,False,False,2025-04-05,B
+2025-04-06 14:34:17,Tazmanian Trader,onis-floor-🔫,META,bear,False,False,2025-04-06,A
+2025-04-06 14:38:30,Tazmanian Trader,onis-floor-🔫,SNOW,bull,True,False,2025-04-06,A
+2025-04-06 14:38:38,Tazmanian Trader,onis-floor-🔫,NVDA,bull,True,False,2025-04-06,A
+2025-04-06 16:27:33,Tazmanian Trader,onis-floor-🔫,GLD,bull,False,False,2025-04-06,B
+2025-04-08 14:52:05,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2025-04-08,B
+2025-04-08 22:41:28,TA Study,trading-floor,UNH,bear,False,False,2025-04-08,B
+2025-04-09 14:58:20,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2025-04-09,B
+2025-04-09 19:56:01,TA Study,tazmanian-trades,QQQ,bear,True,True,2025-04-09,A
+2025-04-10 17:42:09,Tazmanian Trader,onis-floor-🔫,QQQ,bear,True,True,2025-04-10,A
+2025-04-10 17:53:34,Tazmanian Trader,📊-vip-trade-writeups,META,bear,True,True,2025-04-10,A
+2025-04-10 18:12:10,TA Study,tazmanian-trades,QQQ,bull,False,True,2025-04-10,B
+2025-04-11 14:00:38,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-04-11,B
+2025-04-11 19:34:42,Tazmanian Trader,onis-floor-🔫,QQQ,bull,False,True,2025-04-11,A
+2025-04-14 13:35:20,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-04-14,A
+2025-04-14 18:16:29,Tazmanian Trader,📊-vip-trade-writeups,UNH,bear,True,True,2025-04-14,A
+2025-04-14 21:10:41,TA Study,tazmanian-trades,MCD,bear,False,True,2025-04-14,B
+2025-04-14 23:06:30,Tazmanian Trader,onis-floor-🔫,AVGO,bear,False,False,2025-04-14,B
+2025-04-15 16:33:55,Tazmanian Trader,onis-floor-🔫,PLTR,bear,False,True,2025-04-15,A
+2025-04-15 22:19:55,Tazmanian Trader,onis-floor-🔫,BABA,bear,False,True,2025-04-15,B
+2025-04-16 13:50:18,TA Study,tazmanian-trades,META,bull,False,True,2025-04-16,B
+2025-04-16 14:44:11,Tazmanian Trader,onis-floor-🔫,CVNA,bear,True,True,2025-04-16,A
+2025-04-21 17:07:00,TA Study,tazmanian-trades,BABA,bear,False,True,2025-04-21,B
+2025-04-21 18:56:45,Tazmanian Trader,onis-floor-🔫,BA,bear,False,False,2025-04-21,B
+2025-04-22 16:49:39,TA Study,tazmanian-trades,BABA,bear,False,True,2025-04-22,B
+2025-04-23 18:26:48,TA Study,tazmanian-trades,NFLX,bear,True,True,2025-04-23,A
+2025-04-23 18:30:07,TA Study,tazmanian-trades,QQQ,bear,True,True,2025-04-23,A
+2025-04-24 14:17:07,Tazmanian Trader,onis-floor-🔫,BABA,bear,False,True,2025-04-24,B
+2025-04-24 18:44:22,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-04-24,B
+2025-04-25 13:29:27,Tazmanian Trader,onis-floor-🔫,META,bear,False,True,2025-04-25,B
+2025-04-25 14:02:03,TA Study,trading-floor,NFLX,bear,False,True,2025-04-25,B
+2025-04-25 14:56:57,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,True,2025-04-25,B
+2025-04-25 16:00:33,TA Study,trading-floor,TSLA,bull,False,False,2025-04-25,B
+2025-04-25 16:35:59,TA Study,trading-floor,PLTR,bear,False,False,2025-04-25,B
+2025-04-28 13:38:28,TA Study,tazmanian-trades,QQQ,bear,False,True,2025-04-28,A
+2025-04-28 15:19:11,Tazmanian Trader,onis-floor-🔫,IBM,bear,False,False,2025-04-28,B
+2025-04-28 17:14:15,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,False,2025-04-28,B
+2025-04-28 19:50:46,Tazmanian Trader,onis-floor-🔫,AVGO,bear,True,True,2025-04-28,A
+2025-04-29 13:36:28,Tazmanian Trader,onis-floor-🔫,AMZN,bear,False,True,2025-04-29,B
+2025-04-29 21:05:08,Tazmanian Trader,onis-floor-🔫,MCD,bear,False,False,2025-04-29,B
+2025-04-30 13:43:08,Tazmanian Trader,onis-floor-🔫,GS,bull,False,False,2025-04-30,B
+2025-04-30 16:25:35,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-04-30,B
+2025-05-01 13:35:01,Tazmanian Trader,onis-floor-🔫,NFLX,bear,True,True,2025-05-01,A
+2025-05-01 14:00:33,TA Study,trading-floor,AVGO,bear,False,False,2025-05-01,B
+2025-05-02 19:40:19,Tazmanian Trader,onis-floor-🔫,AVGO,bear,True,True,2025-05-02,A
+2025-05-05 13:32:58,Tazmanian Trader,onis-floor-🔫,AMD,bear,False,True,2025-05-05,B
+2025-05-05 13:35:08,Tazmanian Trader,onis-floor-🔫,AAPL,bear,False,True,2025-05-05,B
+2025-05-05 14:26:54,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-05-05,B
+2025-05-06 13:54:20,Tazmanian Trader,onis-floor-🔫,MSFT,bear,False,True,2025-05-06,B
+2025-05-07 14:44:42,Tazmanian Trader,onis-floor-🔫,NVDA,bull,False,False,2025-05-07,B
+2025-05-07 14:54:46,Tazmanian Trader,onis-floor-🔫,MSFT,bear,False,True,2025-05-07,B
+2025-05-08 12:51:46,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-05-08,B
+2025-05-12 13:29:00,Tazmanian Trader,onis-floor-🔫,AVGO,bear,False,True,2025-05-12,A
+2025-05-12 13:50:17,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,True,2025-05-12,B
+2025-05-13 03:24:46,Tazmanian Trader,onis-floor-🔫,AVGO,bull,False,False,2025-05-12,B
+2025-05-14 02:41:47,Tazmanian Trader,onis-floor-🔫,SPY,bull,False,False,2025-05-13,B
+2025-05-15 18:48:22,Tazmanian Trader,onis-floor-🔫,AVGO,bear,False,False,2025-05-15,A
+2025-05-15 19:01:39,Tazmanian Trader,onis-floor-🔫,PLTR,bear,False,True,2025-05-15,B
+2025-05-16 03:17:48,Tazmanian Trader,onis-floor-🔫,SPY,bear,True,True,2025-05-15,A
+2025-05-16 04:51:10,Tazmanian Trader,📊-vip-trade-writeups,SPY,bear,True,True,2025-05-16,A
+2025-05-16 17:21:57,Tazmanian Trader,onis-floor-🔫,MSFT,bear,False,False,2025-05-16,A
+2025-05-18 21:22:00,Tazmanian Trader,onis-floor-🔫,GLD,bull,False,False,2025-05-18,B
+2025-05-19 04:04:27,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,True,2025-05-19,B
+2025-05-20 12:30:34,Tazmanian Trader,onis-floor-🔫,COIN,bear,False,True,2025-05-20,B
+2025-05-22 20:14:18,Tazmanian Trader,onis-floor-🔫,CMG,bear,False,False,2025-05-22,B
+2025-05-23 13:59:51,Tazmanian Trader,onis-floor-🔫,CRWV,bear,True,True,2025-05-23,A
+2025-05-27 18:31:40,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,True,2025-05-27,B
+2025-05-30 15:57:01,Tazmanian Trader,onis-floor-🔫,MSFT,bull,False,True,2025-05-30,A
+2025-05-31 00:59:52,Tazmanian Trader,onis-floor-🔫,MSTR,bear,False,False,2025-05-30,B
+2025-06-02 04:15:07,Tazmanian Trader,onis-floor-🔫,ROKU,bull,False,False,2025-06-02,B
+2025-06-05 16:35:43,Tazmanian Trader,onis-floor-🔫,TSLA,bear,False,False,2025-06-05,B
+2025-06-06 14:44:10,Tazmanian Trader,onis-floor-🔫,META,bear,True,True,2025-06-06,A
+2025-06-09 03:10:43,Tazmanian Trader,onis-floor-🔫,META,bear,True,True,2025-06-08,A
+2025-06-10 02:02:09,Tazmanian Trader,onis-floor-🔫,PDD,bear,False,False,2025-06-09,B
+2025-06-11 17:58:11,Tazmanian Trader,onis-floor-🔫,COIN,bear,False,True,2025-06-11,B
+2025-06-13 06:58:09,Tazmanian Trader,onis-floor-🔫,IBM,bear,False,False,2025-06-13,B
+2025-06-13 14:31:04,TA Study,trading-floor,KRE,bear,False,False,2025-06-13,A
+2025-06-16 14:56:50,Tazmanian Trader,onis-floor-🔫,COIN,bear,False,True,2025-06-16,B
+2025-06-18 13:49:41,Tazmanian Trader,onis-floor-🔫,CRWV,bear,False,True,2025-06-18,B
+2025-06-18 14:11:56,Tazmanian Trader,onis-floor-🔫,COIN,bull,False,True,2025-06-18,B
+2025-06-18 14:54:21,Tazmanian Trader,onis-floor-🔫,COIN,bear,False,False,2025-06-18,B
+2025-06-20 05:18:38,Tazmanian Trader,onis-floor-🔫,COIN,bear,False,False,2025-06-20,A
+2025-06-20 14:27:56,TA Study,trading-floor,CRWV,bear,False,False,2025-06-20,B
+2025-06-24 19:06:19,TA Study,trading-floor,TSLA,bear,False,False,2025-06-24,B
+2025-06-25 03:35:18,Tazmanian Trader,onis-floor-🔫,COIN,bear,False,True,2025-06-24,A
+2025-06-25 13:50:47,Tazmanian Trader,onis-floor-🔫,TSLA,bull,False,True,2025-06-25,B
+2025-06-25 14:20:11,Tazmanian Trader,onis-floor-🔫,COIN,bear,False,False,2025-06-25,B
+2025-06-26 06:50:18,Tazmanian Trader,onis-floor-🔫,PLTR,bear,False,False,2025-06-26,B
+2025-06-26 15:40:41,Tazmanian Trader,onis-floor-🔫,CRWV,bear,False,True,2025-06-26,B
+2025-06-26 18:18:29,Tazmanian Trader,onis-floor-🔫,COIN,bear,False,True,2025-06-26,A
+2025-06-27 03:17:26,Tazmanian Trader,onis-floor-🔫,GOOG,bull,False,True,2025-06-26,B
+2025-06-27 19:54:17,Tazmanian Trader,onis-floor-🔫,GOOG,bull,False,True,2025-06-27,A
+2025-06-30 10:31:52,TA Study,trading-floor,AMD,bear,False,False,2025-06-30,A
+2025-06-30 14:10:00,Tazmanian Trader,onis-floor-🔫,MRNA,bull,False,True,2025-06-30,A
+2025-07-01 14:43:21,Tazmanian Trader,onis-floor-🔫,QQQ,bear,False,False,2025-07-01,B
+2025-07-02 17:02:39,Tazmanian Trader,onis-floor-🔫,AMD,bear,True,True,2025-07-02,A
+2025-07-03 16:39:28,Tazmanian Trader,onis-floor-🔫,HOOD,bear,False,False,2025-07-03,B
+2025-07-07 13:44:50,TA Study,trading-floor,AMD,bear,False,False,2025-07-07,B
+2025-07-07 17:38:00,Tazmanian Trader,onis-floor-🔫,AMD,bull,False,False,2025-07-07,B
+2025-07-07 18:02:01,Tazmanian Trader,onis-floor-🔫,SPY,bear,False,True,2025-07-07,B
+2025-07-08 19:09:35,TA Study,trading-floor,TSLA,bear,False,False,2025-07-08,B
+2025-07-09 16:00:33,Tazmanian Trader,trading-floor🧃,TSLA,bull,False,True,2025-07-09,A
+2025-07-09 16:54:39,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-07-09,B
+2025-07-10 13:19:19,Tazmanian Trader,onis-floor-🔫,CVNA,bear,False,False,2025-07-10,B
+2025-07-10 14:23:47,Tazmanian Trader,trading-floor🧃,TSLA,bull,False,True,2025-07-10,A
+2025-07-11 00:20:39,Tazmanian Trader,onis-floor-🔫,COIN,bear,False,False,2025-07-10,B
+2025-07-14 04:10:36,Tazmanian Trader,trading-floor🧃,COIN,bear,False,True,2025-07-14,B
+2025-07-14 20:55:57,Tazmanian Trader,trading-floor🧃,UNH,bear,False,False,2025-07-14,B
+2025-07-15 16:42:59,Tazmanian Trader,trading-floor🧃,UNH,bear,False,True,2025-07-15,A
+2025-07-15 19:17:59,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-07-15,B
+2025-07-16 19:46:20,Tazmanian Trader,trading-floor🧃,PLTR,bull,True,True,2025-07-16,A
+2025-07-21 13:32:23,Tazmanian Trader,trading-floor🧃,MSFT,bear,False,True,2025-07-21,B
+2025-07-21 13:34:05,Tazmanian Trader,trading-floor🧃,UNH,bear,False,True,2025-07-21,B
+2025-07-21 18:43:00,Tazmanian Trader,trading-floor🧃,CVNA,bear,False,True,2025-07-21,B
+2025-07-22 06:02:55,Tazmanian Trader,📊-vip-trade-writeups,HOOD,bear,False,True,2025-07-22,A
+2025-07-22 06:29:47,Tazmanian Trader,📊-vip-trade-writeups,COST,bear,False,True,2025-07-22,B
+2025-07-22 16:46:35,Tazmanian Trader,trading-floor🧃,QQQ,bear,True,True,2025-07-22,A
+2025-07-23 14:01:46,Tazmanian Trader,trading-floor🧃,HOOD,bear,False,True,2025-07-23,B
+2025-07-23 14:18:51,Tazmanian Trader,trading-floor🧃,HOOD,bull,False,True,2025-07-23,B
+2025-07-23 19:20:27,Tazmanian Trader,trading-floor🧃,AMD,bear,False,False,2025-07-23,B
+2025-07-25 14:58:25,Tazmanian Trader,trading-floor🧃,PLTR,bear,True,True,2025-07-25,A
+2025-07-28 05:36:23,Tazmanian Trader,📊-vip-trade-writeups,AMZN,bear,False,True,2025-07-28,B
+2025-07-28 13:51:55,Tazmanian Trader,trading-floor🧃,NVDA,bull,False,True,2025-07-28,A
+2025-07-28 14:55:22,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-07-28,B
+2025-07-28 18:33:48,TA Study,trading-floor,BABA,bear,False,False,2025-07-28,A
+2025-07-28 18:46:01,Tazmanian Trader,trading-floor🧃,BABA,bull,False,True,2025-07-28,A
+2025-07-29 13:37:03,Tazmanian Trader,trading-floor🧃,BABA,bull,False,False,2025-07-29,B
+2025-07-29 14:03:56,Tazmanian Trader,trading-floor🧃,AMD,bear,False,False,2025-07-29,A
+2025-07-29 15:19:05,Tazmanian Trader,trading-floor🧃,COIN,bear,False,False,2025-07-29,B
+2025-07-29 19:25:38,Tazmanian Trader,trading-floor🧃,SPY,bull,False,True,2025-07-29,A
+2025-07-29 19:40:20,Tazmanian Trader,trading-floor🧃,QQQ,bull,False,True,2025-07-29,A
+2025-07-31 17:54:16,Tazmanian Trader,onis-floor-🔫,AMD,bear,False,False,2025-07-31,B
+2025-07-31 18:12:48,Tazmanian Trader,onis-floor-🔫,COIN,bear,False,False,2025-07-31,B
+2025-08-01 16:06:58,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,False,2025-08-01,B
+2025-08-04 13:29:44,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-08-04,B
+2025-08-04 13:30:21,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,False,2025-08-04,A
+2025-08-04 15:25:53,Tazmanian Trader,trading-floor🧃,QQQ,bull,True,True,2025-08-04,A
+2025-08-04 16:10:51,Tazmanian Trader,trading-floor🧃,PLTR,bear,False,False,2025-08-04,B
+2025-08-05 13:32:13,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-08-05,B
+2025-08-05 16:40:34,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-08-05,B
+2025-08-07 17:24:55,Tazmanian Trader,tazmanian-trades-💸,AAPL,bear,False,True,2025-08-07,B
+2025-08-07 19:23:12,Tazmanian Trader,tazmanian-trades-💸,PLTR,bear,True,True,2025-08-07,A
+2025-08-08 14:32:26,Tazmanian Trader,trading-floor🧃,PLTR,bear,False,False,2025-08-08,B
+2025-08-08 15:42:01,Tazmanian Trader,trading-floor🧃,AAPL,bear,False,False,2025-08-08,B
+2025-08-12 02:54:23,Tazmanian Trader,trading-floor🧃,GLD,bull,False,False,2025-08-11,B
+2025-08-12 03:12:28,Tazmanian Trader,trading-floor🧃,AMD,bull,False,False,2025-08-11,B
+2025-08-12 11:35:58,Tazmanian Trader,onis-floor-🔫,GLD,bear,False,False,2025-08-12,B
+2025-08-12 12:20:35,Tazmanian Trader,📊-vip-trade-writeups,GLD,bull,False,True,2025-08-12,B
+2025-08-12 12:38:38,Tazmanian Trader,📊-vip-trade-writeups,META,bear,False,True,2025-08-12,B
+2025-08-12 12:58:13,Tazmanian Trader,📊-vip-trade-writeups,AMD,bear,False,True,2025-08-12,A
+2025-08-12 13:06:21,Tazmanian Trader,trading-floor🧃,TSLA,bull,False,False,2025-08-12,B
+2025-08-12 13:35:40,Tazmanian Trader,trading-floor🧃,SPY,bull,False,True,2025-08-12,B
+2025-08-12 13:38:12,Tazmanian Trader,trading-floor🧃,AAPL,bear,False,True,2025-08-12,A
+2025-08-12 16:17:14,Tazmanian Trader,trading-floor🧃,AAPL,bull,False,True,2025-08-12,A
+2025-08-13 17:15:46,Tazmanian Trader,trading-floor🧃,PLTR,bear,False,False,2025-08-13,B
+2025-08-14 02:52:07,Tazmanian Trader,📊-vip-trade-writeups,META,bull,False,True,2025-08-13,B
+2025-08-14 16:43:27,Tazmanian Trader,trading-floor🧃,PLTR,bear,False,True,2025-08-14,B
+2025-08-14 17:15:53,Tazmanian Trader,tazmanian-trades-💸,QQQ,bear,False,True,2025-08-14,A
+2025-08-15 07:33:29,Tazmanian Trader,trading-floor🧃,RDDT,bear,False,True,2025-08-15,A
+2025-08-18 14:20:06,Tazmanian Trader,trading-floor🧃,NFLX,bear,False,True,2025-08-18,A
+2025-08-18 15:45:37,Tazmanian Trader,tazmanian-trades-💸,RDDT,bull,False,True,2025-08-18,B
+2025-08-20 13:54:54,Tazmanian Trader,trading-floor🧃,SPY,bull,False,True,2025-08-20,B
+2025-08-20 14:18:32,Tazmanian Trader,trading-floor🧃,RDDT,bear,True,True,2025-08-20,A
+2025-08-20 17:07:46,Tazmanian Trader,trading-floor🧃,SPY,bear,False,True,2025-08-20,B
+2025-08-21 13:28:29,Tazmanian Trader,trading-floor🧃,SPY,bear,False,True,2025-08-21,B
+2025-08-22 17:27:43,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-08-22,B
+2025-08-22 18:24:14,Tazmanian Trader,trading-floor🧃,BABA,bear,False,True,2025-08-22,A
+2025-08-24 23:18:26,Tazmanian Trader,trading-floor🧃,COIN,bear,False,True,2025-08-24,B
+2025-08-25 08:00:03,Tazmanian Trader,trading-floor🧃,META,bear,False,False,2025-08-25,B
+2025-08-25 13:50:27,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-08-25,A
+2025-08-26 16:27:16,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-08-26,A
+2025-08-27 13:36:09,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-08-27,B
+2025-08-27 20:22:15,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,True,2025-08-27,B
+2025-08-29 13:20:28,Tazmanian Trader,trading-floor🧃,AVGO,bear,False,False,2025-08-29,B
+2025-08-29 13:40:08,Tazmanian Trader,trading-floor🧃,QQQ,bull,False,True,2025-08-29,B
+2025-08-29 13:48:12,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-08-29,B
+2025-09-02 15:02:42,Tazmanian Trader,trading-floor🧃,SPY,bull,True,True,2025-09-02,A
+2025-09-03 12:26:00,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,True,2025-09-03,B
+2025-09-03 13:54:27,Tazmanian Trader,trading-floor🧃,HOOD,bear,False,True,2025-09-03,B
+2025-09-04 13:14:18,Tazmanian Trader,trading-floor🧃,BABA,bear,False,True,2025-09-04,B
+2025-09-05 12:59:01,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,False,2025-09-05,A
+2025-09-05 14:15:07,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,False,2025-09-05,B
+2025-09-08 13:16:09,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-09-08,A
+2025-09-08 13:42:32,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,True,2025-09-08,B
+2025-09-08 17:36:02,Tazmanian Trader,trading-floor🧃,AMD,bull,False,True,2025-09-08,B
+2025-09-08 18:00:09,TA Study,trading-floor,TSLA,bear,False,False,2025-09-08,B
+2025-09-09 14:38:14,Tazmanian Trader,trading-floor🧃,ARM,bear,False,True,2025-09-09,B
+2025-09-09 15:56:02,Tazmanian Trader,trading-floor🧃,ARM,bull,False,True,2025-09-09,B
+2025-09-09 17:17:03,Tazmanian Trader,trading-floor🧃,HOOD,bear,False,True,2025-09-09,B
+2025-09-10 01:03:30,Tazmanian Trader,trading-floor🧃,HOOD,bull,False,False,2025-09-09,B
+2025-09-10 01:04:51,Tazmanian Trader,trading-floor🧃,GLD,bear,False,False,2025-09-09,B
+2025-09-10 13:37:21,Tazmanian Trader,trading-floor🧃,AVGO,bear,False,True,2025-09-10,A
+2025-09-10 16:51:10,TA Study,tazmanian-trades,HOOD,bear,True,True,2025-09-10,A
+2025-09-10 17:07:48,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-09-10,A
+2025-09-11 13:37:41,Tazmanian Trader,trading-floor🧃,QQQ,bear,True,True,2025-09-11,A
+2025-09-11 14:08:44,Tazmanian Trader,trading-floor🧃,ARM,bear,False,True,2025-09-11,B
+2025-09-12 01:22:20,Tazmanian Trader,trading-floor🧃,AVGO,bull,False,False,2025-09-11,B
+2025-09-12 01:28:38,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2025-09-11,B
+2025-09-12 13:09:49,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,True,2025-09-12,B
+2025-09-12 13:27:23,Tazmanian Trader,trading-floor🧃,ES,bear,False,False,2025-09-12,B
+2025-09-12 13:41:02,Tazmanian Trader,trading-floor🧃,EBAY,bear,False,True,2025-09-12,B
+2025-09-15 13:18:48,Tazmanian Trader,trading-floor🧃,HOOD,bear,False,True,2025-09-15,B
+2025-09-16 01:20:55,Tazmanian Trader,📊-vip-trade-writeups,AMD,bear,False,False,2025-09-15,B
+2025-09-16 02:20:36,Tazmanian Trader,trading-floor🧃,AAPL,bear,False,False,2025-09-15,B
+2025-09-16 02:26:40,Tazmanian Trader,trading-floor🧃,AMZN,bull,False,False,2025-09-15,B
+2025-09-16 02:34:28,Tazmanian Trader,trading-floor🧃,AMZN,bear,False,False,2025-09-15,B
+2025-09-16 03:31:40,Tazmanian Trader,trading-floor🧃,COST,bear,False,False,2025-09-15,B
+2025-09-16 15:15:01,Tazmanian Trader,trading-floor🧃,GDX,bear,False,True,2025-09-16,B
+2025-09-17 13:54:54,Tazmanian Trader,trading-floor🧃,HOOD,bear,False,True,2025-09-17,B
+2025-09-17 15:52:45,Tazmanian Trader,trading-floor🧃,GOOG,bear,False,True,2025-09-17,B
+2025-09-17 22:16:15,Tazmanian Trader,trading-floor🧃,SPY,bull,False,False,2025-09-17,B
+2025-09-18 13:32:00,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,False,2025-09-18,A
+2025-09-18 13:44:02,Tazmanian Trader,trading-floor🧃,TSLA,bull,False,True,2025-09-18,B
+2025-09-18 19:03:44,Tazmanian Trader,trading-floor🧃,GOOG,bear,False,True,2025-09-18,A
+2025-09-19 12:55:29,Tazmanian Trader,trading-floor🧃,BABA,bear,False,True,2025-09-19,B
+2025-09-19 12:59:54,Tazmanian Trader,trading-floor🧃,HOOD,bear,False,True,2025-09-19,B
+2025-09-19 13:26:04,Tazmanian Trader,trading-floor🧃,AVGO,bear,True,True,2025-09-19,A
+2025-09-19 13:33:45,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,False,2025-09-19,B
+2025-09-19 14:28:32,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2025-09-19,A
+2025-09-22 04:56:36,Tazmanian Trader,trading-floor🧃,COIN,bear,False,False,2025-09-22,B
+2025-09-22 13:34:40,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2025-09-22,B
+2025-09-22 22:48:07,Tazmanian Trader,trading-floor🧃,AAPL,bear,False,False,2025-09-22,B
+2025-09-22 22:50:25,Tazmanian Trader,trading-floor🧃,GOOG,bear,False,True,2025-09-22,B
+2025-09-23 01:45:19,Tazmanian Trader,trading-floor🧃,TSLA,bull,False,False,2025-09-22,B
+2025-09-23 01:45:28,Tazmanian Trader,trading-floor🧃,IWM,bear,False,False,2025-09-22,B
+2025-09-23 12:55:02,Tazmanian Trader,trading-floor🧃,GOOG,bear,False,True,2025-09-23,B
+2025-09-23 13:38:08,Tazmanian Trader,tazmanian-trades-💸,QQQ,bear,True,True,2025-09-23,A
+2025-09-24 13:30:55,Tazmanian Trader,trading-floor🧃,GDX,bear,False,True,2025-09-24,B
+2025-09-24 13:44:26,Tazmanian Trader,trading-floor🧃,BABA,bear,False,True,2025-09-24,B
+2025-09-24 14:08:08,TA Study,trading-floor,GDX,bull,False,False,2025-09-24,B
+2025-09-24 14:14:59,Tazmanian Trader,trading-floor🧃,HOOD,bear,False,True,2025-09-24,B
+2025-09-24 15:38:44,Tazmanian Trader,trading-floor🧃,GOOG,bull,False,False,2025-09-24,B
+2025-09-24 15:57:51,Tazmanian Trader,trading-floor🧃,SPY,bull,False,True,2025-09-24,B
+2025-09-24 18:04:06,Tazmanian Trader,trading-floor🧃,UNH,bear,False,False,2025-09-24,B
+2025-09-25 19:35:23,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-09-25,A
+2025-09-25 19:58:49,Tazmanian Trader,trading-floor🧃,RDDT,bear,True,True,2025-09-25,A
+2025-09-26 12:51:19,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,False,2025-09-26,B
+2025-09-26 14:21:25,Tazmanian Trader,trading-floor🧃,SPY,bull,False,False,2025-09-26,B
+2025-09-27 23:46:45,Tazmanian Trader,trading-floor🧃,AVGO,bear,False,False,2025-09-27,A
+2025-09-30 13:39:25,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,True,2025-09-30,B
+2025-10-01 14:46:50,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,True,2025-10-01,A
+2025-10-01 15:09:00,Tazmanian Trader,trading-floor🧃,HOOD,bear,False,True,2025-10-01,B
+2025-10-01 17:14:00,Tazmanian Trader,trading-floor🧃,RDDT,bear,False,False,2025-10-01,B
+2025-10-02 02:28:10,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,False,2025-10-01,B
+2025-10-02 03:04:28,Tazmanian Trader,trading-floor🧃,AAPL,bull,False,False,2025-10-01,B
+2025-10-02 13:50:49,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,False,2025-10-02,B
+2025-10-02 16:27:46,Tazmanian Trader,trading-floor🧃,AVGO,bear,False,False,2025-10-02,B
+2025-10-02 21:02:06,Tazmanian Trader,trading-floor🧃,MCD,bear,False,False,2025-10-02,B
+2025-10-03 13:03:37,Tazmanian Trader,trading-floor🧃,AAPL,bear,False,False,2025-10-03,B
+2025-10-03 13:35:17,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-10-03,A
+2025-10-03 14:34:10,TA Study,trading-floor,GDX,bear,False,False,2025-10-03,A
+2025-10-06 17:36:32,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-10-06,A
+2025-10-06 19:06:45,Tazmanian Trader,trading-floor🧃,HOOD,bear,False,True,2025-10-06,B
+2025-10-08 13:33:27,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2025-10-08,B
+2025-10-08 14:06:00,Tazmanian Trader,trading-floor🧃,AMD,bear,True,True,2025-10-08,A
+2025-10-09 12:56:46,Tazmanian Trader,trading-floor🧃,ARM,bear,False,False,2025-10-09,B
+2025-10-09 18:04:30,Tazmanian Trader,trading-floor🧃,GDX,bear,False,False,2025-10-09,B
+2025-10-09 18:06:15,Tazmanian Trader,trading-floor🧃,GLD,bear,False,False,2025-10-09,B
+2025-10-09 19:58:28,Tazmanian Trader,trading-floor🧃,MSFT,bear,False,False,2025-10-09,B
+2025-10-09 20:36:03,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2025-10-09,B
+2025-10-09 20:46:50,Tazmanian Trader,trading-floor🧃,META,bear,False,False,2025-10-09,B
+2025-10-10 13:55:54,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-10-10,B
+2025-10-13 12:55:31,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-10-13,A
+2025-10-13 13:54:33,TA Study,trading-floor,AMD,bull,False,False,2025-10-13,B
+2025-10-14 03:24:19,Tazmanian Trader,trading-floor🧃,SPY,bull,False,True,2025-10-13,B
+2025-10-14 12:39:33,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2025-10-14,B
+2025-10-15 13:22:25,Tazmanian Trader,trading-floor🧃,WMT,bear,False,True,2025-10-15,A
+2025-10-15 14:10:24,Tazmanian Trader,trading-floor🧃,AVGO,bull,False,True,2025-10-15,A
+2025-10-16 04:37:23,Tazmanian Trader,trading-floor🧃,AMD,bear,False,False,2025-10-16,B
+2025-10-16 06:58:21,Tazmanian Trader,trading-floor🧃,META,bear,False,True,2025-10-16,A
+2025-10-18 23:37:38,Tazmanian Trader,tazmanian-trades-💸,SPY,bear,False,True,2025-10-18,B
+2025-10-18 23:40:38,Tazmanian Trader,tazmanian-trades-💸,SPY,bull,True,True,2025-10-18,A
+2025-10-20 00:36:15,Tazmanian Trader,📊-vip-trade-writeups,SPY,bear,False,True,2025-10-19,B
+2025-10-20 01:17:33,Tazmanian Trader,📊-vip-trade-writeups,SPY,bull,False,True,2025-10-19,B
+2025-10-21 16:11:48,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-10-21,A
+2025-10-22 04:10:31,Tazmanian Trader,trading-floor🧃,META,bear,False,False,2025-10-22,A
+2025-10-22 19:58:28,Tazmanian Trader,trading-floor🧃,TSLA,bull,False,True,2025-10-22,B
+2025-10-23 01:57:07,Tazmanian Trader,trading-floor🧃,GLD,bear,False,False,2025-10-22,B
+2025-10-23 14:34:03,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-10-23,A
+2025-10-24 13:43:30,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-10-24,B
+2025-10-27 17:26:03,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-10-27,B
+2025-10-28 13:42:35,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-10-28,B
+2025-11-07 16:08:06,Tazmanian Trader,trading-floor🧃,UNH,bear,False,True,2025-11-07,B
+2025-11-07 16:56:40,TA Study,trading-floor,MSFT,bear,False,False,2025-11-07,B
+2025-11-13 15:27:59,Tazmanian Trader,trading-floor🧃,PLTR,bear,False,False,2025-11-13,A
+2025-11-18 22:57:29,Tazmanian Trader,trading-floor🧃,SPY,bear,False,True,2025-11-18,B
+2025-11-19 02:22:14,Tazmanian Trader,trading-floor🧃,COIN,bear,False,True,2025-11-18,A
+2025-11-19 03:26:33,Tazmanian Trader,trading-floor🧃,AMD,bear,False,False,2025-11-18,B
+2025-11-19 14:32:14,Tazmanian Trader,trading-floor🧃,COIN,bear,False,True,2025-11-19,A
+2025-11-20 16:13:12,Tazmanian Trader,trading-floor🧃,GOOG,bear,True,True,2025-11-20,A
+2025-11-24 14:51:23,TA Study,tazmanian-trades,QQQ,bear,False,True,2025-11-24,A
+2025-11-25 14:29:24,Tazmanian Trader,trading-floor🧃,AVGO,bear,False,True,2025-11-25,B
+2025-11-25 15:08:15,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,False,2025-11-25,B
+2025-11-25 21:47:46,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-11-25,B
+2025-11-26 14:13:29,Tazmanian Trader,trading-floor🧃,AVGO,bull,False,False,2025-11-26,B
+2025-11-26 14:36:22,Tazmanian Trader,trading-floor🧃,AVGO,bear,False,True,2025-11-26,B
+2025-12-01 06:51:42,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2025-12-01,A
+2025-12-03 16:58:59,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,False,2025-12-03,B
+2025-12-05 15:43:29,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2025-12-05,B
+2025-12-09 01:58:22,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,True,2025-12-08,B
+2025-12-09 13:16:04,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,True,2025-12-09,B
+2025-12-10 14:33:36,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,True,2025-12-10,B
+2025-12-10 14:41:13,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2025-12-10,B
+2025-12-10 20:50:54,Tazmanian Trader,trading-floor🧃,GOOG,bull,False,True,2025-12-10,B
+2025-12-11 04:51:45,Tazmanian Trader,trading-floor🧃,AAPL,bear,False,True,2025-12-10,B
+2025-12-11 14:34:28,Tazmanian Trader,trading-floor🧃,AAPL,bear,False,True,2025-12-11,A
+2025-12-11 15:22:07,Tazmanian Trader,trading-floor🧃,GDX,bear,True,True,2025-12-11,A
+2025-12-12 13:45:30,Tazmanian Trader,trading-floor🧃,META,bear,False,True,2025-12-12,B
+2025-12-15 15:41:43,Tazmanian Trader,trading-floor🧃,TSLA,bear,True,True,2025-12-15,A
+2025-12-15 17:47:43,Tazmanian Trader,trading-floor🧃,META,bear,False,True,2025-12-15,A
+2025-12-17 14:49:21,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2025-12-17,B
+2025-12-17 18:48:15,Tazmanian Trader,trading-floor🧃,SLV,bear,False,True,2025-12-17,A
+2025-12-18 12:58:32,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2025-12-18,A
+2025-12-18 13:01:44,Tazmanian Trader,trading-floor🧃,SLV,bear,False,True,2025-12-18,B
+2025-12-19 10:54:06,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,False,2025-12-19,B
+2025-12-22 02:35:08,Tazmanian Trader,trading-floor🧃,SLV,bear,False,True,2025-12-21,B
+2025-12-22 15:13:07,Tazmanian Trader,trading-floor🧃,SLV,bear,False,True,2025-12-22,B
+2025-12-23 14:58:16,Tazmanian Trader,trading-floor🧃,QQQ,bear,True,True,2025-12-23,A
+2025-12-23 15:10:53,TA Study,trading-floor,SLV,bear,False,False,2025-12-23,B
+2025-12-25 07:42:44,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,False,2025-12-25,B
+2025-12-25 16:44:39,Tazmanian Trader,trading-floor🧃,GLD,bear,False,False,2025-12-25,B
+2025-12-26 05:54:42,Tazmanian Trader,trading-floor🧃,SLV,bear,False,False,2025-12-26,B
+2025-12-26 21:33:46,Tazmanian Trader,trading-floor🧃,COIN,bear,False,False,2025-12-26,B
+2025-12-26 21:35:55,Tazmanian Trader,trading-floor🧃,GLD,bull,False,False,2025-12-26,B
+2025-12-29 17:34:46,TA Study,tazmanian-trades,SLV,bear,False,True,2025-12-29,B
+2025-12-29 17:35:11,TA Study,tazmanian-trades,NVDA,bear,False,True,2025-12-29,A
+2025-12-30 14:35:02,Tazmanian Trader,trading-floor🧃,SLV,bear,False,True,2025-12-30,A
+2025-12-30 14:35:37,Tazmanian Trader,trading-floor🧃,NVDA,bear,True,True,2025-12-30,A
+2025-12-30 15:39:13,TA Study,trading-floor,SLV,bull,False,False,2025-12-30,B
+2025-12-31 15:28:19,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,False,2025-12-31,B
+2025-12-31 16:56:17,TA Study,trading-floor,SLV,bear,False,False,2025-12-31,B
+2026-01-02 14:47:14,TA Study,tazmanian-trades,NVDA,bear,True,True,2026-01-02,A
+2026-01-02 15:00:10,Tazmanian Trader,tazmanian-trades-💸,QQQ,bear,False,True,2026-01-02,B
+2026-01-02 15:02:33,Tazmanian Trader,tazmanian-trades-💸,SLV,bear,False,True,2026-01-02,B
+2026-01-02 15:58:47,Tazmanian Trader,trading-floor🧃,BA,bear,False,False,2026-01-02,B
+2026-01-02 16:22:52,Tazmanian Trader,trading-floor🧃,MSFT,bear,False,False,2026-01-02,B
+2026-01-02 16:36:07,TA Study,trading-floor,TSLA,bear,False,False,2026-01-02,B
+2026-01-05 16:28:51,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,False,True,2026-01-05,A
+2026-01-05 18:21:06,Tazmanian Trader,trading-floor🧃,SLV,bear,False,False,2026-01-05,B
+2026-01-05 19:24:24,TA Study,trading-floor,RKLB,bear,False,False,2026-01-05,B
+2026-01-05 22:45:48,TA Study,trading-floor,RDDT,bear,False,False,2026-01-05,B
+2026-01-06 03:24:48,Tazmanian Trader,trading-floor🧃,QQQ,bull,False,True,2026-01-05,A
+2026-01-06 03:25:58,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,False,2026-01-05,B
+2026-01-06 07:46:43,TA Study,trading-floor,AMD,bear,False,False,2026-01-06,A
+2026-01-06 14:58:25,TA Study,trading-floor,NVDA,bull,False,False,2026-01-06,B
+2026-01-06 15:40:34,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,True,True,2026-01-06,A
+2026-01-06 19:28:44,Tazmanian Traders VIP ⭐,vip-chart-plan📊,META,bear,True,True,2026-01-06,A
+2026-01-06 20:51:10,TA Study,trading-floor,NVDA,bear,False,False,2026-01-06,B
+2026-01-07 01:16:38,TA Study,trading-floor,AMD,bull,False,False,2026-01-06,B
+2026-01-07 14:43:22,Tazmanian Trader,trading-floor🧃,SLV,bear,False,True,2026-01-07,B
+2026-01-07 14:43:40,Tazmanian Trader,trading-floor🧃,MU,bear,True,True,2026-01-07,A
+2026-01-07 20:15:48,TA Study,trading-floor,QQQ,bear,False,True,2026-01-07,B
+2026-01-08 15:05:46,TA Study,tazmanian-trades,LMT,bear,True,True,2026-01-08,A
+2026-01-12 15:30:22,TA Study,trading-floor,AMD,bull,False,False,2026-01-12,B
+2026-01-12 16:13:58,TA Study,trading-floor,SLV,bull,False,False,2026-01-12,B
+2026-01-13 14:56:52,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2026-01-13,B
+2026-01-13 15:20:53,Tazmanian Trader,trading-floor🧃,SLV,bear,False,False,2026-01-13,B
+2026-01-14 20:03:12,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bull,False,True,2026-01-14,A
+2026-01-15 08:05:00,Tazmanian Trader,trading-floor🧃,PLTR,bull,False,False,2026-01-15,B
+2026-01-15 08:11:44,Tazmanian Trader,trading-floor🧃,PLTR,bear,False,False,2026-01-15,B
+2026-01-15 14:39:22,Tazmanian Trader,trading-floor🧃,SLV,bear,True,True,2026-01-15,A
+2026-01-15 14:56:43,Tazmanian Trader,trading-floor🧃,SLV,bull,False,False,2026-01-15,B
+2026-01-15 16:59:11,Tazmanian Trader,trading-floor🧃,TSLA,bear,True,True,2026-01-15,A
+2026-01-16 14:30:00,Tazmanian Trader,trading-floor🧃,TSLA,bull,False,True,2026-01-16,B
+2026-01-20 05:08:09,Tazmanian Trader,trading-floor🧃,SLV,bear,False,False,2026-01-20,B
+2026-01-20 14:46:44,TA Study,trading-floor,MU,bear,False,False,2026-01-20,B
+2026-01-20 15:51:06,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2026-01-20,B
+2026-01-20 16:52:07,TA Study,trading-floor,RKLB,bear,False,False,2026-01-20,B
+2026-01-21 14:58:01,Tazmanian Trader,trading-floor🧃,NVDA,bear,False,True,2026-01-21,B
+2026-01-21 16:10:29,Tazmanian Trader,trading-floor🧃,SLV,bear,False,True,2026-01-21,B
+2026-01-22 14:52:18,TA Study,trading-floor,SLV,bear,False,False,2026-01-22,B
+2026-01-22 14:54:46,TA Study,trading-floor,AMD,bear,False,False,2026-01-22,B
+2026-01-23 20:44:19,TA Study,trading-floor,AMD,bull,False,False,2026-01-23,B
+2026-01-26 04:07:52,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AMD,bear,True,True,2026-01-25,A
+2026-01-26 14:49:16,Tazmanian Traders VIP ⭐,free-alerts-✈️,SLV,bear,False,True,2026-01-26,A
+2026-01-26 14:51:26,Tazmanian Traders VIP ⭐,vip-chart-plan📊,BA,bull,False,False,2026-01-26,B
+2026-01-27 13:48:17,Tazmanian Traders VIP ⭐,trading-floor-🧃,BA,bear,False,True,2026-01-27,B
+2026-01-27 16:59:37,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2026-01-27,A
+2026-01-28 14:44:37,Tazmanian Trader,trading-floor🧃,UNH,bear,False,True,2026-01-28,B
+2026-01-29 00:21:58,Tazmanian Traders VIP ⭐,trading-floor-🧃,SLV,bear,False,True,2026-01-28,B
+2026-01-29 02:29:32,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,True,2026-01-28,A
+2026-01-29 13:57:45,Tazmanian Trader,trading-floor🧃,AMD,bear,False,False,2026-01-29,B
+2026-01-29 14:02:04,TA Study,trading-floor,CVNA,bear,False,False,2026-01-29,B
+2026-01-29 14:03:33,TA Study,trading-floor,SLV,bear,False,False,2026-01-29,B
+2026-01-29 14:10:04,Tazmanian Trader,trading-floor🧃,MSTR,bear,False,False,2026-01-29,B
+2026-01-29 14:19:51,Tazmanian Trader,trading-floor🧃,CVNA,bull,False,False,2026-01-29,B
+2026-01-29 17:47:08,TA Study,trading-floor,TSLA,bear,False,False,2026-01-29,B
+2026-01-30 14:29:14,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2026-01-30,A
+2026-01-30 15:53:05,Tazmanian Trader,trading-floor🧃,SLV,bear,False,True,2026-01-30,B
+2026-01-30 16:24:06,Tazmanian Trader,trading-floor🧃,SLV,bull,False,True,2026-01-30,B
+2026-01-30 16:32:57,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,True,True,2026-01-30,A
+2026-02-02 14:22:21,Tazmanian Trader,trading-floor🧃,ROKU,bear,False,True,2026-02-02,B
+2026-02-03 14:57:24,Tazmanian Trader,trading-floor🧃,AAPL,bear,False,True,2026-02-03,B
+2026-02-03 17:31:12,Tazmanian Traders VIP ⭐,trading-floor-🧃,ROKU,bear,False,True,2026-02-03,A
+2026-02-04 17:25:29,Tazmanian Trader,trading-floor🧃,WMT,bear,True,True,2026-02-04,A
+2026-02-04 17:35:21,Tazmanian Trader,trading-floor🧃,AAPL,bear,False,True,2026-02-04,A
+2026-02-05 16:39:49,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bull,True,True,2026-02-05,A
+2026-02-05 19:45:56,Tazmanian Traders VIP ⭐,trading-floor-🧃,AAPL,bear,False,True,2026-02-05,A
+2026-02-06 15:58:53,Tazmanian Traders VIP ⭐,trading-floor-🧃,AAPL,bear,True,True,2026-02-06,A
+2026-02-09 03:37:19,Tazmanian Trader,trading-floor🧃,BA,bull,False,False,2026-02-08,B
+2026-02-09 14:34:01,Tazmanian Trader,trading-floor🧃,AAPL,bear,False,True,2026-02-09,B
+2026-02-09 15:52:27,Tazmanian Trader,trading-floor🧃,TSLA,bear,True,True,2026-02-09,A
+2026-02-09 17:03:09,Tazmanian Trader,trading-floor🧃,WMT,bull,False,True,2026-02-09,B
+2026-02-09 17:15:04,Tazmanian Trader,trading-floor🧃,KRE,bear,True,True,2026-02-09,A
+2026-02-09 17:15:30,Tazmanian Trader,trading-floor🧃,WMT,bear,False,False,2026-02-09,B
+2026-02-11 20:56:08,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,True,2026-02-11,B
+2026-02-13 11:03:50,Tazmanian Trader,trading-floor🧃,QQQ,bull,False,True,2026-02-13,B
+2026-02-13 15:22:09,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2026-02-13,B
+2026-02-13 18:04:37,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2026-02-13,A
+2026-02-17 14:49:18,Tazmanian Traders VIP ⭐,free-alerts-✈️,AMD,bear,False,True,2026-02-17,A
+2026-02-17 14:49:59,Tazmanian Traders VIP ⭐,free-alerts-✈️,AMD,bull,False,False,2026-02-17,B
+2026-02-17 14:53:55,Tazmanian Trader,trading-floor🧃,QQQ,bear,False,True,2026-02-17,B
+2026-02-17 14:54:33,Tazmanian Trader,trading-floor🧃,SPY,bull,False,True,2026-02-17,B
+2026-02-17 14:59:01,Tazmanian Trader,trading-floor🧃,TSLA,bear,False,True,2026-02-17,B
+2026-02-17 18:31:22,Tazmanian Trader,tazmanian-trades-💸,TSLA,bull,False,True,2026-02-17,B
+2026-02-18 15:11:01,Tazmanian Trader,tazmanian-trades-💸,AAPL,bear,False,True,2026-02-18,B
+2026-02-18 16:55:38,Tazmanian Traders VIP ⭐,free-alerts-✈️,AMD,bear,False,True,2026-02-18,A
+2026-02-19 14:36:57,Tazmanian Trader,trading-floor🧃,QQQ,bear,True,True,2026-02-19,A
+2026-02-19 15:55:29,Tazmanian Trader,tazmanian-trades-💸,TSLA,bear,True,True,2026-02-19,A
+2026-02-20 17:39:33,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,True,2026-02-20,B
+2026-02-20 19:00:22,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,False,True,2026-02-20,B
+2026-02-23 14:57:51,Tazmanian Trader,trading-floor🧃,GLD,bear,False,True,2026-02-23,B
+2026-02-23 15:05:50,Tazmanian Traders VIP ⭐,free-alerts-✈️,AAPL,bear,False,True,2026-02-23,B
+2026-02-24 12:35:51,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,True,2026-02-24,B
+2026-02-24 20:46:10,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,NVDA,bull,False,True,2026-02-24,A
+2026-02-25 14:27:48,Tazmanian Trader,trading-floor🧃,META,bear,False,True,2026-02-25,A
+2026-02-25 14:38:44,Tazmanian Trader,trading-floor🧃,AMD,bear,False,True,2026-02-25,B
+2026-02-25 20:14:13,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,False,True,2026-02-25,A
+2026-02-26 15:06:31,Tazmanian Traders VIP ⭐,free-alerts-✈️,META,bear,False,True,2026-02-26,B
+2026-02-26 15:08:02,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AMD,bear,False,True,2026-02-26,B
+2026-02-27 15:17:06,Tazmanian Traders VIP ⭐,free-alerts-✈️,TSLA,bear,True,True,2026-02-27,A
+2026-02-27 16:03:06,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-02-27,A
+2026-02-27 19:11:07,Tazmanian Traders VIP ⭐,trading-floor-🧃,SPY,bull,False,True,2026-02-27,B
+2026-02-27 20:27:03,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bull,False,True,2026-02-27,A
+2026-03-02 13:59:18,Tazmanian Traders VIP ⭐,free-alerts-✈️,TSLA,bull,False,True,2026-03-02,A
+2026-03-02 14:17:18,Tazmanian Traders VIP ⭐,free-alerts-✈️,NFLX,bull,False,True,2026-03-02,B
+2026-03-02 14:41:06,Tazmanian Traders VIP ⭐,free-alerts-✈️,META,bear,False,True,2026-03-02,A
+2026-03-02 14:53:48,TA Study,tazmanian-trades,AAPL,bear,False,True,2026-03-02,B
+2026-03-02 15:04:00,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,True,True,2026-03-02,A
+2026-03-02 15:55:22,Tazmanian Traders VIP ⭐,free-alerts-✈️,TSLA,bear,True,True,2026-03-02,A
+2026-03-02 20:11:36,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bull,False,True,2026-03-02,B
+2026-03-03 14:38:10,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,True,True,2026-03-03,A
+2026-03-03 14:42:08,TA Study,tazmanian-trades,AMD,bear,True,True,2026-03-03,A
+2026-03-03 17:00:56,TA Study,trading-floor,BA,bear,False,False,2026-03-03,B
+2026-03-03 18:32:01,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,MSFT,bear,False,False,2026-03-03,B
+2026-03-04 18:18:04,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,True,2026-03-04,A
+2026-03-05 17:32:22,TA Study,trading-floor,AMD,bear,False,True,2026-03-05,B
+2026-03-05 18:11:46,Tazmanian Traders VIP ⭐,free-alerts-✈️,NFLX,bull,False,True,2026-03-05,B
+2026-03-05 19:30:01,Tazmanian Trader,trading-floor🧃,AVGO,bear,False,True,2026-03-05,B
+2026-03-06 15:25:07,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,False,True,2026-03-06,B
+2026-03-08 01:26:11,Tazmanian Trader,trading-floor🧃,HIMS,bear,False,False,2026-03-07,B
+2026-03-09 14:02:22,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,True,True,2026-03-09,A
+2026-03-09 16:23:04,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,META,bull,False,False,2026-03-09,B
+2026-03-10 06:45:11,Tazmanian Traders VIP ⭐,vip-chart-plan📊,SPY,bull,False,True,2026-03-10,B
+2026-03-10 13:35:56,Tazmanian Trader,tazmanian-trades-💸,QQQ,bear,False,True,2026-03-10,A
+2026-03-10 13:38:18,Tazmanian Trader,tazmanian-trades-💸,NFLX,bear,True,True,2026-03-10,A
+2026-03-10 19:28:11,Tazmanian Traders VIP ⭐,trading-floor-🧃,SPY,bear,False,True,2026-03-10,A
+2026-03-11 13:37:55,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bull,False,True,2026-03-11,B
+2026-03-11 13:59:02,Tazmanian Traders VIP ⭐,free-alerts-✈️,PFE,bull,True,True,2026-03-11,A
+2026-03-11 14:28:51,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,TSLA,bear,False,True,2026-03-11,B
+2026-03-11 18:36:47,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-03-11,B
+2026-03-12 13:16:04,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bear,False,True,2026-03-12,A
+2026-03-12 13:26:42,Tazmanian Traders VIP ⭐,free-alerts-✈️,TSLA,bull,False,True,2026-03-12,B
+2026-03-12 13:45:51,Tazmanian Traders VIP ⭐,free-alerts-✈️,AMZN,bull,False,True,2026-03-12,B
+2026-03-12 14:46:48,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AAPL,bear,False,True,2026-03-12,B
+2026-03-12 17:48:26,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,SPY,bull,False,True,2026-03-12,A
+2026-03-12 18:07:51,Tazmanian Traders VIP ⭐,trading-floor-🧃,AAPL,bull,False,True,2026-03-12,B
+2026-03-12 20:39:17,TA Study,trading-floor,ULTA,bear,False,False,2026-03-12,A
+2026-03-16 14:37:27,Tazmanian Traders VIP ⭐,free-alerts-✈️,PLTR,bear,True,True,2026-03-16,A
+2026-03-16 18:32:15,Tazmanian Traders VIP ⭐,trading-floor-🧃,PLTR,bull,False,True,2026-03-16,B
+2026-03-17 13:28:16,Tazmanian Traders VIP ⭐,free-alerts-✈️,SLV,bear,True,True,2026-03-17,A
+2026-03-17 14:27:41,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,ULTA,bull,False,True,2026-03-17,B
+2026-03-17 16:50:11,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,TSLA,bear,True,True,2026-03-17,A
+2026-03-17 17:25:54,Tazmanian Traders VIP ⭐,trading-floor-🧃,USO,bull,False,False,2026-03-17,B
+2026-03-17 20:18:37,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AMZN,bull,False,True,2026-03-17,A
+2026-03-18 12:32:39,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,TSLA,bear,False,True,2026-03-18,A
+2026-03-18 19:32:01,Tazmanian Traders VIP ⭐,trading-floor-🧃,SPY,bull,False,True,2026-03-18,B
+2026-03-19 01:20:02,Tazmanian Traders VIP ⭐,trading-floor-🧃,BA,bear,False,False,2026-03-18,B
+2026-03-19 13:05:03,Tazmanian Traders VIP ⭐,vip-chart-plan📊,QQQ,bull,False,True,2026-03-19,B
+2026-03-19 16:51:20,Tazmanian Traders VIP ⭐,trading-floor-🧃,SPY,bull,False,False,2026-03-19,B
+2026-03-19 21:21:37,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AMD,bull,False,False,2026-03-19,B
+2026-03-19 21:39:14,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AMD,bear,False,False,2026-03-19,B
+2026-03-20 14:38:05,Tazmanian Traders VIP ⭐,free-alerts-✈️,AMD,bear,True,True,2026-03-20,A
+2026-03-22 22:16:48,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,ES,bull,False,True,2026-03-22,B
+2026-03-23 03:10:58,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,COIN,bear,True,False,2026-03-22,A
+2026-03-23 13:20:30,Tazmanian Traders VIP ⭐,free-alerts-✈️,COIN,bear,True,True,2026-03-23,A
+2026-03-24 00:18:06,Tazmanian Traders VIP ⭐,vip-chart-plan📊,COIN,bull,False,False,2026-03-23,B
+2026-03-24 13:56:17,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-03-24,B
+2026-03-25 12:56:29,Tazmanian Traders VIP ⭐,free-alerts-✈️,COIN,bear,True,True,2026-03-25,A
+2026-03-25 15:19:15,Tazmanian Traders VIP ⭐,free-alerts-✈️,USO,bear,False,True,2026-03-25,B
+2026-03-26 19:53:14,Tazmanian Traders VIP ⭐,trading-floor-🧃,COIN,bear,False,False,2026-03-26,B
+2026-03-27 13:22:32,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AMD,bear,False,True,2026-03-27,B
+2026-03-27 13:43:12,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bull,False,True,2026-03-27,B
+2026-03-30 13:25:04,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AAPL,bear,False,True,2026-03-30,B
+2026-03-30 14:17:04,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bull,False,True,2026-03-30,B
+2026-03-30 15:24:48,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-03-30,B
+2026-03-30 22:43:41,Tazmanian Traders VIP ⭐,trading-floor-🧃,RKLB,bear,False,False,2026-03-30,B
+2026-03-31 14:17:49,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,CANE,bull,True,True,2026-03-31,A
+2026-03-31 19:48:46,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bull,False,True,2026-03-31,A
+2026-04-01 02:53:12,Tazmanian Traders VIP ⭐,vip-chart-plan📊,GLD,bull,False,False,2026-03-31,B
+2026-04-01 05:56:42,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,GLD,bear,False,False,2026-04-01,B
+2026-04-01 13:33:48,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,SLV,bear,False,True,2026-04-01,B
+2026-04-01 13:48:32,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,ROKU,bear,True,True,2026-04-01,A
+2026-04-01 13:55:11,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,True,2026-04-01,A
+2026-04-01 21:34:26,Tazmanian Traders VIP ⭐,trading-floor-🧃,WMT,bear,False,False,2026-04-01,B
+2026-04-02 13:08:23,Tazmanian Traders VIP ⭐,vip-chart-plan📊,TSLA,bull,False,True,2026-04-02,B
+2026-04-02 15:28:25,Tazmanian Traders VIP ⭐,trading-floor-🧃,NVDA,bear,False,False,2026-04-02,B
+2026-04-06 13:33:26,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,True,2026-04-06,B
+2026-04-07 00:05:42,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bear,False,False,2026-04-06,A
+2026-04-07 12:12:06,Tazmanian Traders VIP ⭐,free-alerts-✈️,AMD,bear,False,True,2026-04-07,B
+2026-04-07 13:46:58,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,False,2026-04-07,A
+2026-04-07 23:54:34,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bear,False,False,2026-04-07,B
+2026-04-08 19:22:59,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,MSFT,bear,False,True,2026-04-08,A
+2026-04-08 19:56:21,TA Study,trading-floor,QQQ,bear,False,False,2026-04-08,B
+2026-04-09 13:19:33,Tazmanian Traders VIP ⭐,vip-chart-plan📊,TSLA,bull,False,True,2026-04-09,A
+2026-04-09 17:20:57,Tazmanian Traders VIP ⭐,trading-floor-🧃,AAPL,bull,False,False,2026-04-09,B
+2026-04-10 13:44:59,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,True,True,2026-04-10,A
+2026-04-10 14:48:37,Tazmanian Traders VIP ⭐,free-alerts-✈️,AMD,bear,False,True,2026-04-10,B
+2026-04-13 03:50:19,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AMD,bull,False,True,2026-04-12,B
+2026-04-13 13:23:22,Tazmanian Traders VIP ⭐,vip-chart-plan📊,GLD,bear,False,True,2026-04-13,B
+2026-04-13 13:33:53,Tazmanian Traders VIP ⭐,free-alerts-✈️,AMD,bear,False,True,2026-04-13,A
+2026-04-14 14:38:02,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,False,2026-04-14,B
+2026-04-14 17:32:10,Tazmanian Traders VIP ⭐,vip-chat-🌪️⭐,TSLA,bear,False,True,2026-04-14,A
+2026-04-14 17:36:11,Tazmanian Traders VIP ⭐,vip-chart-plan📊,LYFT,bear,False,True,2026-04-14,B
+2026-04-15 13:39:54,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,True,2026-04-15,B
+2026-04-16 14:57:17,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bull,False,True,2026-04-16,B
+2026-04-16 20:11:11,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bull,False,False,2026-04-16,B
+2026-04-16 20:17:35,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMZN,bull,False,False,2026-04-16,B
+2026-04-17 17:28:03,Tazmanian Traders VIP ⭐,trading-floor-🧃,NVDA,bear,False,True,2026-04-17,A
+2026-04-20 13:38:46,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,True,2026-04-20,B
+2026-04-21 21:08:58,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bull,False,False,2026-04-21,B
+2026-04-22 01:14:23,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,False,2026-04-21,B
+2026-04-22 13:39:33,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bull,False,True,2026-04-22,A
+2026-04-22 17:40:26,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AMD,bear,False,True,2026-04-22,B
+2026-04-23 09:05:14,Tazmanian Traders VIP ⭐,vip-chart-plan📊,IBM,bear,False,True,2026-04-23,B
+2026-04-23 13:29:54,Tazmanian Traders VIP ⭐,vip-chart-plan📊,QQQ,bear,False,True,2026-04-23,B
+2026-04-23 14:12:06,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AMD,bear,False,True,2026-04-23,B
+2026-04-23 15:11:57,Tazmanian Traders VIP ⭐,vip-chat-🌪️⭐,SOXL,bear,False,False,2026-04-23,B
+2026-04-29 13:22:37,Tazmanian Traders VIP ⭐,trading-floor-🧃,USO,bear,False,True,2026-04-29,B
+2026-04-30 13:09:12,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bull,True,True,2026-04-30,A
+2026-04-30 13:38:21,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bear,False,True,2026-04-30,B
+2026-05-01 18:35:28,Tazmanian Traders VIP ⭐,trading-floor-🧃,SMH,bear,False,True,2026-05-01,B
+2026-05-04 13:26:34,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMZN,bull,False,True,2026-05-04,A
+2026-05-04 13:37:19,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,BA,bear,True,True,2026-05-04,A
+2026-05-04 14:34:50,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bear,False,False,2026-05-04,B
+2026-05-04 14:35:49,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,False,2026-05-04,B
+2026-05-04 22:30:58,Tazmanian Traders VIP ⭐,vip-chart-plan📊,RCL,bear,False,True,2026-05-04,B
+2026-05-04 22:40:54,Tazmanian Traders VIP ⭐,vip-chart-plan📊,ABNB,bear,True,True,2026-05-04,A
+2026-05-05 18:03:24,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AMD,bull,False,True,2026-05-05,B
+2026-05-05 18:07:03,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AMD,bear,False,True,2026-05-05,B
+2026-05-05 18:23:56,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AFRM,bear,False,True,2026-05-05,B
+2026-05-05 22:53:47,Tazmanian Traders VIP ⭐,trading-floor-🧃,TJX,bear,False,True,2026-05-05,B
+2026-05-05 22:59:41,Tazmanian Traders VIP ⭐,vip-chart-plan📊,RCL,bull,False,True,2026-05-05,B
+2026-05-05 23:09:01,Tazmanian Traders VIP ⭐,vip-chart-plan📊,TSLA,bear,False,True,2026-05-05,A
+2026-05-06 15:12:33,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AFRM,bear,False,True,2026-05-06,B
+2026-05-06 20:56:45,Tazmanian Traders VIP ⭐,trading-floor-🧃,SPY,bear,False,False,2026-05-06,B
+2026-05-06 20:56:58,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,False,2026-05-06,B
+2026-05-07 17:24:49,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,True,2026-05-07,B
+2026-05-07 17:32:55,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMZN,bear,True,True,2026-05-07,A
+2026-05-07 17:39:58,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMZN,bull,False,False,2026-05-07,B
+2026-05-08 12:48:00,Tazmanian Traders VIP ⭐,vip-chat-🌪️⭐,AMZN,bear,False,True,2026-05-08,B
+2026-05-08 16:57:49,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-05-08,B
+2026-05-08 21:53:26,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AMD,bear,False,False,2026-05-08,B
+2026-05-09 13:41:32,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,False,2026-05-09,B
+2026-05-11 12:02:51,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AMZN,bear,False,True,2026-05-11,B
+2026-05-11 13:14:07,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AMD,bear,False,True,2026-05-11,B
+2026-05-12 14:33:31,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,True,2026-05-12,B
+2026-05-12 19:39:46,Tazmanian Traders VIP ⭐,trading-floor-🧃,RKLB,bull,False,True,2026-05-12,A
+2026-05-13 13:30:51,Tazmanian Traders VIP ⭐,trading-floor-🧃,GLD,bear,True,True,2026-05-13,A
+2026-05-13 18:47:40,Tazmanian Traders VIP ⭐,trading-floor-🧃,GLD,bull,False,True,2026-05-13,B
+2026-05-14 19:45:40,Tazmanian Traders VIP ⭐,trading-floor-🧃,GLD,bear,False,True,2026-05-14,B
+2026-05-14 19:55:35,Tazmanian Traders VIP ⭐,trading-floor-🧃,INTC,bear,False,True,2026-05-14,B
+2026-05-15 13:19:32,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bear,False,True,2026-05-15,B
+2026-05-19 13:35:01,Tazmanian Traders VIP ⭐,vip-chart-plan📊,RKLB,bear,False,True,2026-05-19,B
+2026-05-19 13:42:13,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,SNAP,bear,True,True,2026-05-19,A
+2026-05-19 14:01:50,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,RKLB,bull,False,True,2026-05-19,B
+2026-05-20 03:02:02,Tazmanian Traders VIP ⭐,vip-chart-plan📊,MSFT,bear,True,False,2026-05-19,A
+2026-05-20 11:52:14,Tazmanian Traders VIP ⭐,vip-chart-plan📊,MSTR,bear,False,True,2026-05-20,B
+2026-05-20 13:40:20,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,INTC,bear,False,True,2026-05-20,A
+2026-05-20 13:53:58,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,SNAP,bear,False,True,2026-05-20,B
+2026-05-20 15:04:28,Tazmanian Traders VIP ⭐,trading-floor-🧃,MSTR,bull,False,True,2026-05-20,B
+2026-05-20 23:43:50,Tazmanian Traders VIP ⭐,trading-floor-🧃,USO,bear,False,False,2026-05-20,B
+2026-05-21 13:04:15,Tazmanian Traders VIP ⭐,vip-chart-plan📊,SNAP,bear,True,True,2026-05-21,A
+2026-05-21 13:25:25,Tazmanian Traders VIP ⭐,vip-chart-plan📊,MSTR,bear,False,True,2026-05-21,B
+2026-05-21 14:17:20,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,SNAP,bull,False,True,2026-05-21,A
+2026-05-21 14:21:27,Tazmanian Traders VIP ⭐,trading-floor-🧃,INTC,bear,False,True,2026-05-21,B
+2026-05-22 13:43:23,Tazmanian Traders VIP ⭐,trading-floor-🧃,INTC,bear,True,True,2026-05-22,A
+2026-05-28 14:15:47,Tazmanian Traders VIP ⭐,trading-floor-🧃,MSTR,bear,False,True,2026-05-28,B
+2026-06-01 13:55:50,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-06-01,B
+2026-06-04 19:56:11,Tazmanian Traders VIP ⭐,trading-floor-🧃,INTC,bear,True,True,2026-06-04,A
+2026-06-08 13:38:46,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,GOOG,bear,False,True,2026-06-08,B
+2026-06-09 13:28:28,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,GOOG,bull,False,True,2026-06-09,B
+2026-06-09 14:41:27,Tazmanian Traders VIP ⭐,vip-chat-🌪️⭐,GOOG,bear,False,False,2026-06-09,B
+2026-06-09 14:50:55,Tazmanian Traders VIP ⭐,vip-chat-🌪️⭐,QQQ,bull,False,True,2026-06-09,B
+2026-06-09 14:57:18,Tazmanian Traders VIP ⭐,vip-chat-🌪️⭐,QQQ,bear,False,True,2026-06-09,A
+2026-06-10 13:24:00,Tazmanian Traders VIP ⭐,vip-chat-🌪️⭐,QQQ,bull,False,True,2026-06-10,B
+2026-06-10 13:44:58,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,GOOG,bear,False,True,2026-06-10,A
+2026-06-10 14:20:13,Tazmanian Traders VIP ⭐,vip-chat-🌪️⭐,QQQ,bear,False,True,2026-06-10,B
+2026-06-11 15:11:53,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,True,2026-06-11,A
+2026-06-12 12:11:54,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-06-12,A
+2026-06-15 14:48:03,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,True,True,2026-06-15,A
+2026-06-16 19:58:37,Tazmanian Traders VIP ⭐,trading-floor-🧃,IBM,bear,False,False,2026-06-16,B
+2026-06-17 16:05:57,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-06-17,B
+2026-06-22 05:55:04,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,RDDT,bull,False,False,2026-06-22,A
+2026-06-22 16:36:08,Tazmanian Traders VIP ⭐,trading-floor-🧃,AFRM,bull,False,False,2026-06-22,B
+2026-06-22 17:02:26,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,False,2026-06-22,B
+2026-06-23 17:44:36,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,True,True,2026-06-23,A
+2026-06-23 19:58:35,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,BA,bear,True,True,2026-06-23,A
+2026-06-24 17:16:24,Tazmanian Traders VIP ⭐,trading-floor-🧃,SPCX,bear,False,False,2026-06-24,B
+2026-06-26 05:25:13,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,TSLA,bear,False,True,2026-06-26,A
+2026-06-26 13:51:10,Tazmanian Traders VIP ⭐,vip-chat-🌪️⭐,TSLA,bull,False,False,2026-06-26,B
+2026-06-28 20:24:56,Tazmanian Traders VIP ⭐,vip-chart-plan📊,QQQ,bull,False,False,2026-06-28,B
+2026-06-28 20:26:35,Tazmanian Traders VIP ⭐,vip-chart-plan📊,QCOM,bull,False,False,2026-06-28,B
+2026-06-28 20:28:59,Tazmanian Traders VIP ⭐,vip-chart-plan📊,NVDA,bear,False,False,2026-06-28,B
+2026-06-29 17:25:13,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bear,False,False,2026-06-29,B
+2026-06-30 11:24:44,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,False,2026-06-30,B
+2026-06-30 11:25:24,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,INTC,bear,False,False,2026-06-30,B
+2026-07-01 05:40:13,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,HOOD,bear,False,False,2026-07-01,B
+2026-07-01 13:35:26,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bear,False,True,2026-07-01,B
+2026-07-01 14:58:30,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,INTC,bear,False,True,2026-07-01,A
+2026-07-01 16:08:52,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bull,True,True,2026-07-01,A
+2026-07-03 17:39:09,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bull,False,False,2026-07-03,B
+2026-07-06 14:16:38,Tazmanian Traders VIP ⭐,free-alerts-✈️,SPY,bull,True,True,2026-07-06,A
+2026-07-06 15:16:28,Tazmanian Traders VIP ⭐,trading-floor-🧃,BA,bull,False,False,2026-07-06,B
+2026-07-06 19:37:41,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AAPL,bear,False,True,2026-07-06,B
+2026-07-07 05:14:25,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AAPL,bear,False,True,2026-07-07,B
+2026-07-07 14:21:19,Tazmanian Traders VIP ⭐,trading-floor-🧃,SPY,bear,False,True,2026-07-07,B
+2026-07-08 05:22:46,Tazmanian Traders VIP ⭐,trading-floor-🧃,CVNA,bear,False,False,2026-07-08,A
+2026-07-08 13:59:11,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,True,2026-07-08,A
+2026-07-08 17:33:31,Tazmanian Traders VIP ⭐,free-alerts-✈️,AMZN,bear,True,True,2026-07-08,A
+2026-07-08 20:19:35,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AAPL,bear,False,True,2026-07-08,A
+2026-07-09 13:52:24,Tazmanian Traders VIP ⭐,free-alerts-✈️,AAPL,bear,True,True,2026-07-09,A
+2026-07-09 14:21:29,Tazmanian Traders VIP ⭐,free-alerts-✈️,CVNA,bull,False,True,2026-07-09,B
+2026-07-09 19:12:03,Tazmanian Traders VIP ⭐,trading-floor-🧃,BA,bear,False,False,2026-07-09,B
+2026-07-09 19:56:28,Tazmanian Traders VIP ⭐,free-alerts-✈️,RKLB,bear,True,True,2026-07-09,A
+2026-07-10 13:23:04,Tazmanian Traders VIP ⭐,trading-floor-🧃,RKLB,bear,False,True,2026-07-10,B
+2026-07-10 15:25:27,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-07-10,B
+2026-07-13 13:39:12,Tazmanian Traders VIP ⭐,vip-chart-plan📊,INTC,bear,True,True,2026-07-13,A
+2026-07-14 04:13:32,Tazmanian Traders VIP ⭐,vip-chart-plan📊,TSLA,bear,False,True,2026-07-14,B
+2026-07-14 13:01:19,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,INTC,bull,True,True,2026-07-14,A
+2026-07-14 14:09:48,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-07-14,B
+2026-07-15 13:00:33,Tazmanian Traders VIP ⭐,vip-chart-plan📊,TSLA,bull,False,True,2026-07-15,A
+2026-07-15 13:50:38,Tazmanian Traders VIP ⭐,trading-floor-🧃,NVDA,bull,True,True,2026-07-15,A
+2026-07-15 13:52:46,Tazmanian Traders VIP ⭐,free-alerts-✈️,TSLA,bear,False,True,2026-07-15,B
+2026-07-15 13:58:51,Tazmanian Traders VIP ⭐,free-alerts-✈️,NVDA,bear,False,True,2026-07-15,B
+2026-07-15 16:22:04,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AAPL,bear,False,True,2026-07-15,B
+2026-07-16 04:54:40,Tazmanian Traders VIP ⭐,vip-chart-plan📊,UNH,bear,False,True,2026-07-16,B
+2026-07-16 04:57:35,Tazmanian Traders VIP ⭐,vip-chart-plan📊,WMT,bear,False,True,2026-07-16,B
+2026-07-16 13:36:06,Tazmanian Traders VIP ⭐,vip-chart-plan📊,TSLA,bear,False,True,2026-07-16,B
+2026-07-16 14:03:14,Tazmanian Traders VIP ⭐,free-alerts-✈️,INTC,bear,False,True,2026-07-16,A
+2026-07-16 14:09:40,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AAPL,bear,False,True,2026-07-16,B
+2026-07-16 14:49:50,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bull,True,True,2026-07-16,A
+2026-07-16 15:44:19,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMD,bull,False,False,2026-07-16,B
+2026-07-17 14:03:03,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bull,False,True,2026-07-17,A
+2026-07-20 13:47:24,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,SPY,bear,False,True,2026-07-20,B
+2026-07-20 14:00:25,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AMZN,bear,False,False,2026-07-20,B
+2026-07-20 14:29:42,Tazmanian Traders VIP ⭐,trading-floor-🧃,SPY,bull,False,True,2026-07-20,B
+2026-07-20 15:17:32,Tazmanian Traders VIP ⭐,trading-floor-🧃,AAPL,bear,False,True,2026-07-20,B
+2026-07-20 18:53:15,Tazmanian Traders VIP ⭐,vip-chart-plan📊,SLV,bull,False,True,2026-07-20,B
+2026-07-20 19:02:17,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,True,True,2026-07-20,A
+2026-07-20 20:05:02,Tazmanian Traders VIP ⭐,vip-chart-plan📊,BA,bear,False,True,2026-07-20,B
+2026-07-21 15:15:23,Tazmanian Traders VIP ⭐,free-alerts-✈️,PLTR,bear,True,True,2026-07-21,A
+2026-07-21 16:01:30,Tazmanian Traders VIP ⭐,trading-floor-🧃,SPY,bear,False,True,2026-07-21,B
+2026-07-22 14:25:07,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-07-22,B
+2026-07-22 18:54:37,Tazmanian Traders VIP ⭐,free-alerts-✈️,INTC,bear,True,True,2026-07-22,A
+2026-07-22 22:17:11,Tazmanian Traders VIP ⭐,vip-chart-plan📊,TSLA,bear,False,True,2026-07-22,B
+2026-07-22 22:22:52,Tazmanian Traders VIP ⭐,vip-chart-plan📊,UNH,bear,False,True,2026-07-22,B
+2026-07-22 22:32:45,Tazmanian Traders VIP ⭐,trading-floor-🧃,USO,bear,False,False,2026-07-22,B
+2026-07-23 13:05:58,Tazmanian Traders VIP ⭐,trading-floor-🧃,AAPL,bear,False,True,2026-07-23,B
+2026-07-23 13:18:23,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-07-23,B
+2026-07-23 16:22:38,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bull,True,True,2026-07-23,A
+2026-07-23 21:58:54,Tazmanian Traders VIP ⭐,trading-floor-🧃,TSLA,bear,False,False,2026-07-23,B
+2026-07-24 13:44:11,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,True,2026-07-24,A
+2026-07-24 14:48:43,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,INTC,bear,False,True,2026-07-24,B
+2026-07-24 15:34:37,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bull,True,True,2026-07-24,A
+2026-07-24 19:58:46,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,GOOG,bear,True,True,2026-07-24,A
+2026-07-27 15:58:23,Tazmanian Traders VIP ⭐,trading-floor-🧃,AAPL,bear,False,True,2026-07-27,B
+2026-07-27 17:16:35,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bull,True,True,2026-07-27,A
+2026-07-28 03:30:31,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,XSP,bear,True,True,2026-07-27,A
+2026-07-28 13:32:56,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bull,False,True,2026-07-28,B
+2026-07-31 02:18:00,Tazmanian Traders VIP ⭐,vip-chart-plan📊,QQQ,bear,False,True,2026-07-30,B
+2026-07-31 02:24:23,Tazmanian Traders VIP ⭐,vip-chart-plan📊,QQQ,bull,True,True,2026-07-30,A
+2026-07-31 13:26:38,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,True,2026-07-31,B
+2026-08-02 23:13:54,Tazmanian Traders VIP ⭐,vip-chart-plan📊,QQQ,bull,False,True,2026-08-02,B
+2026-08-03 04:51:21,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AVGO,bear,False,False,2026-08-03,B
+2026-08-03 04:52:27,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AMZN,bear,False,False,2026-08-03,B
+2026-08-03 05:05:44,Tazmanian Traders VIP ⭐,vip-chart-plan📊,COIN,bear,False,False,2026-08-03,A
+2026-08-03 14:07:34,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bull,True,True,2026-08-03,A
+2026-08-03 14:22:43,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,False,2026-08-03,A
+2026-08-03 15:27:39,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,MCD,bull,True,True,2026-08-03,A
+2026-08-05 15:40:20,Tazmanian Traders VIP ⭐,free-alerts-✈️,INTC,bear,False,True,2026-08-05,B
+2026-08-05 16:28:02,Tazmanian Traders VIP ⭐,free-alerts-✈️,NVDA,bear,False,True,2026-08-05,A
+2026-08-06 14:12:39,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,True,2026-08-06,A
+2026-08-07 13:27:16,Tazmanian Traders VIP ⭐,free-alerts-✈️,SPY,bear,True,True,2026-08-07,A
+2026-08-11 18:37:07,Tazmanian Traders VIP ⭐,vip-chart-plan📊,AMZN,bear,False,True,2026-08-11,A
+2026-08-11 19:21:26,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,SPY,bear,False,True,2026-08-11,B
+2026-08-12 14:13:13,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,True,True,2026-08-12,A
+2026-08-14 08:49:33,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMZN,bear,False,False,2026-08-14,B
+2026-08-14 17:13:10,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,AMZN,bull,False,True,2026-08-14,B
+2026-08-17 19:41:59,Tazmanian Traders VIP ⭐,vip-chart-plan📊,INTC,bull,False,True,2026-08-17,A
+2026-08-19 18:21:50,Tazmanian Traders VIP ⭐,free-alerts-✈️,RKLB,bear,False,True,2026-08-19,A
+2026-08-19 19:28:58,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,RDDT,bear,True,True,2026-08-19,A
+2026-08-19 20:03:12,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,RKLB,bull,False,True,2026-08-19,B
+2026-08-20 02:44:18,Tazmanian Traders VIP ⭐,vip-chart-plan📊,SPY,bear,False,True,2026-08-19,B
+2026-08-20 02:46:08,Tazmanian Traders VIP ⭐,vip-chart-plan📊,SMH,bull,False,True,2026-08-19,B
+2026-08-20 02:53:17,Tazmanian Traders VIP ⭐,vip-chart-plan📊,QQQ,bear,False,True,2026-08-19,B
+2026-08-20 13:34:07,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,RKLB,bull,False,True,2026-08-20,B
+2026-08-20 14:38:00,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,INTC,bull,True,True,2026-08-20,A
+2026-08-20 17:25:13,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,False,True,2026-08-20,A
+2026-08-21 16:25:28,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bear,True,True,2026-08-21,A
+2026-08-24 19:12:28,Tazmanian Traders VIP ⭐,free-alerts-✈️,QQQ,bull,True,True,2026-08-24,A
+2026-08-24 20:07:19,Tazmanian Traders VIP ⭐,vip-chart-plan📊,QQQ,bear,False,True,2026-08-24,B
+2026-08-25 13:37:52,Tazmanian Traders VIP ⭐,trading-floor-🧃,AMZN,bull,False,True,2026-08-25,A
+2026-08-26 04:34:52,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,XSP,bear,True,True,2026-08-26,A
+2026-08-28 14:41:45,Tazmanian Traders VIP ⭐,free-alerts-✈️,PLTR,bear,True,True,2026-08-28,A
+2026-08-28 15:22:58,Tazmanian Traders VIP ⭐,vip-chart-plan📊,PLTR,bull,True,True,2026-08-28,A
+2026-08-31 12:48:55,Tazmanian Traders VIP ⭐,vip-chart-plan📊,SPY,bear,False,True,2026-08-31,B
+2026-08-31 14:44:48,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,True,True,2026-08-31,A
+2026-09-02 14:25:06,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,TSLA,bear,True,True,2026-09-02,A
+2026-09-02 15:13:03,Tazmanian Traders VIP ⭐,vip-chat-🌪️⭐,NVDA,bear,False,True,2026-09-02,A
+2026-09-03 13:41:17,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,True,True,2026-09-03,A
+2026-09-03 15:54:00,Tazmanian Traders VIP ⭐,free-alerts-✈️,SPY,bear,True,True,2026-09-03,A
+2026-09-04 11:46:37,Tazmanian Traders VIP ⭐,vip-chart-plan📊,TSLA,bear,False,True,2026-09-04,B
+2026-09-07 00:59:30,Tazmanian Traders VIP ⭐,vip-chart-plan📊,TSLA,bear,False,True,2026-09-06,B
+2026-09-08 13:32:13,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,PLTR,bear,False,True,2026-09-08,A
+2026-09-08 19:53:19,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bear,True,True,2026-09-08,A
+2026-09-09 12:39:25,Tazmanian Traders VIP ⭐,vip-chart-plan📊,QQQ,bear,True,True,2026-09-09,A
+2026-09-10 12:44:30,Tazmanian Traders VIP ⭐,trading-floor-🧃,QQQ,bear,False,True,2026-09-10,B
+2026-09-10 14:59:06,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,HOOD,bull,False,True,2026-09-10,A
+2026-09-14 20:13:59,Tazmanian Traders VIP ⭐,tazmanian-trades-⚠️,QQQ,bull,True,True,2026-09-14,A
+2026-09-14 20:17:57,Tazmanian Traders VIP ⭐,trading-floor-🧃,XSP,bull,False,True,2026-09-14,B
