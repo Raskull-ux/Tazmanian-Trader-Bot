@@ -1,0 +1,33 @@
+name: Restore to Oct 7
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Put every file back exactly as it was at "Call grades 2026-10-07"
+        run: |
+          OLD=0c4363ac2a66d8d8629b89d84c559dc731f67fa7
+          git config user.name "restore"
+          git config user.email "restore@users.noreply.github.com"
+          echo "===== WORKFLOW FILES CHANGED SINCE OCT 7 (A = added today, delete it; M = changed today, restore it) ====="
+          git diff --name-status $OLD HEAD -- .github/workflows
+          for f in $(git diff --name-only --diff-filter=M $OLD HEAD -- .github/workflows); do
+            echo "===== ORIGINAL CONTENT OF $f (copy everything below this line) ====="
+            git show $OLD:$f
+            echo "===== END OF $f ====="
+          done
+          git rm -r -q -- . ':(exclude).github/workflows'
+          git checkout $OLD -- . ':(exclude).github/workflows'
+          git add -A
+          if git diff --cached --quiet; then echo "Nothing to restore."; else
+            git commit -m "Restore all code to Oct 7 state (0c4363a): undo Oct 8 uploads"; git push; fi
+          echo "===== CODE FILES NOW MATCH OCT 7 ====="
