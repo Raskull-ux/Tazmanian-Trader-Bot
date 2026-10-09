@@ -1,0 +1,44 @@
+name: Chart Rules Test
+on:
+  workflow_dispatch:
+    inputs:
+      max_symbols:
+        description: "How many names (most liquid first)"
+        default: "300"
+      dump_daily_pct:
+        description: "Daily bottom: % under the prior 40-day high"
+        default: "12"
+      dump_weekly_pct:
+        description: "Weekly bottom: % under the prior 26-week high"
+        default: "20"
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy requests
+      - name: Run test
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY }}
+          APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID }}
+          APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY }}
+          MAX_SYMBOLS: ${{ inputs.max_symbols }}
+          DUMP_DAILY_PCT: ${{ inputs.dump_daily_pct }}
+          DUMP_WEEKLY_PCT: ${{ inputs.dump_weekly_pct }}
+        run: python chart_rules_test.py
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add results/chart_rules || true
+          git commit -m "Chart rules test results" || true
+          git pull --rebase || true
+          git push || true
