@@ -21,8 +21,9 @@ jobs:
       - run: pip install pandas openpyxl requests
       - name: Build universe
         env:
-          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY }}
-          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          # accepts whichever name the keys are saved under in this repo
+          ALPACA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
           TARGET_SIZE: ${{ github.event.inputs.target_size || '1000' }}
         run: python universe_builder.py
       - name: Commit universe
