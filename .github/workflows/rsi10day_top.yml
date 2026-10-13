@@ -1,4 +1,4 @@
-name: Retest Divergence Test
+name: 10-Day RSI Top Test
 on:
   workflow_dispatch:
 permissions:
@@ -17,13 +17,13 @@ jobs:
         env:
           ALPACA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
-        run: python retest_divergence.py
+        run: python rsi10day_top.py
       - name: Save results
         if: always()
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add results/retest_divergence || true
-          git commit -m "Retest divergence results" || true
+          git add results/rsi10day_top || true
+          git commit -m "10-day RSI top results" || true
           git pull --rebase || true
           git push || true
