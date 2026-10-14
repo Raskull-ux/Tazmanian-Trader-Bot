@@ -1,0 +1,64 @@
+name: Deep Data Repair
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [deep_data_repair]
+permissions:
+  contents: write
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: data_ext
+          path: existing
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy requests pyarrow openpyxl
+      - name: Resume and repair this shard
+        env:
+          SHARD: ${{ matrix.shard }}
+          NSHARDS: 3
+          ALPACA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
+        run: python deep_data_repair.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repaired-${{ matrix.shard }}
+          path: repaired
+  publish:
+    needs: pull
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: data_ext
+          path: deepdata
+      - uses: actions/download-artifact@v4
+        with:
+          path: parts
+      - name: Merge repaired files over the existing data and publish
+        run: |
+          for d in parts/*/; do cp -r "$d"* deepdata/ 2>/dev/null || true; done
+          cd deepdata
+          head -100 completeness_shard*.csv || true
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git commit -qm "Repaired deep data $(date -u +%F)" || true
+          git push origin HEAD:data_ext
+      - name: Show completeness (readable as an annotation)
+        if: always()
+        run: |
+          cd deepdata
+          msg=$(cat completeness_shard*.csv 2>/dev/null | grep -v "already complete\|^sym" | cut -c1-90 | awk '{printf "%s%%0A", $0}')
+          echo "::notice title=repair status::${msg}"
