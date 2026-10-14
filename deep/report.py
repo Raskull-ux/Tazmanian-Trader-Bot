@@ -7,8 +7,16 @@ OUT = "results/deep_analysis"
 SPLIT_CALLS = pd.Timestamp("2025-07-01")
 
 
-def tstat(x):
+CLUSTER = None   # set to a Series of cluster labels (e.g. the week) aligned with the rows being tested
+
+
+def tstat(x, cl=None):
+    """t-stat of the mean. Rows from the same week share the same market moves, so when a cluster label is
+    available the test is run on weekly averages (honest, fewer effective samples)."""
     x = pd.Series(x).dropna()
+    cl = cl if cl is not None else CLUSTER
+    if cl is not None:
+        x = x.groupby(cl.reindex(x.index)).mean()
     if len(x) < 5 or x.std() == 0:
         return np.nan
     return x.mean() / (x.std(ddof=1) / np.sqrt(len(x)))
@@ -75,8 +83,10 @@ def feature_split(df, win_col, feats, period_col):
 
 def calls_section(C):
     L = ["# PART 1: Your 292 top calls, dissected", ""]
+    global CLUSTER
     calls = C[C.kind == "call"].copy()
     ctrl = C[C.kind == "control"].copy()
+    CLUSTER = pd.to_datetime(calls.t_entry).dt.to_period("W").astype(str)
     calls["period"] = np.where(pd.to_datetime(calls.t_call) < SPLIT_CALLS, "early", "late")
     ctrl["period"] = np.where(pd.to_datetime(ctrl.t_call) < SPLIT_CALLS, "early", "late")
     L.append(f"Calls measured: **{len(calls)}** (controls: {len(ctrl)} random entries, same names, same minute of day, nearby days).")
@@ -196,8 +206,10 @@ def calls_section(C):
 
 
 def trades_section(T):
+    global CLUSTER
     L = ["# PART 2: Your 576 real trades, with the real option prices", ""]
     T = T.copy()
+    CLUSTER = pd.to_datetime(T.entry).dt.to_period("W").astype(str)
     T["month"] = pd.to_datetime(T.entry).dt.to_period("M").astype(str)
     T["won"] = T.realized_pct > 0
     T["gave_back"] = (T.peak_held_pct >= 20) & (T.realized_pct <= 0)
