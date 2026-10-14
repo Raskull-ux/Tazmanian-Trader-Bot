@@ -10,7 +10,7 @@ OUT = "results/recent_options"
 def main():
     R.HD = R.keys()
     os.makedirs(OUT, exist_ok=True)
-    T = pd.read_csv("deep/recent_trades.csv", parse_dates=["entry"])
+    T = pd.read_csv(os.environ.get("TRADES_FILE", "deep/recent_trades.csv"), parse_dates=["entry"])
     now = pd.Timestamp.now(tz="America/New_York").tz_localize(None) - pd.Timedelta(minutes=20)
     status = []
     for occ, g in T.groupby("occ"):
