@@ -40,6 +40,8 @@ def run_one(S, t_call, label, cid):
         row[f"E_{e}_hours_after"] = (te - t0).total_seconds() / 3600
         stop = ts.stop_for(S, te, pe, f["atr"])
         row[f"E_{e}_stop_atr"] = (stop - pe) / f["atr"]
+        stop2 = ts.stop_for(S, te, pe, f["atr"], "hourly_swing")
+        row[f"E_{e}_stop2_atr"] = (stop2 - pe) / f["atr"]
         s_e = S.session_of(te) or te.normalize()
         lv = lib.levels_below(pe, s_e if te.hour * 60 + te.minute < 960 else s_e, S.D, S.m5x, S.tf["h1"], min_gap=0.25 * f["atr"])
         sim = ts.simulate(S, te, pe, stop, lv)
@@ -47,6 +49,10 @@ def run_one(S, t_call, label, cid):
             continue
         for x, (rv, _) in sim.items():
             row[f"E_{e}_X_{x}"] = rv
+        sim2 = ts.simulate(S, te, pe, stop2, lv)
+        if sim2 is not None:
+            for x, (rv, _) in sim2.items():
+                row[f"E_{e}_S2_{x}"] = rv
         if e == "at_call":
             row["levels_n"] = len(lv)
             for n in range(min(4, len(lv))):

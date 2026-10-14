@@ -70,17 +70,21 @@ def main():
                 row[f"level{n+1}_dist_atr"] = (p_in - lv[n][0]) / a
             # which level was he out at? (count of levels between entry and his exit price)
             row["levels_passed_at_exit"] = sum(1 for p, _ in lv if p_out <= p)
-            sim = ts.simulate(S, r.entry, p_in, stop, lv)
-            if sim:
+            stop2 = ts.stop_for(S, r.entry, p_in, a, "hourly_swing")
+            row["stop2_atr"] = (stop2 - p_in) / a
+            for pre, stp in (("X", stop), ("Y", stop2)):     # X = tight stop (hour high), Y = hourly swing high
+                sim = ts.simulate(S, r.entry, p_in, stp, lv)
+                if not sim:
+                    continue
                 for x, (rv, tx) in sim.items():
-                    row[f"X_{x}_R"] = rv
+                    row[f"{pre}_{x}_R"] = rv
                     if tx is not None:
                         if tx <= opt_end:
                             op = price_at(r.occ, tx)
-                            row[f"X_{x}_opt_pct"] = (op / r.px_in - 1) * 100 if pd.notna(op) else np.nan
+                            row[f"{pre}_{x}_opt_pct"] = (op / r.px_in - 1) * 100 if pd.notna(op) else np.nan
                         else:
-                            row[f"X_{x}_opt_pct"] = np.nan
-                            row[f"X_{x}_beyond_window"] = 1
+                            row[f"{pre}_{x}_opt_pct"] = np.nan
+                            row[f"{pre}_{x}_beyond_window"] = 1
             # next level below HIS exit: did it get there before the stock rose back above his entry price?
             s_out = S.session_of(r.exit) or r.exit.normalize()
             lv_out = [x for x in lib.levels_below(p_out, s_out, S.D, S.m5x, S.tf["h1"], min_gap=0.25 * a)]

@@ -91,9 +91,21 @@ def find_entry(S, kind, t0, p0, window_sessions=3):
     raise ValueError(kind)
 
 
-def stop_for(S, te, pe, atr):
-    """Technical stop: highest high of the last hour of 5-min bars into the entry, a hair above.
-    Kept between 0.25 and 2 ATR away."""
+STOPS = ["hour_high", "hourly_swing"]
+
+
+def stop_for(S, te, pe, atr, kind="hour_high"):
+    """Technical stop, a hair above, kept between 0.25 and 2 ATR away.
+    hour_high:    highest high of the last hour of 5-min bars into the entry (tight)
+    hourly_swing: the nearest confirmed hourly swing high above entry (Taz: 'stop on the hourly')"""
+    if kind == "hourly_swing":
+        H = S.tf["h1"]
+        X = H[H.index <= te].iloc[-120:]
+        hv = X.h.values
+        piv = [hv[i] for i in range(2, len(hv) - 2) if hv[i] == hv[i - 2:i + 3].max()]
+        above = [p for p in piv if p >= pe + 0.25 * atr]
+        st = (min(above) + 0.05 * atr) if above else pe + 2 * atr
+        return float(min(max(st, pe + 0.25 * atr), pe + 2 * atr))
     m5 = S.tf["m5"]
     X = m5[(m5.index <= te) & (m5.index > te - pd.Timedelta(hours=1))]
     if len(X) == 0:
