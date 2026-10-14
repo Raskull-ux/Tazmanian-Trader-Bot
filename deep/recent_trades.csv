@@ -1,0 +1,19 @@
+occ,entry,exit,posted
+QQQ261009P00750000,2026-10-06 15:40,2026-10-07 09:59,swing from Oct 6; 190% then out at 9:59
+QQQ261009P00750000,2026-10-08 09:35,2026-10-08 11:15,bought at QQQ 754.5; sold at .98; contract later hit 5.95
+QQQ261009P00748000,2026-10-08 11:15,2026-10-08 11:58,bought at .95; taking profits 11:58
+MSTR261009P00155000,2026-10-05 12:39,2026-10-05 14:50,exited on the pump (exit time approximate)
+INTC261009P00110000,2026-10-05 14:02,2026-10-05 14:56,entered .61 by mistake; switched to 10/12
+INTC261012P00110000,2026-10-05 14:56,2026-10-06 12:15,switched in at about .68; 1.37 and over 100% Oct 6 (exit time approximate)
+TSLA261012P00365000,2026-10-08 15:59,2026-10-09 10:18,overnight swing; sold at .40 for a loss
+TSLA261009P00367500,2026-10-08 11:58,2026-10-08 13:36,next-day put with tight stop; 40-60%; out 1:36
+QQQ261012P00745000,2026-10-09 10:18,2026-10-09 12:44,breakeven then +20% then a loss; out of puts 12:44
+NVDA260925P00225000,2026-09-22 09:45,2026-09-22 10:04,cut for a small gain
+QQQ260928P00740000,2026-09-25 12:51,2026-09-25 14:07,stopped out with a loss
+QQQ260925P00743000,2026-09-25 13:06,2026-09-25 14:07,same-day lotto at .42; out with a loss
+QQQ261001P00739000,2026-10-01 12:37,2026-10-01 12:54,same-day lotto; out at +115%
+QQQ261012P00746000,2026-10-12 12:24,2026-10-12 12:57,same-day lotto; +50%; out of puts 12:57
+QQQ261012C00748000,2026-10-12 11:43,2026-10-12 12:04,same-day lotto call; out at +180%
+INTC260925P00108000,2026-09-18 09:37,,next week's $108 put; no exit posted
+AAPL260918P00320000,2026-09-16 15:10,,lotto swing at .40; no exit posted
+HOOD261023P00100000,2026-10-09 15:55,2026-10-14 11:27,HOOD put swing (single-leg proxy for the spread); out at 5.01 from 1.12

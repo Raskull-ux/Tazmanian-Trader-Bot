@@ -1,0 +1,36 @@
+name: Recent Options Pull
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [recent_options]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy requests yfinance
+      - name: Pull option bars
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
+        run: python recent_options_pull.py 2>&1 | tee pull.log
+      - name: Save
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add results/recent_options || true
+          git commit -m "Recent option bars (Sep-Oct 2026 trades)" || true
+          git pull --rebase || true
+          git push || true
+      - name: Show status
+        if: always()
+        run: |
+          msg=$(cat pull.log | tail -n 30 | awk '{printf "%s%%0A", $0}')
+          echo "::notice title=recent options::${msg}"
