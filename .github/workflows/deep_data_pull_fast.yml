@@ -38,7 +38,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: parts
-      - name: Merge shards and publish to the data branch
+      - name: Merge shards and publish to the data_ext branch (extended-hours data)
         run: |
           mkdir -p deepdata
           for d in parts/*/; do cp -r "$d"* deepdata/ 2>/dev/null || true; done
@@ -50,4 +50,4 @@ jobs:
           git config user.email "actions@github.com"
           git add .
           git commit -qm "Deep data $(date -u +%F)"
-          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" data
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" data:data_ext

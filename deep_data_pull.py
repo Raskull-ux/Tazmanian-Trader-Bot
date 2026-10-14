@@ -4,7 +4,8 @@ plus the core ETF/stock list, and publishes them to the repo's `data` branch so 
 can run on them (whole-chart study, pattern tests across names).
 
 Per symbol, saved as data/<tf>/<SYM>.parquet:
-  m5     5-minute bars, regular hours only (9:30-16:00 ET), 2016 -> now, split-adjusted
+  m5     5-minute bars INCLUDING pre-market and after-hours (4:00-20:00 ET), 2016 -> now, split-adjusted
+         (Taz charts with extended hours on in thinkorswim, so moving averages must include those bars)
   daily  daily bars 2015 -> now, split-adjusted, plus raw close (c_raw) to match option strikes
 Plus data/vix.parquet (daily VIX from Yahoo).
 Hourly, 4-hour and weekly bars are built from these inside the analysis (same way TradingView builds them).
@@ -96,7 +97,7 @@ def main():
         m = bars(sym, "5Min", "2016-01-01", end, "split")
         if len(m):
             tod = m.t.dt.hour * 60 + m.t.dt.minute
-            m = m[(tod >= 570) & (tod < 960)].reset_index(drop=True)
+            m = m[(tod >= 240) & (tod < 1200)].reset_index(drop=True)   # 4:00 AM - 8:00 PM ET, like Taz's TOS chart
             for c in "ohlc":
                 m[c] = m[c].astype("float32")
             m["v"] = m.v.astype("float32")
