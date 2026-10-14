@@ -339,12 +339,57 @@ def patterns_section(V, R, VN=None):
     return L
 
 
+def extra_section(C):
+    L = ["# PART 4: Extra checks", ""]
+    calls = C[C.kind == "call"].copy()
+    ctrl = C[C.kind == "control"].copy()
+    calls["period"] = np.where(pd.to_datetime(calls.t_call) < SPLIT_CALLS, "early", "late")
+    L.append("## Same entries x exits with a WIDER stop (nearest hourly swing high), average R, calls / controls")
+    rows = []
+    for e in ts.ENTRIES:
+        rec = {"entry": e, "median stop (ATR)": fmt(calls[f"E_{e}_stop2_atr"].median())}
+        for x in ("level1", "level2", "level3", "half_L1_rest_L3", "day_close", "hourly_close_above_20", "hold_3_days"):
+            c = f"E_{e}_S2_{x}"
+            if c in calls:
+                rec[x] = f"{calls[c].mean():+.2f} (t {tstat(calls[c]):.1f}) / {ctrl[c].mean():+.2f}"
+        rows.append(rec)
+    L += [md(pd.DataFrame(rows)), ""]
+    L.append("## The two conditions that split winning and losing calls (HYPOTHESIS: picked from ~70 tested)")
+    late = calls.minute_of_day >= 620
+    up = calls.h4_rsi_above_ma == 1
+    rows = []
+    for nm, m in (("4H RSI above its MA AND called after 10:20", up & late), ("only 4H RSI above its MA", up & ~late),
+                  ("only after 10:20", ~up & late), ("neither", ~up & ~late), ("all calls", up | ~up)):
+        g = calls[m]
+        rows.append({"group": nm, "calls": len(g), "win %": round(g.win_1atr.mean() * 100),
+                     "win % before Jul 2025": round(g[g.period == "early"].win_1atr.mean() * 100),
+                     "win % after": round(g[g.period == "late"].win_1atr.mean() * 100),
+                     "avg 5-day move %": round(g.ret_5d_pct.mean(), 2)})
+    L += [md(pd.DataFrame(rows)), ""]
+    if os.path.exists(f"{OUT}/hold_next_level.csv"):
+        H = pd.read_csv(f"{OUT}/hold_next_level.csv")
+        L.append("## Winning puts: sell where you sold vs hold for the next support level (real option prices)")
+        rows = []
+        for nm, g in H.groupby("policy"):
+            d = g.held - g.yours
+            rows.append({"bail-out rule": nm, "trades": len(g), "yours avg %": round(g.yours.mean()),
+                         "yours median %": round(g.yours.median()), "held avg %": round(g.held.mean()),
+                         "held median %": round(g.held.median()), "held beat yours": f"{(d > 0).mean()*100:.0f}%",
+                         "t": round(tstat(d, pd.Series(range(len(d)), index=d.index)), 2),
+                         "outcomes": ", ".join(f"{k} {v}" for k, v in g.how.value_counts().items())})
+        L += [md(pd.DataFrame(rows)), ""]
+    return L
+
+
 def main():
     L = ["# Deep analysis: your calls, your trades, your patterns", ""]
     if os.path.exists(f"{OUT}/calls_dissected.csv.gz"):
         L += calls_section(boolify(pd.read_csv(f"{OUT}/calls_dissected.csv.gz")))
     if os.path.exists(f"{OUT}/trades_dissected.csv.gz"):
         L += trades_section(boolify(pd.read_csv(f"{OUT}/trades_dissected.csv.gz")))
+    if os.path.exists(f"{OUT}/calls_dissected.csv.gz"):
+        L += extra_section(boolify(pd.read_csv(f"{OUT}/calls_dissected.csv.gz")))
+
     def load_parts(prefix, noise=""):
         parts = [f"{OUT}/{prefix}{noise}{suf}.csv" for suf in ("", "_daily", "_intraday")]
         got = [pd.read_csv(p) for p in parts if os.path.exists(p)]
