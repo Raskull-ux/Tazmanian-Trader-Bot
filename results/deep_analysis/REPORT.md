@@ -334,6 +334,15 @@ By entry time:
 | neither                                    |      78 |      37 |                      37 |            38 |              -1.03 |
 | all calls                                  |     290 |      50 |                      47 |            51 |               0.33 |
 
+## FORWARD TEST: the two conditions on fresh calls (Sep 15 - Oct 7 2026, not used to find them)
+| group          |   calls |   win |   avg_5d_move |
+|:---------------|--------:|------:|--------------:|
+| both           |       9 |    39 |         -2.16 |
+| neither        |       3 |    67 |          3.06 |
+| one of the two |      10 |    50 |          0.68 |
+
+Verdict: NOT confirmed. With only 22 fresh calls this can't prove or kill it, but the 'both' group did not win more. Keep it as an untested idea, not a rule.
+
 ## Winning puts: sell where you sold vs hold for the next support level (real option prices)
 | bail-out rule                 |   trades |   yours avg % |   yours median % |   held avg % |   held median % | held beat yours   |    t | outcomes                                          |
 |:------------------------------|---------:|--------------:|-----------------:|-------------:|----------------:|:------------------|-----:|:--------------------------------------------------|

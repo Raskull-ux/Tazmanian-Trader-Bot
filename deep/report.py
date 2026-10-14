@@ -366,6 +366,19 @@ def extra_section(C):
                      "win % after": round(g[g.period == "late"].win_1atr.mean() * 100),
                      "avg 5-day move %": round(g.ret_5d_pct.mean(), 2)})
     L += [md(pd.DataFrame(rows)), ""]
+    if os.path.exists(f"{OUT}/recent_calls_forward_test.csv"):
+        F = pd.read_csv(f"{OUT}/recent_calls_forward_test.csv")
+        F = F[F.sessions_seen >= 5].copy()
+        up = F.h4_rsi_above_ma.astype(str).str.lower().isin(["true", "1", "1.0"])
+        late = F.after_1020.astype(str).str.lower().isin(["true", "1", "1.0"])
+        F["group"] = np.where(up & late, "both", np.where(~up & ~late, "neither", "one of the two"))
+        L.append("## FORWARD TEST: the two conditions on fresh calls (Sep 15 - Oct 7 2026, not used to find them)")
+        G = F.groupby("group").agg(calls=("win_1atr", "size"), win=("win_1atr", "mean"), avg_5d_move=("move_5d", "mean"))
+        G["win"] = (G.win * 100).round(0)
+        L += [md(G.round(2).reset_index()), ""]
+        L.append(f"Verdict: NOT confirmed. With only {len(F)} fresh calls this can't prove or kill it, but the 'both' "
+                 "group did not win more. Keep it as an untested idea, not a rule.")
+        L.append("")
     if os.path.exists(f"{OUT}/hold_next_level.csv"):
         H = pd.read_csv(f"{OUT}/hold_next_level.csv")
         L.append("## Winning puts: sell where you sold vs hold for the next support level (real option prices)")
