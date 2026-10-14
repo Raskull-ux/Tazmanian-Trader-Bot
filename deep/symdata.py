@@ -82,7 +82,7 @@ class SymData:
         f["d_rsi_cross_down_3d"] = bool(((D.rsi < D.rsi_ma) & (D.rsi.shift() >= D.rsi_ma.shift())).iloc[-3:].any())
         f["d_macd_above_sig"] = d0.macd > d0.macd_sig
         f["d_macd_cross_down_3d"] = bool(((D.macd < D.macd_sig) & (D.macd.shift() >= D.macd_sig.shift())).iloc[-3:].any())
-        f["d_hist_falling"] = d0.hist < d1.hist
+        f["d_hist_falling"] = d0["hist"] < d1["hist"]
         f["d_macd_above_0"] = d0.macd > 0
         for n in (10, 20, 50, 200):
             f[f"d_vs_sma{n}_atr"] = (price - d0[f"sma{n}"]) / a
@@ -119,7 +119,7 @@ class SymData:
             f[f"{k}_rsi"] = b.rsi
             f[f"{k}_rsi_above_ma"] = b.rsi > b.rsi_ma
             f[f"{k}_macd_above_sig"] = b.macd > b.macd_sig
-            f[f"{k}_hist_falling"] = b.hist < pb.hist
+            f[f"{k}_hist_falling"] = b["hist"] < pb["hist"]
             f[f"{k}_vs_sma20_atr"] = (price - b.sma20) / a
             f[f"{k}_vs_sma50_atr"] = (price - b.sma50) / a
             f[f"{k}_vs_sma200_atr"] = (price - b.sma200) / a

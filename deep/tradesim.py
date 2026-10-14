@@ -165,20 +165,24 @@ def simulate(S, te, pe, stop, levels, sessions=10):
     # hourly close above hourly 20 SMA (swing trail)
     H = S.tf["h1"]
     HX = H[(H.index > te) & (H.index <= idx[-1])]
-    trig = HX.index[(HX.c > HX.sma20).values]
+    below = (HX.c < HX.sma20).cummax()          # trail only arms after an hourly close under the 20
+    trig = HX.index[((HX.c > HX.sma20) & below.shift(fill_value=False)).values]
     t_tr = trig[0] if len(trig) else idx[-1]
     k_tr = int(np.searchsorted(idx.values, np.datetime64(t_tr), side="right") - 1)
     out["hourly_close_above_20"] = (R(stop_px(first_stop)), idx[first_stop]) if first_stop <= k_tr else (R(c[k_tr]), idx[k_tr])
     # daily close above daily 10 SMA (swing), max 10 sessions
     Dd = S.D
     k_d = len(P) - 1
+    armed = False
     for j, d in enumerate(ud):
         if d in Dd.index:
             r = Dd.loc[d]
-            if r.c > r.sma10:
+            if armed and r.c > r.sma10:
                 kk = np.where(sess_no == j)[0]
                 k_d = kk[-1]
                 break
+            if r.c < r.sma10:
+                armed = True
     out["daily_close_above_10"] = (R(stop_px(first_stop)), idx[first_stop]) if first_stop <= k_d else (R(c[k_d]), idx[k_d])
     for n, name in ((3, "hold_3_days"), (5, "hold_5_days")):
         kk = np.where(sess_no < n)[0]

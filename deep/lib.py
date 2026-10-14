@@ -138,7 +138,7 @@ def volume_profile(m5_days, bins=60):
     return mid[poc], mid[b], mid[a]
 
 
-def levels_below(price, day, daily_ind, m5, h1_ind):
+def levels_below(price, day, daily_ind, m5, h1_ind, min_gap=0.0):
     """Support levels under `price` known at the start of session `day` (only past data).
     Returns sorted list (nearest first) of (price, name)."""
     D = daily_ind[daily_ind.index < day]
@@ -181,12 +181,14 @@ def levels_below(price, day, daily_ind, m5, h1_ind):
         for v, nm in ((poc, "5-day volume POC"), (val, "5-day value area low"), (vah, "5-day value area high")):
             if pd.notna(v):
                 lv.append((v, nm))
-    out = sorted([(float(p), n) for p, n in lv if pd.notna(p) and p < price * 0.999], key=lambda x: -x[0])
+    out = sorted([(float(p), n) for p, n in lv if pd.notna(p) and p < price * 0.999 and price - p >= min_gap],
+                 key=lambda x: -x[0])
     # merge levels within 0.15% of each other
     merged = []
     for p, n in out:
         if merged and abs(merged[-1][0] - p) / p < 0.0015:
-            merged[-1] = (merged[-1][0], merged[-1][1] + " + " + n)
+            if n not in merged[-1][1]:
+                merged[-1] = (merged[-1][0], merged[-1][1] + " + " + n)
         else:
             merged.append((p, n))
     return merged
