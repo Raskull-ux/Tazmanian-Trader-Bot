@@ -1,0 +1,18 @@
+name: Cancel runs
+on:
+  repository_dispatch:
+    types: [cancel_runs]
+permissions:
+  actions: write
+jobs:
+  cancel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel the run ids sent in the dispatch payload
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IDS: ${{ github.event.client_payload.ids }}
+        run: |
+          for id in $IDS; do
+            gh api -X POST repos/${{ github.repository }}/actions/runs/$id/cancel && echo "cancelled $id" || echo "could not cancel $id"
+          done
