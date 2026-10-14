@@ -1,0 +1,32 @@
+name: Deep Data Pull
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [deep_data]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy requests yfinance pyarrow openpyxl
+      - name: Pull 10 years of charts
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
+        run: python deep_data_pull.py
+      - name: Publish to the data branch (kept off main so the main branch stays small)
+        run: |
+          cd deepdata
+          git init -q
+          git checkout -q -b data
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -qm "Deep data $(date -u +%F)"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" data
