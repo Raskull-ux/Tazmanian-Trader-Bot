@@ -54,6 +54,27 @@ def resample_intraday(m5, minutes):
     return out
 
 
+def resample_clock(m5, minutes, anchor=0):
+    """Extended-hours bars the way thinkorswim builds them with pre/after-market ON: buckets on the clock.
+    minutes=60 -> 9:00-10:00, 10:00-11:00 ...; minutes=240, anchor=60 -> 5-9, 9-13, 13-17, 17-21 (futures-day
+    anchoring, cut at the 5 PM futures maintenance hour). Index = bar END time (nominal)."""
+    tod = m5.index.hour * 60 + m5.index.minute
+    day = m5.index.normalize()
+    slot = (tod - anchor) // minutes
+    g = m5.groupby([day, slot])
+    out = pd.DataFrame({"o": g.o.first(), "h": g.h.max(), "l": g.l.min(), "c": g.c.last(), "v": g.v.sum()})
+    days = out.index.get_level_values(0)
+    slots = out.index.get_level_values(1)
+    out.index = days + pd.to_timedelta(anchor + (slots + 1) * minutes, unit="m")
+    return out
+
+
+def rth_mask(idx_end):
+    """True for bars that END inside regular hours (9:35 .. 16:00): the only times an option order can fill."""
+    tod = idx_end.hour * 60 + idx_end.minute
+    return (tod > 570) & (tod <= 960)
+
+
 def m5_end_index(m5):
     """5-min bars are stamped at their START; this returns a copy stamped at their END."""
     x = m5.copy()

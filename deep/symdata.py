@@ -6,7 +6,7 @@ One symbol, every timeframe, every indicator, ready to be asked:
 import numpy as np, pandas as pd
 from . import lib
 
-TFS = {"m5": 5, "m15": 15, "m30": 30, "h1": 60, "h4": 240}
+TFS = {"m5": (5, 0), "m15": (15, 0), "m30": (30, 0), "h1": (60, 0), "h4": (240, 60)}   # (minutes, clock anchor)
 
 
 class SymData:
@@ -17,15 +17,20 @@ class SymData:
         self.ok = self.daily is not None and m5 is not None and len(m5) > 1000
         if not self.ok:
             return
-        self.m5 = m5                                       # stamped at bar start
+        tod = m5.index.hour * 60 + m5.index.minute
+        self.m5x = m5                                      # extended hours 4:00-20:00, stamped at bar start
+        self.m5 = m5[(tod >= 570) & (tod < 960)]           # regular hours only (what options can trade)
         self.D = lib.add_ind(self.daily)
         self.D["green"] = self.D.c > self.D.o
         self.D["body"] = (self.D.c - self.D.o) / self.D.atr
         self.W = lib.add_ind(lib.weekly(self.daily), smas=(10, 20, 50))
         self.tf = {}
-        for k, mins in TFS.items():
-            bars = lib.m5_end_index(m5) if k == "m5" else lib.resample_intraday(m5, mins)
+        for k, (mins, anchor) in TFS.items():
+            # indicators run over ALL bars incl. pre/after-market (Taz's TOS chart has extended hours on)
+            bars = lib.m5_end_index(m5) if k == "m5" else lib.resample_clock(m5, mins, anchor)
             self.tf[k] = lib.add_ind(bars, smas=(9, 20, 50, 200))
+        # regular-hours views of each timeframe (signals / fills only happen here; indicator values keep ext bars)
+        self.rth = {k: v[lib.rth_mask(v.index)] for k, v in self.tf.items()}
         self.sessions = self.D.index
         self.spy = spy
         self.vix = vix
@@ -50,7 +55,7 @@ class SymData:
         tod = t.hour * 60 + t.minute
         if t.normalize() == s and 570 <= tod < 960:
             te = s + pd.Timedelta(minutes=570 + ((tod - 570) // 5 + 1) * 5)
-            m = self.tf["m5"]
+            m = self.rth["m5"]
             i = m.index.searchsorted(te, side="right") - 1
             if i < 0:
                 return None, None
@@ -152,7 +157,7 @@ class SymData:
     # ---------- what happened next ----------
     def path(self, t0, sessions=10):
         """5-min bars (stamped at END) strictly after t0, through `sessions` sessions incl. t0's session."""
-        m = self.tf["m5"]
+        m = self.rth["m5"]
         s = self.session_of(t0 - pd.Timedelta(minutes=1)) or t0.normalize()
         i = self.sessions.searchsorted(s)
         last = self.sessions[min(i + sessions - 1, len(self.sessions) - 1)]

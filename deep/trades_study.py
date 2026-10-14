@@ -63,7 +63,7 @@ def main():
             stop = ts.stop_for(S, r.entry, p_in, a)
             row["stop_atr"] = (stop - p_in) / a
             s_in = S.session_of(r.entry) or r.entry.normalize()
-            lv = lib.levels_below(p_in, s_in, S.D, S.m5, S.tf["h1"], min_gap=0.25 * a)
+            lv = lib.levels_below(p_in, s_in, S.D, S.m5x, S.tf["h1"], min_gap=0.25 * a)
             row["levels_n"] = len(lv)
             for n in range(min(4, len(lv))):
                 row[f"level{n+1}_name"] = lv[n][1]
@@ -83,7 +83,7 @@ def main():
                             row[f"X_{x}_beyond_window"] = 1
             # next level below HIS exit: did it get there before the stock rose back above his entry price?
             s_out = S.session_of(r.exit) or r.exit.normalize()
-            lv_out = [x for x in lib.levels_below(p_out, s_out, S.D, S.m5, S.tf["h1"], min_gap=0.25 * a)]
+            lv_out = [x for x in lib.levels_below(p_out, s_out, S.D, S.m5x, S.tf["h1"], min_gap=0.25 * a)]
             if lv_out:
                 nxt = lv_out[0][0]
                 row["next_level_name"] = lv_out[0][1]
@@ -122,7 +122,7 @@ def main():
                 # result from the alt entry, exit at level1 / hourly trail, real option prices
                 st2 = ts.stop_for(S, te, pe, a)
                 s2 = S.session_of(te) or te.normalize()
-                lv2 = lib.levels_below(pe, s2, S.D, S.m5, S.tf["h1"], min_gap=0.25 * a)
+                lv2 = lib.levels_below(pe, s2, S.D, S.m5x, S.tf["h1"], min_gap=0.25 * a)
                 sim2 = ts.simulate(S, te, pe, st2, lv2)
                 if sim2 and pd.notna(op) and op > 0:
                     for x in ("level1", "hourly_close_above_20", "day_close"):

@@ -41,7 +41,7 @@ def run_one(S, t_call, label, cid):
         stop = ts.stop_for(S, te, pe, f["atr"])
         row[f"E_{e}_stop_atr"] = (stop - pe) / f["atr"]
         s_e = S.session_of(te) or te.normalize()
-        lv = lib.levels_below(pe, s_e if te.hour * 60 + te.minute < 960 else s_e, S.D, S.m5, S.tf["h1"], min_gap=0.25 * f["atr"])
+        lv = lib.levels_below(pe, s_e if te.hour * 60 + te.minute < 960 else s_e, S.D, S.m5x, S.tf["h1"], min_gap=0.25 * f["atr"])
         sim = ts.simulate(S, te, pe, stop, lv)
         if sim is None:
             continue

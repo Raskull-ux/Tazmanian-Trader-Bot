@@ -17,20 +17,21 @@ def find_entry(S, kind, t0, p0, window_sessions=3):
     if i0 + window_sessions - 1 >= len(S.sessions):
         return None
     t_end = S.sessions[i0 + window_sessions - 1] + pd.Timedelta(hours=16)
-    m5 = S.tf["m5"]
+    m5 = S.rth["m5"]
     W = m5[(m5.index > t0) & (m5.index <= t_end)]
     if len(W) == 0:
         return None
     if kind == "reject_5m200":
         # tested the 5-min 200 SMA (a high at/above it in the last 6 bars) then a 5-min close back under it
-        X = m5[(m5.index > t0 - pd.Timedelta(hours=1)) & (m5.index <= t_end)]
+        X = S.tf["m5"]
+        X = X[(X.index > t0 - pd.Timedelta(hours=1)) & (X.index <= t_end)]
         touch = (X.h >= X.sma200).rolling(6, min_periods=1).max().astype(bool)
-        sig = touch & (X.c < X.sma200) & (X.index > t0)
+        sig = touch & (X.c < X.sma200) & (X.index > t0) & lib.rth_mask(X.index)
         sig = sig & (X.c.shift() >= X.sma200.shift()) | (sig & (X.h >= X.sma200))
         k = np.where(sig.values)[0]
         return (X.index[k[0]], float(X.c.iloc[k[0]])) if len(k) else None
     if kind == "hourly_20_retest":
-        H = S.tf["h1"]
+        H = S.rth["h1"]
         X = H[(H.index > t0) & (H.index <= t_end)]
         sig = (X.sma20 < X.sma50) & (X.h >= X.sma20) & (X.c < X.sma20)
         k = np.where(sig.values)[0]
@@ -39,6 +40,15 @@ def find_entry(S, kind, t0, p0, window_sessions=3):
         H = S.tf["h1"]
         X = H[(H.index > t0 - pd.Timedelta(hours=2)) & (H.index <= t_end)]
         sig = (X.sma20 < X.sma50) & (X.sma20.shift() >= X.sma50.shift()) & (X.index > t0)
+        # a cross in pre/after-market is acted on at the next regular-hours bar close
+        k = np.where(sig.values)[0]
+        if not len(k):
+            return None
+        R5 = S.rth["m5"]
+        j = R5.index.searchsorted(X.index[k[0]])
+        if j >= len(R5) or R5.index[j] > t_end:
+            return None
+        return R5.index[j], float(R5.c.iloc[j])
         k = np.where(sig.values)[0]
         return (X.index[k[0]], float(X.c.iloc[k[0]])) if len(k) else None
     if kind == "break_prior_day_low":
@@ -50,7 +60,7 @@ def find_entry(S, kind, t0, p0, window_sessions=3):
     if kind == "m15_macd_cross":
         M = S.tf["m15"]
         X = M[(M.index > t0 - pd.Timedelta(minutes=30)) & (M.index <= t_end)]
-        sig = (X.macd < X.macd_sig) & (X.macd.shift() >= X.macd_sig.shift()) & (X.index > t0)
+        sig = (X.macd < X.macd_sig) & (X.macd.shift() >= X.macd_sig.shift()) & (X.index > t0) & lib.rth_mask(X.index)
         k = np.where(sig.values)[0]
         return (X.index[k[0]], float(X.c.iloc[k[0]])) if len(k) else None
     if kind == "failed_breakout":
@@ -163,7 +173,7 @@ def simulate(S, te, pe, stop, levels, sessions=10):
     k_end = k_end[-1] if len(k_end) else 0
     out["day_close"] = (R(stop_px(first_stop)), idx[first_stop]) if first_stop <= k_end else (R(c[k_end]), idx[k_end])
     # hourly close above hourly 20 SMA (swing trail)
-    H = S.tf["h1"]
+    H = S.rth["h1"]
     HX = H[(H.index > te) & (H.index <= idx[-1])]
     below = (HX.c < HX.sma20).cummax()          # trail only arms after an hourly close under the 20
     trig = HX.index[((HX.c > HX.sma20) & below.shift(fill_value=False)).values]

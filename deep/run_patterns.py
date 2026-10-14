@@ -99,7 +99,8 @@ def main():
         m5 = m5[m5.index >= "2016-01-01"]
         if NOISE:
             m5 = scramble_m5(m5)
-            Di = lib.add_ind(daily_from_m5(m5))
+            tx = m5.index.hour * 60 + m5.index.minute
+            Di = lib.add_ind(daily_from_m5(m5[(tx >= 570) & (tx < 960)]))
         else:
             Di = D
         G = I.grid(m5, Di)

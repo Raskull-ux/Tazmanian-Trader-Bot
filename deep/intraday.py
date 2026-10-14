@@ -8,11 +8,16 @@ from . import lib
 SLOTS = 78
 
 
-def grid(m5, D):
-    """Builds aligned arrays (days x 78) for o,h,l,c and indicators computed on the continuous 5-min series."""
-    m = m5.copy()
-    m["sma20"] = lib.sma(m.c, 20)
-    m["sma200"] = lib.sma(m.c, 200)
+def grid(m5x, D):
+    """Builds aligned arrays (days x 78 regular-hours slots) for o,h,l,c. Moving averages are computed on the
+    continuous EXTENDED-hours 5-min series (pre/after-market included, like Taz's TOS chart), then sampled
+    at the regular-hours bars."""
+    mx = m5x.copy()
+    mx["sma20"] = lib.sma(mx.c, 20)
+    mx["sma200"] = lib.sma(mx.c, 200)
+    tx = mx.index.hour * 60 + mx.index.minute
+    m = mx[(tx >= 570) & (tx < 960)]
+    m5 = m
     tod = (m.index.hour * 60 + m.index.minute - 570) // 5
     day = m.index.normalize()
     days = pd.Index(sorted(day.unique()))
@@ -31,8 +36,8 @@ def grid(m5, D):
     G["atr"] = atr
     G["days"] = days
     # hourly bars from the grid (9:30-10:30 ... 15:30-16:00), with 20/50 SMAs on the continuous hourly series
-    H = lib.add_ind(lib.resample_intraday(m5, 60), smas=(20, 50))
-    G["H"] = H
+    H = lib.add_ind(lib.resample_clock(m5x, 60, 0), smas=(20, 50))      # on-the-clock hourly bars, ext hours
+    G["H"] = H[lib.rth_mask(H.index)]
     return G
 
 
