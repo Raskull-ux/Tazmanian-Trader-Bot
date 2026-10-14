@@ -19,7 +19,9 @@ jobs:
         env:
           ALPACA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
-        run: python recent_options_pull.py 2>&1 | tee pull.log
+        run: |
+          python recent_options_pull.py 2>&1 | tee pull.log
+          python recent_options_later.py 2>&1 | tee -a pull.log
       - name: Save
         if: always()
         run: |
@@ -32,5 +34,5 @@ jobs:
       - name: Show status
         if: always()
         run: |
-          msg=$(cat pull.log | tail -n 30 | awk '{printf "%s%%0A", $0}')
+          msg=$(cat pull.log | tail -n 45 | awk '{printf "%s%%0A", $0}')
           echo "::notice title=recent options::${msg}"
