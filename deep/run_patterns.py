@@ -12,6 +12,8 @@ from . import lib, patterns as P, intraday as I
 
 OUT = "results/deep_analysis"
 NOISE = "--noise" in sys.argv
+DAILY_ONLY = "--daily" in sys.argv
+INTRADAY_ONLY = "--intraday" in sys.argv
 rng = np.random.default_rng(11)
 
 
@@ -74,7 +76,7 @@ def main():
         D = lib.add_ind(Draw)
         OUTC = P.daily_outcomes(D)
         base = OUTC.groupby(OUTC.index.year).transform("mean")
-        for name, fn in P.DAILY.items():
+        for name, fn in ({} if INTRADAY_ONLY else P.DAILY).items():
             s = fn(D).reindex(D.index).fillna(False).astype(bool)
             s &= D.index >= "2016-03-01"
             for d in D.index[s.values]:
@@ -84,7 +86,7 @@ def main():
         # weekly sandwich
         W = lib.add_ind(lib.weekly(Draw), smas=(10, 20, 50))
         b = ((W.c - W.o) / W.atr).values
-        for i in range(2, len(W)):
+        for i in (range(2, len(W)) if not INTRADAY_ONLY else []):
             if b[i - 2] <= -0.5 and 0 < b[i - 1] <= 0.4 and b[i] <= -1.0 and b[i] < b[i - 2]:
                 wk_end = W.index[i]
                 d = D.index[D.index <= wk_end]
@@ -93,6 +95,8 @@ def main():
                     drows.append(dict(pattern="WEEKLY sandwich (red, small green, big red)", sym=sym, day=d[-1],
                                       **r.to_dict(), **{"base_" + k: base.loc[d[-1], k] for k in OUTC.columns}))
         # intraday
+        if DAILY_ONLY:
+            print(sym, "daily done", flush=True); continue
         m5 = lib.load_m5(sym)
         if m5 is None or len(m5) < 20000:
             print(sym, "daily only", flush=True); continue
@@ -119,7 +123,7 @@ def main():
                     rec["base_" + k] = B[k][d_, s_]
                 irows.append(rec)
         print(sym, "done", flush=True)
-    tag = "_NOISE" if NOISE else ""
+    tag = ("_NOISE" if NOISE else "") + ("_daily" if DAILY_ONLY else "") + ("_intraday" if INTRADAY_ONLY else "")
     dd = pd.DataFrame(drows); ii = pd.DataFrame(irows)
     dd.to_csv(f"{OUT}/pattern_signals_daily{tag}.csv.gz", index=False)
     ii.to_csv(f"{OUT}/pattern_signals_intraday{tag}.csv.gz", index=False)

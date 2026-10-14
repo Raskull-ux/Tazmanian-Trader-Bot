@@ -345,9 +345,14 @@ def main():
         L += calls_section(boolify(pd.read_csv(f"{OUT}/calls_dissected.csv.gz")))
     if os.path.exists(f"{OUT}/trades_dissected.csv.gz"):
         L += trades_section(boolify(pd.read_csv(f"{OUT}/trades_dissected.csv.gz")))
-    if os.path.exists(f"{OUT}/pattern_verdicts.csv"):
-        VN = pd.read_csv(f"{OUT}/pattern_verdicts_NOISE.csv") if os.path.exists(f"{OUT}/pattern_verdicts_NOISE.csv") else None
-        L += patterns_section(pd.read_csv(f"{OUT}/pattern_verdicts.csv"), pd.read_csv(f"{OUT}/pattern_scores.csv"), VN)
+    def load_parts(prefix, noise=""):
+        parts = [f"{OUT}/{prefix}{noise}{suf}.csv" for suf in ("", "_daily", "_intraday")]
+        got = [pd.read_csv(p) for p in parts if os.path.exists(p)]
+        return pd.concat(got, ignore_index=True).drop_duplicates(subset=[c for c in ("kind", "pattern", "period")
+                                                                        if c in got[0].columns]) if got else None
+    V = load_parts("pattern_verdicts")
+    if V is not None:
+        L += patterns_section(V, load_parts("pattern_scores"), load_parts("pattern_verdicts", "_NOISE"))
     open(f"{OUT}/REPORT.md", "w").write("\n".join(L))
     print("\n".join(L)[:3000])
 

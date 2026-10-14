@@ -1,0 +1,17 @@
+kind,pattern,discovery_pass,holdout_pass,PASS
+daily,"WEEKLY sandwich (red, small green, big red)",False,False,False
+daily,bear flag (break of flag low),False,False,False
+daily,bear flag (break of prior day low),False,False,False
+daily,"bear flag, deep pole 4 ATR",False,False,False
+daily,daily 10 SMA crosses under 50 SMA,False,False,False
+daily,"daily 10/50 cross, first retest of 10 SMA",True,False,False
+daily,double top (break of middle low),False,False,False
+daily,double top (early: red day off 2nd top),False,False,False
+daily,"falling three (red, 3 greens, big red)",False,False,False
+daily,falling three (textbook),False,False,False
+daily,head and shoulders (neckline break),False,False,False
+daily,red-green-green-red,False,False,False
+daily,red-green-green-red after 20-day high,False,False,False
+daily,red-green-green-red under 20 SMA,False,False,False
+daily,"sandwich (red, small green, big red)",False,False,False
+daily,sandwich + 10 SMA under 20 SMA,False,False,False
