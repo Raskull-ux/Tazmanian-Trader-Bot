@@ -79,7 +79,9 @@ def main():
         os.makedirs(f"{OUT}/{sub}", exist_ok=True)
     end = (pd.Timestamp.now(tz="UTC") - pd.Timedelta(minutes=20)).isoformat()
     syms = symbols()
-    print(len(syms), "symbols:", " ".join(syms), flush=True)
+    shard, nsh = int(os.environ.get("SHARD", "0")), int(os.environ.get("NSHARDS", "1"))
+    syms = syms[shard::nsh]
+    print(len(syms), "symbols in this shard:", " ".join(syms), flush=True)
     t0 = time.time()
     for n, sym in enumerate(syms, 1):
         d = bars(sym, "1Day", "2015-01-01", end, "split")
@@ -100,6 +102,8 @@ def main():
             m["v"] = m.v.astype("float32")
             m.to_parquet(f"{OUT}/m5/{sym}.parquet", index=False, compression="zstd")
         print(f"[{n}/{len(syms)}] {sym}: daily {len(d)}  5min {len(m)}  ({time.time() - t0:.0f}s)", flush=True)
+    if shard != 0:
+        return
     try:
         import yfinance as yf
         v = yf.download("^VIX", start="2015-01-01", progress=False, auto_adjust=False)

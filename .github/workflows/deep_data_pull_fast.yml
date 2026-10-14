@@ -1,0 +1,53 @@
+name: Deep Data Pull (parallel)
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [deep_data_fast]
+permissions:
+  contents: write
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy requests yfinance pyarrow openpyxl
+      - name: Pull this shard
+        env:
+          SHARD: ${{ matrix.shard }}
+          NSHARDS: 10
+          ALPACA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
+        run: python deep_data_pull.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.shard }}
+          path: deepdata
+  publish:
+    needs: pull
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: parts
+      - name: Merge shards and publish to the data branch
+        run: |
+          mkdir -p deepdata
+          for d in parts/*/; do cp -r "$d"* deepdata/ 2>/dev/null || true; done
+          ls deepdata/m5 | wc -l
+          cd deepdata
+          git init -q
+          git checkout -q -b data
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -qm "Deep data $(date -u +%F)"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" data
