@@ -20,9 +20,8 @@ jobs:
           ALPACA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
         run: |
-          python recent_options_pull.py 2>&1 | tee pull.log
-          python recent_options_later.py 2>&1 | tee -a pull.log
-          TRADES_FILE=deep/recent_trades2.csv python recent_options_pull.py 2>&1 | tee -a pull.log
+          : > pull.log
+          TRADES_FILE=deep/recent_trades3.csv python recent_options_pull.py 2>&1 | tee -a pull.log
       - name: Save
         if: always()
         run: |
