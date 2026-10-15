@@ -2,7 +2,8 @@
 bought at the first real print after the alert, sold at the last print before Taz posted he was out.
 One contract each. Also: what a $200 / $500 account taking one contract per alert would look like (in order).
 Posted-only results (spreads, unknown strikes) are listed separately, not mixed in.
-HOOD is left out: his $1.12 -> $5.01 contract is not the $100 10/23 single put (that traded 1.04 -> 2.30), so it could not be priced exactly."""
+HOOD: the alerted $100/$90 10/23 put spread is priced as a spread (long minus short). His personal $1.12 -> $5.01
+fill matches the HOOD 10/16 $107 put (traded 1.10-1.14 on 10/13, about 4.90-4.92 around 11:11-11:45 on 10/14)."""
 import numpy as np, pandas as pd
 
 SRC = "results/recent_options"
@@ -32,6 +33,7 @@ ALERTS = [
     ("TSLA261009P00367500", "2026-10-08 11:58", "2026-10-08 13:36", "TSLA $367.5 put"),
     ("TSLA261012P00365000", "2026-10-08 15:59", "2026-10-09 10:18", "TSLA $365 put overnight"),
     ("QQQ261012P00745000", "2026-10-09 10:18", "2026-10-09 12:44", "QQQ $745 put"),
+    ("HOOD261023P00100000-HOOD261023P00090000", "2026-10-09 15:55", "2026-10-14 11:27", "HOOD $100/$90 put spread 10/23"),
     ("QQQ261012C00748000", "2026-10-12 11:43", "2026-10-12 12:04", "QQQ $748 same-day call"),
     ("QQQ261012P00746000", "2026-10-12 12:24", "2026-10-12 12:57", "QQQ $746 same-day put"),
 ]
@@ -46,7 +48,15 @@ def px(b, t, before=False):
 def main():
     rows = []
     for occ, a, z, label in ALERTS:
-        b = pd.read_csv(f"{SRC}/{occ}.csv", parse_dates=["t"])
+        if "-" in occ:          # spread: long leg minus short leg, minute by minute
+            lg, sh = occ.split("-")
+            L = pd.read_csv(f"{SRC}/{lg}.csv", parse_dates=["t"]).set_index("t").c
+            S_ = pd.read_csv(f"{SRC}/{sh}.csv", parse_dates=["t"]).set_index("t").c
+            j = L.to_frame("l").join(S_.to_frame("s"), how="outer").sort_index().ffill().dropna()
+            b = pd.DataFrame({"t": j.index, "c": (j.l - j.s).values})
+            occ = lg
+        else:
+            b = pd.read_csv(f"{SRC}/{occ}.csv", parse_dates=["t"])
         p_in = px(b, a)
         if z is None:
             exp = pd.Timestamp("20" + occ[-15:-9]) + pd.Timedelta(hours=16)
