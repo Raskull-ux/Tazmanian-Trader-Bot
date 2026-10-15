@@ -10,6 +10,10 @@ for sym in os.environ.get("SYMS", "QQQ,SPY").split(","):
         "start": (today + pd.Timedelta(hours=4)).isoformat(), "feed": "iex", "limit": 1000}, timeout=30).json()
     bars = (b.get("bars") or {}).get(sym, [])
     hi = max([x["h"] for x in bars], default=None); lo = min([x["l"] for x in bars], default=None)
+    rth = [x for x in bars if pd.Timestamp(x["t"]).tz_convert("America/New_York").hour * 60 + pd.Timestamp(x["t"]).tz_convert("America/New_York").minute >= 570]
+    o930 = rth[0]["o"] if rth else None
+    rhi = max([x["h"] for x in rth], default=None); rlo = min([x["l"] for x in rth], default=None)
+    out.append(f"{sym} OPEN930 {o930} | RTH high {rhi} low {rlo}")
     out.append(f"{sym} last {t.get('trade', {}).get('p')} at {t.get('trade', {}).get('t')} | today since 4am: high {hi} low {lo} bars {len(bars)}")
 msg = " %0A".join(out)
 print(msg.replace(" %0A", "\n"))
