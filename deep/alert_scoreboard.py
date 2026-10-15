@@ -2,8 +2,8 @@
 bought at the first real print after the alert, sold at the last print before Taz posted he was out.
 One contract each. Also: what a $200 / $500 account taking one contract per alert would look like (in order).
 Posted-only results (spreads, unknown strikes) are listed separately, not mixed in.
-HOOD: the alerted $100/$90 10/23 put spread is priced as a spread (long minus short). His personal $1.12 -> $5.01
-fill matches the HOOD 10/16 $107 put (traded 1.10-1.14 on 10/13, about 4.90-4.92 around 11:11-11:45 on 10/14)."""
+HOOD: Taz confirmed the contract was the $100/$92 10/30 put spread; priced as a spread (long minus short).
+The posted $1.12 -> $5.01 never printed on that spread (10/13 low 1.28, 10/14 high 3.32), so the scoreboard uses real prints."""
 import numpy as np, pandas as pd
 
 SRC = "results/recent_options"
@@ -33,7 +33,7 @@ ALERTS = [
     ("TSLA261009P00367500", "2026-10-08 11:58", "2026-10-08 13:36", "TSLA $367.5 put"),
     ("TSLA261012P00365000", "2026-10-08 15:59", "2026-10-09 10:18", "TSLA $365 put overnight"),
     ("QQQ261012P00745000", "2026-10-09 10:18", "2026-10-09 12:44", "QQQ $745 put"),
-    ("HOOD261023P00100000-HOOD261023P00090000", "2026-10-09 15:55", "2026-10-14 11:27", "HOOD $100/$90 put spread 10/23"),
+    ("HOOD261030P00100000-HOOD261030P00092000", "2026-10-09 15:55", "2026-10-14 11:27", "HOOD $100/$92 put spread 10/30"),
     ("QQQ261012C00748000", "2026-10-12 11:43", "2026-10-12 12:04", "QQQ $748 same-day call"),
     ("QQQ261012P00746000", "2026-10-12 12:24", "2026-10-12 12:57", "QQQ $746 same-day put"),
 ]
