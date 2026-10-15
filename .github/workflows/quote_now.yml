@@ -1,0 +1,16 @@
+name: Quote Now
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [quote]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install pandas requests
+      - env:
+          ALPACA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
+        run: python quote_now.py
