@@ -13,4 +13,5 @@ jobs:
       - env:
           ALPACA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
           ALPACA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
+          SYMS: ${{ github.event.client_payload.syms || 'QQQ,SPY' }}
         run: python quote_now.py
