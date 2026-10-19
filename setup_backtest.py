@@ -100,8 +100,8 @@ def fetch(symbols, tf, start, end):
 # ----------------------------------------------------------------- indicators
 def rsi(close: pd.Series, n: int) -> pd.Series:
     d = close.diff()
-    up = d.clip(lower=0).ewm(alpha=1 / n, adjust=False).mean()
-    dn = (-d.clip(upper=0)).ewm(alpha=1 / n, adjust=False).mean()
+    up = d.clip(lower=0).ewm(span=n, adjust=False).mean()
+    dn = (-d.clip(upper=0)).ewm(span=n, adjust=False).mean()
     rs = up / dn.replace(0, np.nan)
     return (100 - 100 / (1 + rs)).fillna(100)
 

@@ -92,8 +92,8 @@ def three_hour(h1):
 
 def wilder_rsi(c, n=14):
     d = c.diff()
-    up = d.clip(lower=0).ewm(alpha=1 / n, adjust=False).mean()
-    dn = (-d.clip(upper=0)).ewm(alpha=1 / n, adjust=False).mean()
+    up = d.clip(lower=0).ewm(span=n, adjust=False).mean()
+    dn = (-d.clip(upper=0)).ewm(span=n, adjust=False).mean()
     return 100 - 100 / (1 + up / dn)
 
 

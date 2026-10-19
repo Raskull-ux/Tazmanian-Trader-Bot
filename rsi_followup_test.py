@@ -128,8 +128,8 @@ def option_trade(c, iv, j, call):
 def prep(d, ivser):
     d = d.copy()
     delta = d.c.diff()
-    up = delta.clip(lower=0).ewm(alpha=1 / 14, adjust=False).mean()
-    dn = (-delta.clip(upper=0)).ewm(alpha=1 / 14, adjust=False).mean()
+    up = delta.clip(lower=0).ewm(span=14, adjust=False).mean()
+    dn = (-delta.clip(upper=0)).ewm(span=14, adjust=False).mean()
     d["rsi"] = 100 - 100 / (1 + up / dn)
     d["s50"] = d.c.rolling(50).mean(); d["s200"] = d.c.rolling(200).mean()
     rv = np.log(d.c).diff().rolling(20).std() * math.sqrt(252) * 1.2

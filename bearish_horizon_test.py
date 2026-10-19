@@ -173,8 +173,8 @@ def prep(d, ivser):
     for n in (10, 20, 50, 200):
         d[f"s{n}"] = d.c.rolling(n).mean()
     delta = d.c.diff()
-    up = delta.clip(lower=0).ewm(alpha=1 / 14, adjust=False).mean()
-    dn = (-delta.clip(upper=0)).ewm(alpha=1 / 14, adjust=False).mean()
+    up = delta.clip(lower=0).ewm(span=14, adjust=False).mean()
+    dn = (-delta.clip(upper=0)).ewm(span=14, adjust=False).mean()
     d["rsi"] = 100 - 100 / (1 + up / dn)
     lr = np.log(d.c).diff()
     # stocks: blend of 20-day and 1-year realized vol x1.2. Pure 20-day vol made options look too cheap after

@@ -167,8 +167,8 @@ def run_symbol(sym, grp, dd, m, out):
     gc = ((s50 > s200) & (s50.shift() <= s200.shift())).rolling(30, min_periods=1).max().astype(bool)
     into_gc = gc | ((s50 < s200) & (s50 >= s200 * 0.98) & (s50 > s50.shift(5)))
     delta = c.diff()
-    au = delta.clip(lower=0).ewm(alpha=1 / 14, adjust=False).mean()
-    ad = (-delta.clip(upper=0)).ewm(alpha=1 / 14, adjust=False).mean()
+    au = delta.clip(lower=0).ewm(span=14, adjust=False).mean()
+    ad = (-delta.clip(upper=0)).ewm(span=14, adjust=False).mean()
     rsi = 100 - 100 / (1 + au / ad)
     P = pd.DataFrame({"sum9": c.rolling(9).sum(), "sum19": c.rolling(19).sum(), "sum49": c.rolling(49).sum(),
                       "s50": s50, "s200": s200, "below3": below3, "above3": above3, "into_gc": into_gc,

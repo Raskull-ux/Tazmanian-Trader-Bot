@@ -154,8 +154,8 @@ def prep(d):
     for n in (10, 20, 50, 200):
         d[f"s{n}"] = d.c.rolling(n).mean()
     delta = d.c.diff()
-    up = delta.clip(lower=0).ewm(alpha=1 / 14, adjust=False).mean()
-    dn = (-delta.clip(upper=0)).ewm(alpha=1 / 14, adjust=False).mean()
+    up = delta.clip(lower=0).ewm(span=14, adjust=False).mean()
+    dn = (-delta.clip(upper=0)).ewm(span=14, adjust=False).mean()
     d["rsi"] = 100 - 100 / (1 + up / dn)
     pc = d.c.shift()
     tr = pd.concat([d.h - d.l, (d.h - pc).abs(), (d.l - pc).abs()], axis=1).max(axis=1)
