@@ -14,7 +14,7 @@ jobs:
       max-parallel: 1
       fail-fast: false
       matrix:
-        study: ${{ fromJSON(github.event.client_payload.studies) }}
+        study: ${{ github.event.client_payload.studies }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
