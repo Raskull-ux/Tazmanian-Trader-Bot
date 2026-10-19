@@ -128,10 +128,11 @@ def build_grid(m5):
 
 
 def wilder(c, n):
+    # RSI uses EXPONENTIAL averaging (EMA span) to match Taz's charts (RSI 14 exponential). Verified QQQ 2026-10-16 = 20.87.
     c = pd.Series(np.asarray(c, float))
     d = c.diff()
-    up = d.clip(lower=0).ewm(alpha=1 / n, adjust=False).mean()
-    dn = (-d.clip(upper=0)).ewm(alpha=1 / n, adjust=False).mean()
+    up = d.clip(lower=0).ewm(span=n, adjust=False).mean()
+    dn = (-d.clip(upper=0)).ewm(span=n, adjust=False).mean()
     return up.values, dn.values
 
 

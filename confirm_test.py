@@ -36,9 +36,10 @@ CONF = ["rsi_div", "rsi_under_ma", "macd_roll", "macd_div", "under_10sma", "lowe
 
 
 def rsi(c, n=14):
+    # RSI uses EXPONENTIAL averaging (EMA span) to match Taz's charts (RSI 14 exponential). Verified QQQ 2026-10-16 = 20.87.
     d = c.diff()
-    up = d.clip(lower=0).ewm(alpha=1 / n, adjust=False).mean()
-    dn = (-d.clip(upper=0)).ewm(alpha=1 / n, adjust=False).mean()
+    up = d.clip(lower=0).ewm(span=n, adjust=False).mean()
+    dn = (-d.clip(upper=0)).ewm(span=n, adjust=False).mean()
     return (100 - 100 / (1 + up / dn.replace(0, np.nan))).fillna(100)
 
 
