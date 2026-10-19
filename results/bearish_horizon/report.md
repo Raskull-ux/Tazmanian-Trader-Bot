@@ -6,109 +6,109 @@ Puts direction: positive = it fell. Random = the same measurement on EVERY day o
 
 | Setup | Group | Signals | Passes on | Best evidence |
 |---|---|---|---|---|
-| MA break DOWN: all | ETF | 2172 | nothing | dropped 5% in 30d: +0.05 (t -1.4; periods +0.07 / -0.03 / +0.09) |
-| MA break DOWN: all | MEGA | 1785 | nothing | dropped 5% in 30d: +0.04 (t -0.2; periods +0.04 / +0.01 / +0.08) |
-| MA break DOWN: 50 10%+ over the 200 | ETF | 329 | nothing | put +50% target: -9.04 (t -1.0; periods -17.51 / -16.25 / +10.41) |
-| MA break DOWN: 50 10%+ over the 200 | MEGA | 698 | nothing | dropped 5% in 30d: +0.03 (t 0.2; periods +0.04 / -0.00 / +0.04) |
-| MA break DOWN: next day lower (enter that close) | ETF | 971 | nothing | dropped 5% in 30d: +0.06 (t 0.1; periods +0.06 / +0.06 / +0.08) |
-| MA break DOWN: next day lower (enter that close) | MEGA | 839 | nothing | dropped 5% in 30d: +0.01 (t -0.6; periods -0.01 / +0.01 / +0.07) |
-| MA break DOWN: failed retest of the 10 | ETF | 1252 | nothing | dropped 5% in 30d: +0.06 (t 0.0; periods +0.09 / -0.01 / +0.07) |
-| MA break DOWN: failed retest of the 10 | MEGA | 1015 | nothing | 15-day close: +0.35 (t -0.2; periods +0.68 / -0.41 / +0.27) |
-| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | ETF | 548 | nothing | 20-day close: -0.58 (t -0.7; periods -0.55 / -0.51 / -0.72) |
-| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | MEGA | 291 | nothing | 15-day close: -0.23 (t 0.1; periods +0.06 / -0.76 / +0.28) |
-| MA break UP -> calls | ETF | 3023 | nothing | 40-day close: -0.45 (t -2.0; periods -0.25 / -0.40 / -1.11) |
-| MA break UP -> calls | MEGA | 2369 | nothing | 40-day close: +0.03 (t -1.3; periods +0.61 / -0.58 / -0.62) |
-| RSI 70 -> puts | ETF | 940 | nothing | 15-day close: +0.40 (t 3.1; periods +0.11 / +1.13 / -0.13) |
-| RSI 70 -> puts | MEGA | 932 | nothing | dropped 5% in 30d: -0.02 (t 1.6; periods -0.01 / +0.00 / -0.09) |
-| RSI 80 -> puts | ETF | 119 | nothing | 40-day close: +1.91 (t 1.1; periods +0.65 / +3.27 / +0.95) |
-| RSI 80 -> puts | MEGA | 202 | nothing | dropped 5% in 30d: +0.04 (t 1.3; periods +0.03 / +0.08 / -0.01) |
+| MA break DOWN: all | ETF | 2174 | nothing | dropped 5% in 30d: +0.05 (t -1.5; periods +0.07 / -0.03 / +0.09) |
+| MA break DOWN: all | MEGA | 1787 | nothing | dropped 5% in 30d: +0.04 (t -0.2; periods +0.04 / +0.01 / +0.08) |
+| MA break DOWN: 50 10%+ over the 200 | ETF | 329 | nothing | put +50% target: -9.11 (t -1.0; periods -17.51 / -16.25 / +10.18) |
+| MA break DOWN: 50 10%+ over the 200 | MEGA | 700 | nothing | dropped 5% in 30d: +0.03 (t 0.1; periods +0.04 / -0.00 / +0.05) |
+| MA break DOWN: next day lower (enter that close) | ETF | 972 | nothing | dropped 5% in 30d: +0.06 (t 0.1; periods +0.06 / +0.06 / +0.08) |
+| MA break DOWN: next day lower (enter that close) | MEGA | 840 | nothing | dropped 5% in 30d: +0.01 (t -0.6; periods -0.01 / +0.01 / +0.07) |
+| MA break DOWN: failed retest of the 10 | ETF | 1251 | nothing | dropped 5% in 30d: +0.06 (t 0.0; periods +0.09 / -0.01 / +0.07) |
+| MA break DOWN: failed retest of the 10 | MEGA | 1019 | nothing | 15-day close: +0.38 (t -0.2; periods +0.71 / -0.41 / +0.34) |
+| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | ETF | 549 | nothing | 20-day close: -0.58 (t -0.7; periods -0.55 / -0.51 / -0.73) |
+| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | MEGA | 291 | nothing | 15-day close: -0.23 (t 0.1; periods +0.06 / -0.76 / +0.30) |
+| MA break UP -> calls | ETF | 3025 | nothing | 40-day close: -0.46 (t -2.0; periods -0.25 / -0.40 / -1.12) |
+| MA break UP -> calls | MEGA | 2372 | nothing | 40-day close: +0.03 (t -1.3; periods +0.61 / -0.58 / -0.60) |
+| RSI 70 -> puts | ETF | 2150 | **30-day close, 40-day close** | 15-day close: +0.08 (t 4.5; periods +0.06 / +0.35 / -0.30) |
+| RSI 70 -> puts | MEGA | 1808 | nothing | 15-day close: +0.10 (t 2.8; periods +0.14 / +0.22 / -0.19) |
+| RSI 80 -> puts | ETF | 791 | nothing | put +50% target: +2.57 (t 3.6; periods +0.88 / +10.46 / -6.91) |
+| RSI 80 -> puts | MEGA | 836 | nothing | 15-day close: -0.38 (t 0.9; periods -0.51 / +0.30 / -1.06) |
 
 ## 1. Close-to-close move your way, by holding period (edge vs random, t)
 
 | Setup | Group | 5d | 10d | 15d | 20d | 30d | 40d | 60d |
 |---|---|---|---|---|---|---|---|---|
-| MA break DOWN: all | ETF | -0.25 (t -5.0) | -0.14 (t -3.6) | -0.05 (t -2.8) | -0.03 (t -2.7) | -0.12 (t -2.2) | -0.20 (t -2.1) | -0.15 (t -1.1) |
-| MA break DOWN: all | MEGA | +0.20 (t -1.5) | +0.42 (t -1.1) | +0.33 (t -1.4) | +0.65 (t -0.9) | +0.27 (t -1.6) | +0.40 (t -0.8) | +0.78 (t -0.5) |
+| MA break DOWN: all | ETF | -0.25 (t -5.0) | -0.14 (t -3.6) | -0.04 (t -2.9) | -0.03 (t -2.7) | -0.12 (t -2.2) | -0.21 (t -2.1) | -0.16 (t -1.1) |
+| MA break DOWN: all | MEGA | +0.19 (t -1.5) | +0.42 (t -1.1) | +0.33 (t -1.4) | +0.65 (t -0.9) | +0.28 (t -1.6) | +0.41 (t -0.8) | +0.79 (t -0.5) |
 | MA break DOWN: all | QQQ alone (211) | -0.01 | +0.11 | +0.08 | +0.04 | +0.08 | +0.12 | +0.29 |
-| MA break DOWN: 50 10%+ over the 200 | ETF | -0.39 (t -2.3) | -1.04 (t -2.5) | -1.26 (t -2.1) | -1.75 (t -2.7) | -2.13 (t -2.5) | -2.11 (t -2.5) | -3.06 (t -1.9) |
-| MA break DOWN: 50 10%+ over the 200 | MEGA | -0.12 (t -1.0) | -0.14 (t -1.1) | -0.30 (t -1.3) | -0.18 (t -0.8) | -0.96 (t -1.5) | -0.69 (t -1.1) | -0.14 (t -1.0) |
-| MA break DOWN: 50 10%+ over the 200 | QQQ alone (29) | +0.56 | -0.91 | -0.38 | -1.28 | -1.61 | -2.39 | -2.68 |
-| MA break DOWN: next day lower (enter that close) | ETF | -0.28 (t -3.3) | +0.02 (t -1.7) | +0.15 (t -1.4) | +0.05 (t -1.3) | -0.09 (t -1.3) | -0.20 (t -1.3) | -0.06 (t -0.8) |
-| MA break DOWN: next day lower (enter that close) | MEGA | +0.38 (t -0.6) | +0.49 (t -1.1) | +0.26 (t -1.3) | +0.27 (t -1.1) | +0.03 (t -0.9) | -0.19 (t -0.9) | +0.68 (t 0.1) |
-| MA break DOWN: next day lower (enter that close) | QQQ alone (92) | -0.20 | +0.06 | +0.19 | -0.10 | +0.44 | +0.62 | +0.89 |
-| MA break DOWN: failed retest of the 10 | ETF | +0.04 (t -1.4) | +0.01 (t -1.4) | -0.04 (t -1.7) | -0.00 (t -1.6) | -0.39 (t -2.1) | -0.24 (t -1.7) | +0.02 (t -0.9) |
-| MA break DOWN: failed retest of the 10 | MEGA | +0.42 (t -0.4) | +0.15 (t -0.8) | +0.35 (t -0.2) | -0.12 (t -1.3) | -0.17 (t -1.3) | +0.07 (t -1.3) | +0.28 (t -1.1) |
+| MA break DOWN: 50 10%+ over the 200 | ETF | -0.39 (t -2.3) | -1.04 (t -2.5) | -1.26 (t -2.1) | -1.74 (t -2.7) | -2.13 (t -2.5) | -2.11 (t -2.5) | -3.06 (t -1.9) |
+| MA break DOWN: 50 10%+ over the 200 | MEGA | -0.14 (t -1.1) | -0.13 (t -1.1) | -0.30 (t -1.3) | -0.19 (t -0.8) | -0.94 (t -1.5) | -0.66 (t -1.1) | -0.13 (t -1.0) |
+| MA break DOWN: 50 10%+ over the 200 | QQQ alone (29) | +0.56 | -0.91 | -0.37 | -1.28 | -1.61 | -2.39 | -2.67 |
+| MA break DOWN: next day lower (enter that close) | ETF | -0.28 (t -3.2) | +0.02 (t -1.7) | +0.15 (t -1.4) | +0.05 (t -1.3) | -0.10 (t -1.4) | -0.21 (t -1.4) | -0.07 (t -0.8) |
+| MA break DOWN: next day lower (enter that close) | MEGA | +0.38 (t -0.6) | +0.49 (t -1.1) | +0.25 (t -1.3) | +0.27 (t -1.1) | +0.04 (t -0.9) | -0.17 (t -0.9) | +0.70 (t 0.1) |
+| MA break DOWN: next day lower (enter that close) | QQQ alone (92) | -0.21 | +0.06 | +0.19 | -0.09 | +0.44 | +0.61 | +0.89 |
+| MA break DOWN: failed retest of the 10 | ETF | +0.04 (t -1.4) | +0.01 (t -1.4) | -0.04 (t -1.7) | -0.00 (t -1.6) | -0.39 (t -2.1) | -0.23 (t -1.7) | +0.03 (t -0.9) |
+| MA break DOWN: failed retest of the 10 | MEGA | +0.44 (t -0.3) | +0.18 (t -0.8) | +0.38 (t -0.2) | -0.07 (t -1.2) | -0.12 (t -1.3) | +0.12 (t -1.3) | +0.33 (t -1.2) |
 | MA break DOWN: failed retest of the 10 | QQQ alone (134) | +0.81 | +0.44 | +0.02 | +0.17 | +0.05 | +0.51 | +0.94 |
-| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | ETF | -0.31 (t -2.5) | -0.36 (t -2.0) | -0.54 (t -1.0) | -0.58 (t -0.7) | -0.84 (t -0.9) | -0.71 (t -0.8) | -0.73 (t -0.8) |
-| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | MEGA | +0.14 (t 0.8) | +0.02 (t 0.2) | -0.23 (t 0.1) | -0.40 (t -0.2) | -0.53 (t -0.2) | -0.67 (t -0.2) | -1.05 (t -0.5) |
-| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | QQQ alone (65) | -0.47 | -0.19 | -0.18 | -0.34 | -0.36 | -0.44 | -0.49 |
-| MA break UP -> calls | ETF | -0.17 (t -4.1) | -0.04 (t -2.8) | -0.24 (t -3.2) | -0.18 (t -2.4) | -0.44 (t -2.4) | -0.45 (t -2.0) | -0.39 (t -1.5) |
-| MA break UP -> calls | MEGA | +0.22 (t -0.6) | +0.07 (t -2.0) | -0.04 (t -2.3) | +0.16 (t -1.7) | -0.06 (t -1.8) | +0.03 (t -1.3) | +0.26 (t -0.8) |
-| MA break UP -> calls | QQQ alone (288) | +0.08 | +0.16 | +0.14 | -0.02 | -0.29 | -0.14 | +0.20 |
-| RSI 70 -> puts | ETF | +0.22 (t 4.5) | +0.20 (t 3.1) | +0.40 (t 3.1) | +0.37 (t 2.3) | +0.49 (t 2.1) | +0.65 (t 2.1) | +0.96 (t 1.4) |
-| RSI 70 -> puts | MEGA | +0.09 (t 2.2) | +0.11 (t 2.3) | -0.13 (t 1.5) | -0.43 (t 0.8) | +0.09 (t 1.4) | -0.22 (t 0.8) | +0.33 (t 0.4) |
-| RSI 70 -> puts | QQQ alone (103) | -0.03 | -0.12 | -0.08 | -0.16 | +0.10 | +0.08 | +0.91 |
-| RSI 80 -> puts | ETF | +0.80 (t 2.5) | +0.59 (t 0.7) | +0.54 (t 0.9) | +0.39 (t 0.3) | +0.84 (t 0.6) | +1.91 (t 1.1) | +2.13 (t 2.2) |
-| RSI 80 -> puts | MEGA | +0.29 (t 1.1) | -0.14 (t 0.1) | -1.15 (t -0.7) | -0.57 (t -0.0) | -0.39 (t 0.6) | +0.44 (t 0.9) | +0.50 (t -0.1) |
-| RSI 80 -> puts | QQQ alone (17) | +0.99 | +1.78 | +1.42 | +1.74 | +2.61 | +4.79 | +4.19 |
+| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | ETF | -0.31 (t -2.5) | -0.37 (t -2.0) | -0.54 (t -1.1) | -0.58 (t -0.7) | -0.84 (t -0.9) | -0.71 (t -0.9) | -0.73 (t -0.8) |
+| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | MEGA | +0.13 (t 0.8) | +0.02 (t 0.2) | -0.23 (t 0.1) | -0.40 (t -0.2) | -0.53 (t -0.2) | -0.67 (t -0.2) | -1.05 (t -0.5) |
+| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | QQQ alone (65) | -0.48 | -0.19 | -0.18 | -0.34 | -0.36 | -0.45 | -0.49 |
+| MA break UP -> calls | ETF | -0.18 (t -4.1) | -0.05 (t -2.8) | -0.24 (t -3.2) | -0.18 (t -2.4) | -0.44 (t -2.4) | -0.46 (t -2.0) | -0.39 (t -1.5) |
+| MA break UP -> calls | MEGA | +0.21 (t -0.6) | +0.07 (t -2.0) | -0.03 (t -2.3) | +0.16 (t -1.6) | -0.06 (t -1.7) | +0.03 (t -1.3) | +0.26 (t -0.8) |
+| MA break UP -> calls | QQQ alone (288) | +0.06 | +0.15 | +0.13 | -0.02 | -0.30 | -0.15 | +0.19 |
+| RSI 70 -> puts | ETF | +0.16 (t 5.8) | +0.09 (t 4.9) | +0.08 (t 4.5) | +0.04 (t 3.5) | +0.47 (t 3.8) | +0.56 (t 3.2) | +0.38 (t 2.0) |
+| RSI 70 -> puts | MEGA | -0.04 (t 2.4) | -0.00 (t 2.8) | +0.10 (t 2.8) | -0.25 (t 1.6) | +0.16 (t 1.8) | +0.15 (t 1.1) | +0.14 (t 0.6) |
+| RSI 70 -> puts | QQQ alone (205) | +0.30 | -0.04 | +0.03 | -0.05 | +0.32 | +0.59 | +0.24 |
+| RSI 80 -> puts | ETF | +0.37 (t 5.5) | +0.32 (t 3.8) | +0.47 (t 3.0) | +0.38 (t 2.6) | +0.53 (t 2.8) | +0.71 (t 2.6) | +1.09 (t 2.2) |
+| RSI 80 -> puts | MEGA | +0.07 (t 1.7) | -0.09 (t 1.9) | -0.38 (t 0.9) | -0.47 (t 0.0) | -0.17 (t 0.7) | -0.25 (t 0.7) | -0.38 (t -0.5) |
+| RSI 80 -> puts | QQQ alone (91) | +0.16 | +0.13 | +0.17 | +0.25 | +0.33 | +0.17 | +0.97 |
 
 ## 2. Best point inside the window, and how often it dumped (signal vs random)
 
 | Setup | Group | Deepest move your way: 15d / 20d / 30d | Dropped 5% in 30d | Dropped 7% | Dropped 10% |
 |---|---|---|---|---|---|
-| MA break DOWN: all | ETF (2172) | 4.9% vs 4.2% / 5.6% vs 4.8% / 6.8% vs 5.8% | 46% vs 41% (t -1.4) | 35% vs 29% (t -0.2) | 23% vs 18% (t 0.5) |
-| MA break DOWN: all | MEGA (1785) | 7.8% vs 6.9% / 8.8% vs 7.9% / 10.4% vs 9.5% | 63% vs 59% (t -0.2) | 53% vs 48% (t 0.5) | 40% vs 36% (t 0.7) |
-| MA break DOWN: all | QQQ alone (211) | 5.2% vs 4.2% / 5.8% vs 4.8% / 7.0% vs 5.9% | 48% vs 40% (t 1.6) | 35% vs 29% (t 1.4) | 25% vs 18% (t 1.9) |
+| MA break DOWN: all | ETF (2174) | 4.9% vs 4.2% / 5.6% vs 4.8% / 6.8% vs 5.8% | 46% vs 41% (t -1.5) | 35% vs 29% (t -0.2) | 23% vs 18% (t 0.5) |
+| MA break DOWN: all | MEGA (1787) | 7.8% vs 6.9% / 8.8% vs 7.9% / 10.4% vs 9.5% | 63% vs 59% (t -0.2) | 53% vs 48% (t 0.4) | 40% vs 36% (t 0.6) |
+| MA break DOWN: all | QQQ alone (211) | 5.2% vs 4.2% / 5.8% vs 4.8% / 7.0% vs 5.9% | 48% vs 40% (t 1.6) | 35% vs 29% (t 1.4) | 25% vs 18% (t 2.0) |
 | MA break DOWN: 50 10%+ over the 200 | ETF (329) | 4.4% vs 4.5% / 4.8% vs 5.1% / 5.5% vs 6.2% | 40% vs 44% (t -1.7) | 26% vs 32% (t -2.3) | 13% vs 20% (t -2.5) |
-| MA break DOWN: 50 10%+ over the 200 | MEGA (698) | 7.4% vs 7.0% / 8.3% vs 8.0% / 9.7% vs 9.5% | 62% vs 59% (t 0.2) | 51% vs 48% (t 0.2) | 36% vs 36% (t -0.7) |
+| MA break DOWN: 50 10%+ over the 200 | MEGA (700) | 7.4% vs 7.0% / 8.3% vs 8.0% / 9.7% vs 9.5% | 62% vs 59% (t 0.1) | 51% vs 49% (t 0.2) | 36% vs 36% (t -0.8) |
 | MA break DOWN: 50 10%+ over the 200 | QQQ alone (29) | 5.4% vs 4.1% / 5.7% vs 4.7% / 6.1% vs 5.8% | 34% vs 40% (t -0.7) | 28% vs 29% (t -0.3) | 14% vs 17% (t -1.0) |
-| MA break DOWN: next day lower (enter that close) | ETF (971) | 5.4% vs 4.2% / 6.1% vs 4.9% / 7.2% vs 5.9% | 48% vs 41% (t 0.1) | 36% vs 30% (t 0.7) | 26% vs 18% (t 2.0) |
-| MA break DOWN: next day lower (enter that close) | MEGA (839) | 7.9% vs 7.0% / 8.8% vs 8.0% / 10.4% vs 9.6% | 61% vs 59% (t -0.6) | 52% vs 49% (t -0.2) | 41% vs 36% (t 0.9) |
-| MA break DOWN: next day lower (enter that close) | QQQ alone (92) | 5.4% vs 4.2% / 6.1% vs 4.9% / 7.4% vs 6.0% | 45% vs 41% (t 0.7) | 33% vs 30% (t 0.5) | 26% vs 18% (t 1.6) |
-| MA break DOWN: failed retest of the 10 | ETF (1252) | 4.9% vs 4.1% / 5.6% vs 4.7% / 6.6% vs 5.8% | 47% vs 40% (t 0.0) | 34% vs 29% (t 0.1) | 23% vs 17% (t 1.2) |
-| MA break DOWN: failed retest of the 10 | MEGA (1015) | 7.7% vs 6.8% / 8.6% vs 7.8% / 10.2% vs 9.4% | 62% vs 58% (t -0.7) | 52% vs 48% (t -0.0) | 40% vs 35% (t 1.0) |
+| MA break DOWN: next day lower (enter that close) | ETF (972) | 5.4% vs 4.2% / 6.1% vs 4.9% / 7.2% vs 5.9% | 48% vs 41% (t 0.1) | 36% vs 30% (t 0.7) | 26% vs 18% (t 1.9) |
+| MA break DOWN: next day lower (enter that close) | MEGA (840) | 7.9% vs 7.0% / 8.8% vs 8.0% / 10.4% vs 9.6% | 61% vs 59% (t -0.6) | 52% vs 49% (t -0.3) | 40% vs 36% (t 0.8) |
+| MA break DOWN: next day lower (enter that close) | QQQ alone (92) | 5.4% vs 4.2% / 6.1% vs 4.9% / 7.4% vs 6.0% | 45% vs 41% (t 0.7) | 33% vs 29% (t 0.5) | 26% vs 18% (t 1.6) |
+| MA break DOWN: failed retest of the 10 | ETF (1251) | 4.9% vs 4.1% / 5.6% vs 4.7% / 6.6% vs 5.8% | 47% vs 40% (t 0.0) | 34% vs 29% (t 0.1) | 23% vs 17% (t 1.2) |
+| MA break DOWN: failed retest of the 10 | MEGA (1019) | 7.7% vs 6.8% / 8.6% vs 7.8% / 10.3% vs 9.4% | 62% vs 58% (t -0.7) | 52% vs 48% (t -0.0) | 40% vs 35% (t 0.9) |
 | MA break DOWN: failed retest of the 10 | QQQ alone (134) | 5.5% vs 4.2% / 5.9% vs 4.8% / 6.8% vs 5.9% | 49% vs 40% (t 2.1) | 35% vs 29% (t 1.5) | 22% vs 18% (t 1.1) |
-| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | ETF (548) | 3.3% vs 3.9% / 3.7% vs 4.5% / 4.5% vs 5.5% | 32% vs 39% (t -1.7) | 20% vs 27% (t -1.6) | 10% vs 16% (t -0.8) |
-| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | MEGA (291) | 5.2% vs 5.9% / 5.8% vs 6.7% / 7.0% vs 8.1% | 49% vs 53% (t -0.6) | 35% vs 41% (t -1.3) | 23% vs 29% (t -1.5) |
+| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | ETF (549) | 3.3% vs 3.9% / 3.7% vs 4.5% / 4.5% vs 5.5% | 32% vs 39% (t -1.8) | 20% vs 27% (t -1.6) | 10% vs 16% (t -0.8) |
+| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | MEGA (291) | 5.2% vs 5.9% / 5.8% vs 6.7% / 7.0% vs 8.1% | 49% vs 53% (t -0.7) | 35% vs 41% (t -1.3) | 23% vs 29% (t -1.5) |
 | MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | QQQ alone (65) | 3.2% vs 4.0% / 3.4% vs 4.6% / 4.2% vs 5.6% | 28% vs 39% (t -1.6) | 18% vs 28% (t -1.5) | 9% vs 17% (t -1.5) |
-| MA break UP -> calls | ETF (3023) | 3.8% vs 4.3% / 4.5% vs 5.0% / 5.7% vs 6.3% | 46% vs 50% (t -3.3) | 30% vs 34% (t -2.9) | 15% vs 18% (t -2.8) |
-| MA break UP -> calls | MEGA (2369) | 8.5% vs 8.7% / 10.2% vs 10.4% / 13.2% vs 13.5% | 73% vs 73% (t -1.5) | 62% vs 63% (t -1.7) | 48% vs 49% (t -1.3) |
-| MA break UP -> calls | QQQ alone (288) | 3.7% vs 4.2% / 4.4% vs 4.9% / 5.5% vs 6.1% | 49% vs 52% (t -0.7) | 30% vs 34% (t -1.0) | 13% vs 16% (t -1.0) |
-| RSI 70 -> puts | ETF (940) | 3.0% vs 4.0% / 3.7% vs 4.6% / 4.6% vs 5.6% | 31% vs 39% (t -0.9) | 20% vs 27% (t -0.8) | 10% vs 17% (t -2.5) |
-| RSI 70 -> puts | MEGA (932) | 5.8% vs 6.7% / 6.7% vs 7.6% / 8.2% vs 9.1% | 55% vs 57% (t 1.6) | 43% vs 47% (t 0.4) | 31% vs 34% (t 0.4) |
-| RSI 70 -> puts | QQQ alone (103) | 2.4% vs 3.9% / 2.8% vs 4.5% / 3.7% vs 5.5% | 23% vs 38% (t -3.7) | 17% vs 27% (t -3.1) | 6% vs 16% (t -5.0) |
-| RSI 80 -> puts | ETF (119) | 3.7% vs 3.9% / 4.3% vs 4.5% / 5.1% vs 5.4% | 37% vs 38% (t -1.0) | 24% vs 27% (t -1.5) | 18% vs 16% (t -0.4) |
-| RSI 80 -> puts | MEGA (202) | 6.7% vs 6.9% / 7.6% vs 7.9% / 9.4% vs 9.5% | 63% vs 59% (t 1.3) | 50% vs 48% (t 0.5) | 38% vs 36% (t 0.5) |
-| RSI 80 -> puts | QQQ alone (17) | 4.1% vs 3.7% / 5.1% vs 4.2% / 6.2% vs 5.1% | 53% vs 36% (t 1.4) | 35% vs 25% (t 0.8) | 35% vs 15% (t 1.7) |
+| MA break UP -> calls | ETF (3025) | 3.8% vs 4.3% / 4.5% vs 5.0% / 5.7% vs 6.3% | 45% vs 50% (t -3.4) | 30% vs 34% (t -2.9) | 15% vs 18% (t -2.8) |
+| MA break UP -> calls | MEGA (2372) | 8.6% vs 8.7% / 10.2% vs 10.4% / 13.2% vs 13.5% | 73% vs 73% (t -1.5) | 62% vs 63% (t -1.7) | 48% vs 49% (t -1.3) |
+| MA break UP -> calls | QQQ alone (288) | 3.7% vs 4.2% / 4.4% vs 4.9% / 5.5% vs 6.1% | 49% vs 52% (t -0.9) | 30% vs 34% (t -1.0) | 13% vs 16% (t -1.0) |
+| RSI 70 -> puts | ETF (2150) | 3.2% vs 4.0% / 3.8% vs 4.6% / 4.8% vs 5.6% | 33% vs 39% (t 1.9) | 22% vs 28% (t 1.3) | 12% vs 17% (t 0.5) |
+| RSI 70 -> puts | MEGA (1808) | 6.1% vs 6.7% / 6.9% vs 7.6% / 8.5% vs 9.1% | 56% vs 57% (t 2.5) | 43% vs 47% (t 1.2) | 30% vs 34% (t 1.2) |
+| RSI 70 -> puts | QQQ alone (205) | 3.1% vs 4.0% / 3.6% vs 4.6% / 4.8% vs 5.7% | 33% vs 39% (t -1.3) | 22% vs 28% (t -1.6) | 12% vs 17% (t -1.7) |
+| RSI 80 -> puts | ETF (791) | 3.1% vs 4.0% / 3.8% vs 4.6% / 4.8% vs 5.6% | 32% vs 39% (t -0.3) | 21% vs 28% (t -0.2) | 13% vs 17% (t -0.9) |
+| RSI 80 -> puts | MEGA (836) | 6.0% vs 6.7% / 6.9% vs 7.7% / 8.5% vs 9.3% | 56% vs 58% (t 0.8) | 44% vs 47% (t 0.6) | 31% vs 35% (t -1.0) |
+| RSI 80 -> puts | QQQ alone (91) | 2.6% vs 4.0% / 3.2% vs 4.6% / 4.2% vs 5.6% | 24% vs 38% (t -3.0) | 18% vs 27% (t -2.5) | 10% vs 16% (t -2.0) |
 
 ## 3. Option estimate: at-the-money, 30 days to expiry, up to 20 trading days held
 
 | Setup | Group | Hold 20 days | +50% target else day 20 | +100% target else day 20 | Win rate (+50% rule) |
 |---|---|---|---|---|---|
-| MA break DOWN: all | ETF (2172) | -18.5% vs -17.9% (t -2.4) | -18.3% vs -18.3% (t -3.7) | -21.0% vs -19.6% (t -3.4) | 48% |
-| MA break DOWN: all | MEGA (1785) | -22.3% vs -26.5% (t -0.8) | -24.8% vs -29.7% (t -0.4) | -24.8% vs -29.2% (t -0.6) | 40% |
-| MA break DOWN: all | QQQ alone (211) | -30.3% vs -26.1% (t -1.4) | -18.6% vs -21.8% (t 0.2) | -25.3% vs -24.6% (t -0.7) | 47% |
-| MA break DOWN: 50 10%+ over the 200 | ETF (329) | -40.9% vs -16.0% (t -3.1) | -26.1% vs -17.0% (t -1.0) | -35.0% vs -17.5% (t -2.9) | 44% |
-| MA break DOWN: 50 10%+ over the 200 | MEGA (698) | -30.0% vs -28.5% (t -1.2) | -29.5% vs -30.9% (t -0.7) | -30.8% vs -30.8% (t -0.9) | 36% |
-| MA break DOWN: 50 10%+ over the 200 | QQQ alone (29) | -44.5% vs -26.8% (t -1.1) | -27.7% vs -21.9% (t -0.6) | -34.4% vs -24.7% (t -0.5) | 41% |
-| MA break DOWN: next day lower (enter that close) | ETF (971) | -16.3% vs -17.0% (t -0.8) | -18.8% vs -17.7% (t -2.2) | -19.6% vs -18.8% (t -1.7) | 48% |
-| MA break DOWN: next day lower (enter that close) | MEGA (839) | -22.2% vs -25.7% (t -0.8) | -25.7% vs -29.2% (t -0.7) | -26.6% vs -28.5% (t -1.2) | 40% |
-| MA break DOWN: next day lower (enter that close) | QQQ alone (92) | -29.0% vs -25.6% (t -0.2) | -21.4% vs -21.2% (t 0.1) | -23.4% vs -23.8% (t 0.2) | 47% |
-| MA break DOWN: failed retest of the 10 | ETF (1252) | -14.9% vs -18.5% (t -0.7) | -13.8% vs -18.6% (t -1.2) | -13.9% vs -20.0% (t -0.7) | 52% |
-| MA break DOWN: failed retest of the 10 | MEGA (1015) | -25.4% vs -26.6% (t -0.5) | -26.5% vs -29.8% (t -0.7) | -25.0% vs -29.3% (t -0.1) | 38% |
-| MA break DOWN: failed retest of the 10 | QQQ alone (134) | -28.8% vs -26.3% (t -0.2) | -16.3% vs -22.0% (t 0.9) | -19.2% vs -24.7% (t 0.9) | 51% |
-| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | ETF (548) | -31.3% vs -21.2% (t 0.2) | -25.7% vs -20.2% (t -1.7) | -31.9% vs -22.2% (t -1.5) | 43% |
+| MA break DOWN: all | ETF (2174) | -18.6% vs -18.0% (t -2.4) | -18.3% vs -18.3% (t -3.7) | -21.0% vs -19.6% (t -3.4) | 48% |
+| MA break DOWN: all | MEGA (1787) | -22.4% vs -26.5% (t -0.8) | -24.8% vs -29.6% (t -0.5) | -24.9% vs -29.1% (t -0.6) | 40% |
+| MA break DOWN: all | QQQ alone (211) | -30.3% vs -26.1% (t -1.4) | -18.6% vs -21.8% (t 0.1) | -25.3% vs -24.6% (t -0.7) | 47% |
+| MA break DOWN: 50 10%+ over the 200 | ETF (329) | -40.9% vs -16.1% (t -3.1) | -26.1% vs -17.0% (t -1.0) | -35.0% vs -17.4% (t -2.9) | 44% |
+| MA break DOWN: 50 10%+ over the 200 | MEGA (700) | -30.1% vs -28.5% (t -1.2) | -29.5% vs -30.9% (t -0.8) | -31.0% vs -30.8% (t -1.0) | 36% |
+| MA break DOWN: 50 10%+ over the 200 | QQQ alone (29) | -44.5% vs -26.9% (t -1.1) | -27.7% vs -21.8% (t -0.6) | -34.4% vs -24.6% (t -0.5) | 41% |
+| MA break DOWN: next day lower (enter that close) | ETF (972) | -16.4% vs -17.0% (t -0.8) | -18.7% vs -17.7% (t -2.1) | -19.7% vs -18.8% (t -1.8) | 48% |
+| MA break DOWN: next day lower (enter that close) | MEGA (840) | -22.2% vs -25.8% (t -0.8) | -25.7% vs -29.1% (t -0.8) | -26.7% vs -28.5% (t -1.3) | 40% |
+| MA break DOWN: next day lower (enter that close) | QQQ alone (92) | -29.0% vs -25.7% (t -0.2) | -21.4% vs -21.1% (t 0.1) | -23.4% vs -23.8% (t 0.2) | 47% |
+| MA break DOWN: failed retest of the 10 | ETF (1251) | -14.9% vs -18.6% (t -0.7) | -13.9% vs -18.5% (t -1.2) | -14.0% vs -20.0% (t -0.8) | 52% |
+| MA break DOWN: failed retest of the 10 | MEGA (1019) | -24.9% vs -26.6% (t -0.4) | -26.3% vs -29.7% (t -0.7) | -24.6% vs -29.3% (t -0.0) | 38% |
+| MA break DOWN: failed retest of the 10 | QQQ alone (134) | -28.8% vs -26.3% (t -0.2) | -16.3% vs -21.9% (t 0.9) | -19.2% vs -24.7% (t 0.9) | 51% |
+| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | ETF (549) | -31.5% vs -21.3% (t 0.2) | -25.8% vs -20.1% (t -1.8) | -32.0% vs -22.2% (t -1.5) | 43% |
 | MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | MEGA (291) | -33.0% vs -31.1% (t -0.2) | -33.3% vs -32.4% (t -0.1) | -34.9% vs -33.0% (t -0.3) | 35% |
-| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | QQQ alone (65) | -43.4% vs -28.0% (t -1.5) | -27.5% vs -22.9% (t -0.4) | -35.6% vs -25.9% (t -0.9) | 42% |
-| MA break UP -> calls | ETF (3023) | +15.1% vs +15.2% (t -1.5) | -2.3% vs -1.1% (t -2.7) | +4.2% vs +5.1% (t -2.2) | 56% |
-| MA break UP -> calls | MEGA (2369) | +14.4% vs +13.5% (t -1.9) | -5.9% vs -5.4% (t -2.4) | -0.4% vs -0.6% (t -2.2) | 53% |
-| MA break UP -> calls | QQQ alone (288) | +7.9% vs +6.6% (t 0.6) | -4.8% vs -3.8% (t -0.1) | +4.8% vs +1.9% (t 0.9) | 54% |
-| RSI 70 -> puts | ETF (940) | -16.0% vs -20.7% (t 1.4) | -17.8% vs -19.9% (t 2.7) | -18.8% vs -21.6% (t 2.2) | 46% |
-| RSI 70 -> puts | MEGA (932) | -30.6% vs -28.4% (t 0.9) | -35.4% vs -31.2% (t -0.1) | -35.6% vs -30.9% (t 0.1) | 31% |
-| RSI 70 -> puts | QQQ alone (103) | -35.0% vs -28.8% (t -0.8) | -27.4% vs -23.5% (t -0.8) | -34.0% vs -26.6% (t -1.3) | 36% |
-| RSI 80 -> puts | ETF (119) | -11.5% vs -22.8% (t 0.2) | -5.6% vs -21.0% (t 0.9) | -8.3% vs -23.1% (t 0.4) | 57% |
-| RSI 80 -> puts | MEGA (202) | -24.6% vs -28.9% (t 0.5) | -26.1% vs -31.4% (t 1.3) | -27.4% vs -31.1% (t 0.5) | 39% |
-| RSI 80 -> puts | QQQ alone (17) | +4.2% vs -31.4% (t 1.0) | -7.9% vs -25.4% (t 1.1) | -0.8% vs -28.9% (t 1.3) | 53% |
+| MA break DOWN: Taz version (50 5%+ over 200, no golden cross, bunched) | QQQ alone (65) | -43.4% vs -28.0% (t -1.5) | -27.5% vs -22.8% (t -0.4) | -35.6% vs -25.9% (t -0.9) | 42% |
+| MA break UP -> calls | ETF (3025) | +15.1% vs +15.3% (t -1.5) | -2.3% vs -1.1% (t -2.7) | +4.2% vs +5.1% (t -2.2) | 56% |
+| MA break UP -> calls | MEGA (2372) | +14.5% vs +13.5% (t -1.8) | -5.9% vs -5.4% (t -2.4) | -0.3% vs -0.6% (t -2.2) | 53% |
+| MA break UP -> calls | QQQ alone (288) | +7.9% vs +6.6% (t 0.6) | -4.8% vs -3.8% (t -0.1) | +4.7% vs +1.9% (t 0.9) | 54% |
+| RSI 70 -> puts | ETF (2150) | -23.4% vs -20.2% (t 2.5) | -21.9% vs -19.6% (t 3.6) | -22.6% vs -21.4% (t 4.2) | 44% |
+| RSI 70 -> puts | MEGA (1808) | -30.6% vs -28.1% (t 1.4) | -33.2% vs -30.8% (t 1.8) | -33.8% vs -30.5% (t 1.2) | 33% |
+| RSI 70 -> puts | QQQ alone (205) | -34.2% vs -27.9% (t -0.4) | -27.2% vs -22.9% (t -0.5) | -31.1% vs -26.0% (t -0.3) | 39% |
+| RSI 80 -> puts | ETF (791) | -13.7% vs -20.5% (t 1.7) | -17.2% vs -19.8% (t 3.6) | -19.2% vs -21.6% (t 2.5) | 47% |
+| RSI 80 -> puts | MEGA (836) | -29.6% vs -28.1% (t 0.4) | -33.7% vs -31.0% (t 0.0) | -33.8% vs -30.7% (t -0.2) | 32% |
+| RSI 80 -> puts | QQQ alone (91) | -20.3% vs -28.4% (t 0.8) | -27.9% vs -23.2% (t -0.4) | -30.3% vs -26.4% (t -0.4) | 37% |
 
 ## QQQ triple breaks down — every one since 2018 (raw puts-direction moves)
 
