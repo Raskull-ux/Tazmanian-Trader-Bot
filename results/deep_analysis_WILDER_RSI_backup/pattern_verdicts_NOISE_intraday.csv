@@ -1,0 +1,8 @@
+kind,pattern,discovery_pass,holdout_pass,PASS
+intraday,5m 200 SMA rejection (10:00-15:00),False,False,False
+intraday,"dump by 10 + wedge into 5m 200, rejected",False,False,False
+intraday,"dump by 10, chop up into 5m 200, rejected",False,False,False
+intraday,"dump to 10, bounce 10-12, lose 5m 20 after 12",False,False,False
+intraday,hourly 20 SMA crosses under 50 SMA,False,False,False
+intraday,"hourly 20/50 death cross, retest of the 20",False,False,False
+intraday,"rising wedge into 5m 200 SMA, close under",False,False,False
