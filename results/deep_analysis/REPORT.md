@@ -92,11 +92,10 @@ Win = stock fell 1 ATR before rising 1 ATR within 5 days. A condition only matte
 | feature              | early: win when TRUE    | early: win when FALSE   | late: win when TRUE     | late: win when FALSE   |
 |:---------------------|:------------------------|:------------------------|:------------------------|:-----------------------|
 | d_macd_cross_down_3d | 67% (n 18)              | 44% (n 100)             | 67% (n 15)              | 50% (n 157)            |
-| h4_rsi_above_ma      | 54% (n 68)              | 39% (n 50)              | 60% (n 84)              | 43% (n 88)             |
+| h4_rsi_above_ma      | 52% (n 68)              | 41% (n 50)              | 58% (n 80)              | 45% (n 92)             |
 | d_vol_vs_20          | 43% above 0.94 (n 58)   | 52% (n 60)              | 46% above 0.94 (n 87)   | 56% (n 85)             |
-| w_rsi                | 54% above 58.38 (n 56)  | 42% (n 62)              | 55% above 58.38 (n 89)  | 47% (n 83)             |
+| h1_rsi               | 53% above 53.56 (n 60)  | 41% (n 58)              | 55% above 53.56 (n 85)  | 47% (n 87)             |
 | minute_of_day        | 51% above 620.00 (n 62) | 44% (n 56)              | 60% above 620.00 (n 82) | 43% (n 90)             |
-| h1_rsi               | 55% above 53.24 (n 64)  | 39% (n 54)              | 54% above 53.24 (n 81)  | 48% (n 91)             |
 | today_gap_atr        | 41% above 0.03 (n 48)   | 58% (n 42)              | 50% above 0.03 (n 64)   | 56% (n 70)             |
 | vix                  | 43% above 17.28 (n 69)  | 53% (n 49)              | 48% above 17.28 (n 75)  | 54% (n 97)             |
 | h4_20_below_50       | 52% (n 46)              | 44% (n 72)              | 54% (n 77)              | 49% (n 95)             |
@@ -104,27 +103,28 @@ Win = stock fell 1 ATR before rising 1 ATR within 5 days. A condition only matte
 | d_vs_sma200_atr      | 52% above 4.59 (n 58)   | 43% (n 60)              | 53% above 4.59 (n 87)   | 49% (n 85)             |
 | m15_20_below_50      | 41% (n 51)              | 52% (n 67)              | 49% (n 79)              | 53% (n 93)             |
 | h1_macd_above_sig    | 49% (n 63)              | 45% (n 55)              | 54% (n 90)              | 48% (n 82)             |
-| m15_rsi_above_ma     | 45% (n 56)              | 50% (n 62)              | 49% (n 83)              | 53% (n 89)             |
 | m5_20_below_50       | 44% (n 56)              | 51% (n 62)              | 49% (n 82)              | 53% (n 90)             |
+| h4_rsi_max_recent    | 46% above 72.02 (n 63)  | 49% (n 55)              | 44% above 72.02 (n 81)  | 57% (n 91)             |
+| h4_macd_above_sig    | 51% (n 65)              | 43% (n 53)              | 53% (n 79)              | 50% (n 93)             |
 
 Same features on random control entries (gap in pct points, early / late):
 | feature              |   early_gap |   late_gap |
 |:---------------------|------------:|-----------:|
 | d_vs_sma200_atr      |         7.8 |       12.7 |
+| h4_macd_above_sig    |         4.9 |        6.3 |
 | h1_vs_sma20_atr      |        -3.7 |       -5.1 |
-| w_rsi                |         3.4 |        8   |
 | minute_of_day        |        -2.2 |       -8.1 |
 | d_macd_cross_down_3d |         4.9 |        2   |
 | vix                  |        -1.5 |      -12   |
 | today_gap_atr        |        -3.2 |       -1.1 |
-| h4_rsi_above_ma      |        -1.1 |       -0   |
+| h1_rsi               |         3   |       -1   |
 | d_vol_vs_20          |         0.8 |       -3   |
-| h1_rsi               |         3   |       -1.8 |
+| h4_rsi_above_ma      |        -3.3 |        1.7 |
 | h4_20_below_50       |         4.6 |       -0.3 |
 | m15_20_below_50      |         6.6 |       -3.5 |
 | h1_macd_above_sig    |        -2.4 |        0.8 |
-| m15_rsi_above_ma     |         1.2 |       -6.7 |
 | m5_20_below_50       |       -11   |        6.6 |
+| h4_rsi_max_recent    |         0.9 |       -5.1 |
 
 Last 4 daily candles before the call (G = green, R = red), win rate and count:
 | d_seq4   |   win % |   calls |
@@ -285,19 +285,19 @@ Puts where NONE of the confirmations ever came within 2 days: 12 of 522; your me
 |:----------------------|:------------------------|:------------------------|:------------------------|:-----------------------|
 | spy_above_50          | 27% (n 179)             | 34% (n 58)              | 30% (n 210)             | 42% (n 71)             |
 | d_from_60d_high_atr   | 32% above 1.67 (n 115)  | 25% (n 122)             | 40% above 1.67 (n 144)  | 26% (n 137)            |
+| m15_rsi_max_recent    | 26% above 68.99 (n 121) | 32% (n 116)             | 30% above 68.99 (n 138) | 36% (n 143)            |
 | spy_above_20          | 26% (n 151)             | 33% (n 86)              | 30% (n 207)             | 42% (n 74)             |
-| spy_rsi               | 26% above 57.21 (n 112) | 31% (n 125)             | 28% above 57.21 (n 147) | 39% (n 134)            |
 | w_macd_above_sig      | 21% (n 135)             | 39% (n 101)             | 30% (n 138)             | 36% (n 143)            |
 | d_macd_above_sig      | 34% (n 135)             | 22% (n 102)             | 35% (n 165)             | 30% (n 116)            |
 | d_greens_last10       | 26% above 5.00 (n 118)  | 31% (n 119)             | 31% above 5.00 (n 137)  | 35% (n 144)            |
-| d_rsi                 | 27% above 57.86 (n 127) | 31% (n 110)             | 28% above 57.86 (n 132) | 38% (n 149)            |
 | d_macd_cross_down_3d  | 7% (n 30)               | 32% (n 207)             | 30% (n 27)              | 33% (n 254)            |
 | d_vs_sma50_atr        | 27% above 1.89 (n 124)  | 31% (n 113)             | 31% above 1.89 (n 135)  | 35% (n 146)            |
-| m5_rsi_above_ma       | 27% (n 105)             | 30% (n 132)             | 30% (n 142)             | 36% (n 139)            |
+| m5_rsi_above_ma       | 27% (n 101)             | 30% (n 136)             | 29% (n 134)             | 37% (n 147)            |
 | d_days_since_20d_high | 32% above 5.00 (n 116)  | 26% (n 121)             | 35% above 5.00 (n 132)  | 32% (n 149)            |
 | h4_vs_sma200_atr      | 27% above 1.55 (n 125)  | 30% (n 112)             | 30% above 1.55 (n 134)  | 36% (n 147)            |
+| w_rsi_above_ma        | 28% (n 120)             | 30% (n 116)             | 30% (n 129)             | 36% (n 152)            |
 | m5_vs_sma20_atr       | 27% above 0.00 (n 117)  | 30% (n 120)             | 25% above 0.00 (n 142)  | 41% (n 139)            |
-| w_rsi_above_ma        | 27% (n 113)             | 30% (n 123)             | 31% (n 135)             | 35% (n 146)            |
+| h4_macd_above_sig     | 28% (n 123)             | 30% (n 114)             | 29% (n 160)             | 39% (n 121)            |
 
 By entry time:
 | minute_of_day   |   trades |   win |   median_pct |
@@ -328,10 +328,10 @@ By entry time:
 ## The two conditions that split winning and losing calls (HYPOTHESIS: picked from ~70 tested)
 | group                                      |   calls |   win % |   win % before Jul 2025 |   win % after |   avg 5-day move % |
 |:-------------------------------------------|--------:|--------:|------------------------:|--------------:|-------------------:|
-| 4H RSI above its MA AND called after 10:20 |      88 |      62 |                      57 |            67 |               1.06 |
-| only 4H RSI above its MA                   |      64 |      50 |                      48 |            51 |               1.68 |
-| only after 10:20                           |      60 |      47 |                      42 |            50 |              -0.41 |
-| neither                                    |      78 |      37 |                      37 |            38 |              -1.03 |
+| 4H RSI above its MA AND called after 10:20 |      85 |      60 |                      56 |            63 |               0.83 |
+| only 4H RSI above its MA                   |      63 |      49 |                      47 |            51 |               1.17 |
+| only after 10:20                           |      63 |      51 |                      44 |            55 |              -0.02 |
+| neither                                    |      79 |      38 |                      38 |            38 |              -0.58 |
 | all calls                                  |     290 |      50 |                      47 |            51 |               0.33 |
 
 ## FORWARD TEST: the two conditions on fresh calls (Sep 15 - Oct 7 2026, not used to find them)
@@ -355,22 +355,22 @@ Pass rule (set before running): beats being short that same name that same year 
 
 | pattern                                       | type     | 2016-2022                                                        | 2023-now                                                         | VERDICT      |
 |:----------------------------------------------|:---------|:-----------------------------------------------------------------|:-----------------------------------------------------------------|:-------------|
-| WEEKLY sandwich (red, small green, big red)   | daily    | n 50: win 44% (-6.3 pts, t -1.3); move -2.22% (-2.40 vs base)    | n 32: win 37% (-11.9 pts, t -1.7); move -1.81% (-1.50 vs base)   | fail         |
-| bear flag (break of flag low)                 | daily    | n 668: win 55% (+6.1 pts, t 0.4); move +0.58% (+0.80 vs base)    | n 402: win 49% (+1.5 pts, t -1.3); move -0.72% (-0.13 vs base)   | fail         |
-| bear flag (break of prior day low)            | daily    | n 1147: win 52% (+3.4 pts, t 0.2); move +0.31% (+0.56 vs base)   | n 681: win 51% (+4.4 pts, t 0.4); move -0.36% (+0.25 vs base)    | fail         |
-| bear flag, deep pole 4 ATR                    | daily    | n 240: win 57% (+9.2 pts, t 1.4); move +1.41% (+1.71 vs base)    | n 137: win 49% (+1.6 pts, t -0.6); move -1.27% (-0.68 vs base)   | fail         |
-| daily 10 SMA crosses under 50 SMA             | daily    | n 1363: win 48% (-0.3 pts, t -1.1); move -0.05% (+0.21 vs base)  | n 859: win 49% (+2.0 pts, t -0.5); move +0.11% (+0.63 vs base)   | fail         |
-| daily 10/50 cross, first retest of 10 SMA     | daily    | n 978: win 48% (-0.0 pts, t 0.2); move -0.32% (-0.07 vs base)    | n 637: win 47% (-0.6 pts, t 0.3); move -0.73% (-0.21 vs base)    | fail         |
-| double top (break of middle low)              | daily    | n 803: win 52% (+2.9 pts, t -0.5); move -0.10% (+0.06 vs base)   | n 499: win 48% (+0.0 pts, t -0.8); move -0.78% (-0.30 vs base)   | fail         |
-| double top (early: red day off 2nd top)       | daily    | n 1454: win 49% (+0.8 pts, t -0.2); move -0.15% (+0.12 vs base)  | n 842: win 50% (+2.8 pts, t -0.6); move -0.59% (+0.02 vs base)   | fail         |
-| falling three (red, 3 greens, big red)        | daily    | n 22: win 64% (+12.2 pts, t 1.1); move +1.72% (+1.45 vs base)    | n 21: win 48% (+1.1 pts, t -0.4); move -1.29% (-0.66 vs base)    | fail         |
-| falling three (textbook)                      | daily    | n 60: win 50% (+0.2 pts, t -0.0); move -0.06% (-0.05 vs base)    | n 42: win 52% (+4.5 pts, t 0.2); move -0.22% (+0.04 vs base)     | fail         |
-| head and shoulders (neckline break)           | daily    | n 181: win 50% (+1.4 pts, t -0.3); move -0.11% (+0.02 vs base)   | n 122: win 51% (+2.9 pts, t 0.2); move -0.51% (-0.02 vs base)    | fail         |
-| red-green-green-red                           | daily    | n 6651: win 49% (+0.9 pts, t 0.3); move -0.26% (+0.06 vs base)   | n 4371: win 47% (+0.3 pts, t 0.3); move -0.74% (-0.12 vs base)   | fail         |
-| red-green-green-red after 20-day high         | daily    | n 3501: win 50% (+3.0 pts, t 1.3); move -0.17% (+0.28 vs base)   | n 2244: win 49% (+2.5 pts, t 2.3); move -0.46% (+0.26 vs base)   | holdout only |
-| red-green-green-red under 20 SMA              | daily    | n 2728: win 48% (-1.3 pts, t -1.1); move -0.36% (-0.22 vs base)  | n 1869: win 47% (-0.4 pts, t 0.2); move -0.93% (-0.43 vs base)   | fail         |
-| sandwich (red, small green, big red)          | daily    | n 212: win 40% (-8.0 pts, t -1.5); move -1.49% (-1.16 vs base)   | n 98: win 46% (-2.0 pts, t -0.4); move -0.14% (+0.26 vs base)    | fail         |
-| sandwich + 10 SMA under 20 SMA                | daily    | n 108: win 38% (-10.5 pts, t -2.2); move -2.01% (-1.83 vs base)  | n 52: win 49% (+0.1 pts, t -0.6); move -0.82% (-0.53 vs base)    | fail         |
+| WEEKLY sandwich (red, small green, big red)   | daily    | n 54: win 43% (-7.6 pts, t -1.3); move -2.32% (-2.41 vs base)    | n 32: win 37% (-11.9 pts, t -1.7); move -1.81% (-1.50 vs base)   | fail         |
+| bear flag (break of flag low)                 | daily    | n 675: win 55% (+6.2 pts, t 0.3); move +0.61% (+0.84 vs base)    | n 414: win 49% (+1.6 pts, t -1.3); move -0.59% (+0.05 vs base)   | fail         |
+| bear flag (break of prior day low)            | daily    | n 1164: win 52% (+3.3 pts, t -0.0); move +0.31% (+0.57 vs base)  | n 697: win 51% (+4.6 pts, t 0.5); move -0.27% (+0.38 vs base)    | fail         |
+| bear flag, deep pole 4 ATR                    | daily    | n 242: win 57% (+9.3 pts, t 1.4); move +1.43% (+1.74 vs base)    | n 140: win 49% (+1.6 pts, t -0.6); move -1.19% (-0.56 vs base)   | fail         |
+| daily 10 SMA crosses under 50 SMA             | daily    | n 1391: win 48% (-0.2 pts, t -1.1); move -0.05% (+0.21 vs base)  | n 890: win 50% (+2.4 pts, t -0.4); move +0.12% (+0.67 vs base)   | fail         |
+| daily 10/50 cross, first retest of 10 SMA     | daily    | n 998: win 49% (+0.4 pts, t 0.3); move -0.30% (-0.05 vs base)    | n 661: win 46% (-1.3 pts, t 0.1); move -0.89% (-0.35 vs base)    | fail         |
+| double top (break of middle low)              | daily    | n 818: win 52% (+2.9 pts, t -0.6); move -0.07% (+0.07 vs base)   | n 518: win 47% (-0.2 pts, t -0.7); move -0.80% (-0.29 vs base)   | fail         |
+| double top (early: red day off 2nd top)       | daily    | n 1479: win 49% (+1.1 pts, t -0.1); move -0.10% (+0.16 vs base)  | n 870: win 50% (+3.0 pts, t -0.5); move -0.62% (+0.02 vs base)   | fail         |
+| falling three (red, 3 greens, big red)        | daily    | n 22: win 64% (+12.2 pts, t 1.1); move +1.72% (+1.45 vs base)    | n 22: win 50% (+3.7 pts, t -0.3); move -1.32% (-0.61 vs base)    | fail         |
+| falling three (textbook)                      | daily    | n 61: win 49% (-0.5 pts, t -0.2); move -0.26% (-0.21 vs base)    | n 46: win 51% (+3.3 pts, t -0.1); move -0.22% (+0.15 vs base)    | fail         |
+| head and shoulders (neckline break)           | daily    | n 186: win 51% (+2.2 pts, t -0.2); move +0.03% (+0.18 vs base)   | n 129: win 52% (+3.7 pts, t 0.3); move +0.04% (+0.61 vs base)    | fail         |
+| red-green-green-red                           | daily    | n 6775: win 49% (+0.9 pts, t 0.2); move -0.25% (+0.07 vs base)   | n 4540: win 47% (+0.3 pts, t 0.4); move -0.77% (-0.11 vs base)   | fail         |
+| red-green-green-red after 20-day high         | daily    | n 3554: win 50% (+3.1 pts, t 1.1); move -0.13% (+0.33 vs base)   | n 2317: win 49% (+2.3 pts, t 2.3); move -0.53% (+0.23 vs base)   | holdout only |
+| red-green-green-red under 20 SMA              | daily    | n 2788: win 48% (-1.3 pts, t -1.1); move -0.37% (-0.24 vs base)  | n 1951: win 47% (-0.3 pts, t 0.2); move -0.92% (-0.39 vs base)   | fail         |
+| sandwich (red, small green, big red)          | daily    | n 213: win 39% (-8.2 pts, t -1.5); move -1.52% (-1.18 vs base)   | n 102: win 47% (-1.4 pts, t -0.4); move -0.03% (+0.41 vs base)   | fail         |
+| sandwich + 10 SMA under 20 SMA                | daily    | n 108: win 38% (-10.5 pts, t -2.2); move -2.01% (-1.83 vs base)  | n 56: win 50% (+1.1 pts, t -0.6); move -0.56% (-0.22 vs base)    | fail         |
 | 5m 200 SMA rejection (10:00-15:00)            | intraday | n 50438: win 51% (+0.3 pts, t -0.1); move +0.00% (+0.01 vs base) | n 32787: win 51% (+0.4 pts, t 0.7); move -0.03% (+0.00 vs base)  | fail         |
 | dump by 10 + wedge into 5m 200, rejected      | intraday | n 7649: win 51% (+0.5 pts, t 0.2); move +0.01% (+0.01 vs base)   | n 5331: win 51% (+0.6 pts, t 1.0); move +0.02% (+0.05 vs base)   | fail         |
 | dump by 10, chop up into 5m 200, rejected     | intraday | n 11429: win 51% (+0.1 pts, t -0.5); move -0.01% (-0.01 vs base) | n 7861: win 51% (+0.7 pts, t 1.3); move +0.01% (+0.04 vs base)   | fail         |
