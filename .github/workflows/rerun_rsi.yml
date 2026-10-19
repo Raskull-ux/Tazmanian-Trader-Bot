@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install "pandas>=2.2" pyarrow numpy requests yfinance scipy openpyxl
+      - run: pip install pandas pyarrow numpy requests yfinance scipy openpyxl
       - name: Run ${{ matrix.study }}
         env:
           ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
@@ -30,7 +30,7 @@ jobs:
           SYMBOLS: "QQQ,SPY,TSLA,NVDA,META,AMD,PLTR,MU,COIN,AAPL"
           MONTHS: "9"
           GRID: "1"
-        run: python ${{ matrix.study }}.py 2>&1 | tail -200 || echo "::error title=${{ matrix.study }}::failed"
+        run: set -o pipefail; python ${{ matrix.study }}.py 2>&1 | tail -200
       - name: Save results
         if: always()
         run: |
