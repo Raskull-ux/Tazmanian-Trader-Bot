@@ -1,0 +1,41 @@
+name: Rerun RSI studies (exponential RSI)
+# Trigger: repository_dispatch event_type=rerun_rsi, client_payload.studies = JSON list of script names (no .py).
+# One study at a time (max-parallel 1) so the shared Alpaca rate limit is never starved.
+on:
+  repository_dispatch:
+    types: [rerun_rsi]
+permissions:
+  contents: write
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        study: ${{ fromJSON(github.event.client_payload.studies) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "pandas>=2.2" pyarrow numpy requests yfinance scipy openpyxl
+      - name: Run ${{ matrix.study }}
+        env:
+          ALPACA_API_KEY_ID: ${{ secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET_KEY: ${{ secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
+          APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID }}
+          APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY }}
+          SYMBOLS: "QQQ,SPY,TSLA,NVDA,META,AMD,PLTR,MU,COIN,AAPL"
+          MONTHS: "9"
+          GRID: "1"
+        run: python ${{ matrix.study }}.py 2>&1 | tail -200 || echo "::error title=${{ matrix.study }}::failed"
+      - name: Save results
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add results || true
+          git commit -m "${{ matrix.study }} rerun on exponential RSI" || true
+          for i in 1 2 3 4 5; do git pull --rebase -X theirs && git push && break; sleep $((i*5)); done || true
