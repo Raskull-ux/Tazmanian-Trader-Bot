@@ -97,9 +97,11 @@ def ema(s, n):
 
 
 def rsi(c, n=14):
+    """Taz's chart setting: RSI 14 with EXPONENTIAL averaging (EMA span n), verified 20.87 on QQQ 2026-10-16.
+    (Wilder averaging, alpha=1/n, is the textbook default and is NOT what Taz uses.)"""
     d = c.diff()
-    up = d.clip(lower=0).ewm(alpha=1 / n, adjust=False, min_periods=n).mean()
-    dn = (-d.clip(upper=0)).ewm(alpha=1 / n, adjust=False, min_periods=n).mean()
+    up = d.clip(lower=0).ewm(span=n, adjust=False, min_periods=n).mean()
+    dn = (-d.clip(upper=0)).ewm(span=n, adjust=False, min_periods=n).mean()
     return 100 - 100 / (1 + up / dn.replace(0, np.nan))
 
 
@@ -110,10 +112,11 @@ def atr(df, n=14):
 
 
 def add_ind(df, smas=(10, 20, 50, 200)):
-    """Adds SMAs, RSI14 + its 14 SMA (TradingView default), MACD 12/26/9, ATR14."""
+    """Adds SMAs, EMA8, RSI14 exponential (Taz setting) + its 14 SMA, MACD 12/26/9, ATR14."""
     df = df.copy()
     for n in smas:
         df[f"sma{n}"] = sma(df.c, n)
+    df["ema8"] = ema(df.c, 8)  # Taz's 8 is an EMA; every other MA is simple
     df["rsi"] = rsi(df.c)
     df["rsi_ma"] = sma(df.rsi, 14)
     df["macd"] = ema(df.c, 12) - ema(df.c, 26)
