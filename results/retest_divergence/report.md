@@ -7,133 +7,133 @@ Puts direction: positive = it fell. Random = every day of the same name and peri
 
 | Break | Names | Divergence? | Entries | 5-day edge (2016-21 / 2022-26) | t | NET 10-day edge (2016-21 / 2022-26) | t | Dropped 5% in 20d (random) | Verdict |
 |---|---|---|---|---|---|---|---|---|---|
-| X1020 | NEW | yes | 1149 | +0.37% (+0.17 / +0.55) | 0.5 | +0.73% (+0.51 / +0.93) | 0.2 | 47% (44%) | fail |
-| X1020 | NEW | no | 9223 | +0.04% (-0.02 / +0.10) | -1.0 | +0.24% (+0.22 / +0.26) | -0.8 | 50% (48%) | info |
-| X1020 | first-run 50 | yes | 231 | +2.17% (+0.93 / +3.03) | 1.4 | +3.47% (+2.71 / +4.00) | 1.0 | 66% (54%) | info |
-| X1020 | first-run 50 | no | 1677 | +0.25% (+0.31 / +0.19) | -0.2 | +0.50% (+0.83 / +0.24) | -0.7 | 58% (57%) | info |
-| X1020 | all | yes | 1380 | +0.67% (+0.28 / +1.01) | 0.6 | +1.19% (+0.84 / +1.50) | 0.3 | 50% (46%) | info |
-| X1020 | all | no | 10900 | +0.07% (+0.03 / +0.12) | -0.9 | +0.28% (+0.30 / +0.26) | -0.8 | 51% (49%) | info |
-| TRIPLE | NEW | yes | 884 | +0.28% (+0.34 / +0.23) | 2.1 | +0.45% (+0.18 / +0.70) | 1.6 | 47% (46%) | info |
-| TRIPLE | NEW | no | 12607 | -0.09% (-0.26 / +0.07) | -1.5 | -0.02% (-0.16 / +0.11) | -1.1 | 50% (49%) | info |
-| TRIPLE | all | yes | 1053 | +0.43% (+0.24 / +0.60) | 2.0 | +0.70% (+0.19 / +1.16) | 1.6 | 50% (47%) | info |
-| TRIPLE | all | no | 14856 | -0.05% (-0.22 / +0.09) | -1.5 | +0.02% (-0.09 / +0.11) | -1.2 | 52% (50%) | info |
+| X1020 | NEW | yes | 1381 | +0.20% (-0.16 / +0.55) | 0.3 | +0.44% (+0.08 / +0.78) | -0.0 | 46% (44%) | fail |
+| X1020 | NEW | no | 9040 | +0.08% (+0.03 / +0.12) | -0.7 | +0.32% (+0.30 / +0.34) | -0.4 | 50% (48%) | info |
+| X1020 | first-run 50 | yes | 273 | +1.51% (+0.07 / +2.52) | 0.8 | +2.43% (+1.36 / +3.18) | 0.4 | 63% (54%) | info |
+| X1020 | first-run 50 | no | 1646 | +0.29% (+0.43 / +0.18) | 0.0 | +0.58% (+1.00 / +0.27) | -0.4 | 58% (57%) | info |
+| X1020 | all | yes | 1654 | +0.42% (-0.13 / +0.91) | 0.3 | +0.77% (+0.26 / +1.23) | 0.0 | 49% (46%) | info |
+| X1020 | all | no | 10686 | +0.11% (+0.09 / +0.13) | -0.6 | +0.36% (+0.39 / +0.33) | -0.4 | 51% (49%) | info |
+| TRIPLE | NEW | yes | 1042 | +0.29% (+0.22 / +0.36) | 2.2 | +0.37% (-0.05 / +0.79) | 1.5 | 46% (45%) | info |
+| TRIPLE | NEW | no | 12483 | -0.10% (-0.26 / +0.06) | -1.7 | +0.00% (-0.15 / +0.15) | -1.2 | 50% (49%) | info |
+| TRIPLE | all | yes | 1247 | +0.42% (+0.06 / +0.76) | 2.2 | +0.61% (-0.10 / +1.28) | 1.7 | 49% (47%) | info |
+| TRIPLE | all | no | 14704 | -0.06% (-0.21 / +0.07) | -1.7 | +0.03% (-0.08 / +0.14) | -1.2 | 51% (50%) | info |
 
 ## 1. What happens first after the break (next 10 sessions)
 
 | Break | Group | Breaks | Retest first | Down first | Same day | Neither |
 |---|---|---|---|---|---|---|
-| TRIPLE | ETF | 2053 | 27% | 63% | 11% | 0% |
+| TRIPLE | ETF | 2055 | 27% | 63% | 11% | 0% |
 | TRIPLE | MEGA | 1853 | 27% | 61% | 12% | 0% |
-| TRIPLE | HIGHBETA | 2653 | 27% | 59% | 14% | 0% |
-| TRIPLE | NEW | 44256 | 28% | 59% | 13% | 0% |
-| TRIPLE | QQQ | 215 | 25% | 64% | 11% | 0% |
-| X1020 | ETF | 1551 | 44% | 42% | 14% | 0% |
-| X1020 | MEGA | 1467 | 42% | 44% | 14% | 0% |
-| X1020 | HIGHBETA | 1917 | 39% | 47% | 14% | 0% |
-| X1020 | NEW | 33185 | 41% | 45% | 15% | 0% |
-| X1020 | QQQ | 163 | 45% | 38% | 17% | 0% |
+| TRIPLE | HIGHBETA | 2663 | 27% | 59% | 14% | 0% |
+| TRIPLE | NEW | 44737 | 29% | 59% | 12% | 0% |
+| TRIPLE | QQQ | 215 | 25% | 65% | 11% | 0% |
+| X1020 | ETF | 1558 | 44% | 42% | 14% | 0% |
+| X1020 | MEGA | 1468 | 42% | 44% | 14% | 0% |
+| X1020 | HIGHBETA | 1925 | 38% | 47% | 14% | 0% |
+| X1020 | NEW | 33561 | 41% | 45% | 15% | 0% |
+| X1020 | QQQ | 164 | 45% | 38% | 18% | 0% |
 
 ## PASS CHECK (set before running): 100+ entries, vs random, positive in every period, t >= 3.5, on 5d / 10d / NET 10d
 
 | Break | Entry | Group | Entries | Passes on | Strongest |
 |---|---|---|---|---|---|
-| TRIPLE | E0 break close | ETF | 2053 | nothing | x10: -0.17 (t -3.8; -0.09 / -0.82 / +0.21) |
-| TRIPLE | E0 break close | MEGA | 1853 | nothing | net10: +0.65 (t -1.0; +0.78 / -0.10 / +1.11) |
-| TRIPLE | E0 break close | HIGHBETA | 2653 | nothing | net10: +0.82 (t -1.0; -1.01 / +2.50 / +0.77) |
-| TRIPLE | E0 break close | NEW | 44256 | nothing | net10: +0.11 (t -2.2; +0.01 / -0.02 / +0.45) |
-| TRIPLE | E1 retest 10 SMA, close back under | ETF | 1445 | nothing | net10: +0.40 (t -0.9; +0.64 / -0.24 / +0.24) |
-| TRIPLE | E1 retest 10 SMA, close back under | MEGA | 1321 | nothing | x5: +0.28 (t -0.7; +0.33 / -0.25 / +0.69) |
-| TRIPLE | E1 retest 10 SMA, close back under | HIGHBETA | 1904 | nothing | x5: +0.38 (t 0.0; -0.17 / +0.87 / +0.39) |
-| TRIPLE | E1 retest 10 SMA, close back under | NEW | 32019 | nothing | net10: +0.09 (t -1.7; +0.13 / -0.06 / +0.14) |
-| TRIPLE | E1b retest 20 SMA, close back under | ETF | 1113 | nothing | x10: +0.13 (t -0.5; +0.21 / -0.96 / +1.01) |
-| TRIPLE | E1b retest 20 SMA, close back under | MEGA | 1009 | nothing | x10: +0.20 (t -0.7; +0.26 / -0.60 / +0.94) |
-| TRIPLE | E1b retest 20 SMA, close back under | HIGHBETA | 1443 | nothing | x5: +0.41 (t 0.2; -0.11 / -0.14 / +0.99) |
-| TRIPLE | E1b retest 20 SMA, close back under | NEW | 25064 | nothing | x10: -0.02 (t -1.2; +0.15 / -0.24 / -0.19) |
-| X1020 | E0 break close | ETF | 1551 | nothing | x10: +0.40 (t -0.1; +0.18 / +0.53 / +0.94) |
-| X1020 | E0 break close | MEGA | 1467 | nothing | net10: +0.32 (t -0.7; +0.13 / +0.02 / +1.17) |
-| X1020 | E0 break close | HIGHBETA | 1917 | nothing | x10: +0.43 (t -0.7; +0.11 / +0.65 / +0.45) |
-| X1020 | E0 break close | NEW | 33185 | nothing | x10: +0.17 (t -1.3; +0.07 / +0.27 / +0.29) |
-| X1020 | E1 retest 10 SMA, close back under | ETF | 1125 | nothing | x5: +0.47 (t 0.2; +0.48 / +0.19 / +0.74) |
-| X1020 | E1 retest 10 SMA, close back under | MEGA | 1058 | nothing | x5: +0.36 (t 0.0; +0.31 / -0.17 / +1.18) |
-| X1020 | E1 retest 10 SMA, close back under | HIGHBETA | 1406 | nothing | x5: +0.46 (t 0.1; +0.35 / +0.79 / +0.31) |
-| X1020 | E1 retest 10 SMA, close back under | NEW | 24633 | nothing | x5: +0.10 (t -1.0; +0.11 / +0.01 / +0.17) |
-| X1020 | E1b retest 20 SMA, close back under | ETF | 852 | nothing | x5: +0.40 (t 1.1; +0.45 / -0.04 / +0.76) |
-| X1020 | E1b retest 20 SMA, close back under | MEGA | 763 | nothing | x10: +0.30 (t 0.5; +0.50 / -0.25 / +0.51) |
-| X1020 | E1b retest 20 SMA, close back under | HIGHBETA | 987 | nothing | x5: +0.84 (t 0.6; +0.36 / +0.50 / +1.32) |
-| X1020 | E1b retest 20 SMA, close back under | NEW | 18421 | nothing | x5: +0.16 (t 0.5; +0.17 / +0.13 / +0.17) |
+| TRIPLE | E0 break close | ETF | 2055 | nothing | x10: -0.17 (t -3.8; -0.09 / -0.82 / +0.20) |
+| TRIPLE | E0 break close | MEGA | 1853 | nothing | net10: +0.65 (t -1.0; +0.78 / -0.10 / +1.12) |
+| TRIPLE | E0 break close | HIGHBETA | 2663 | nothing | net10: +0.79 (t -1.1; -1.02 / +2.50 / +0.71) |
+| TRIPLE | E0 break close | NEW | 44737 | nothing | net10: +0.11 (t -2.2; -0.00 / -0.01 / +0.51) |
+| TRIPLE | E1 retest 10 SMA, close back under | ETF | 1447 | nothing | net10: +0.42 (t -0.8; +0.65 / -0.24 / +0.27) |
+| TRIPLE | E1 retest 10 SMA, close back under | MEGA | 1321 | nothing | x5: +0.28 (t -0.6; +0.34 / -0.25 / +0.68) |
+| TRIPLE | E1 retest 10 SMA, close back under | HIGHBETA | 1912 | nothing | x5: +0.36 (t 0.0; -0.17 / +0.87 / +0.34) |
+| TRIPLE | E1 retest 10 SMA, close back under | NEW | 32291 | nothing | net10: +0.09 (t -1.8; +0.11 / -0.07 / +0.18) |
+| TRIPLE | E1b retest 20 SMA, close back under | ETF | 1112 | nothing | x10: +0.13 (t -0.5; +0.20 / -0.96 / +0.99) |
+| TRIPLE | E1b retest 20 SMA, close back under | MEGA | 1008 | nothing | x10: +0.23 (t -0.6; +0.30 / -0.60 / +0.94) |
+| TRIPLE | E1b retest 20 SMA, close back under | HIGHBETA | 1448 | nothing | x5: +0.39 (t 0.2; -0.11 / -0.14 / +0.95) |
+| TRIPLE | E1b retest 20 SMA, close back under | NEW | 25215 | nothing | x10: -0.01 (t -1.2; +0.13 / -0.22 / -0.15) |
+| X1020 | E0 break close | ETF | 1558 | nothing | x10: +0.41 (t -0.1; +0.19 / +0.53 / +0.94) |
+| X1020 | E0 break close | MEGA | 1468 | nothing | net10: +0.31 (t -0.7; +0.13 / +0.02 / +1.16) |
+| X1020 | E0 break close | HIGHBETA | 1925 | nothing | x10: +0.43 (t -0.8; +0.11 / +0.65 / +0.44) |
+| X1020 | E0 break close | NEW | 33561 | nothing | x10: +0.18 (t -1.1; +0.08 / +0.28 / +0.31) |
+| X1020 | E1 retest 10 SMA, close back under | ETF | 1131 | nothing | x5: +0.46 (t 0.2; +0.47 / +0.19 / +0.70) |
+| X1020 | E1 retest 10 SMA, close back under | MEGA | 1058 | nothing | x5: +0.36 (t 0.0; +0.32 / -0.17 / +1.17) |
+| X1020 | E1 retest 10 SMA, close back under | HIGHBETA | 1412 | nothing | x5: +0.45 (t 0.1; +0.35 / +0.79 / +0.29) |
+| X1020 | E1 retest 10 SMA, close back under | NEW | 24840 | nothing | x5: +0.12 (t -0.8; +0.13 / +0.02 / +0.19) |
+| X1020 | E1b retest 20 SMA, close back under | ETF | 859 | nothing | x5: +0.39 (t 0.9; +0.45 / -0.04 / +0.71) |
+| X1020 | E1b retest 20 SMA, close back under | MEGA | 764 | nothing | x10: +0.33 (t 0.6; +0.55 / -0.25 / +0.53) |
+| X1020 | E1b retest 20 SMA, close back under | HIGHBETA | 993 | nothing | x5: +0.83 (t 0.6; +0.36 / +0.50 / +1.29) |
+| X1020 | E1b retest 20 SMA, close back under | NEW | 18552 | nothing | x5: +0.16 (t 0.3; +0.16 / +0.14 / +0.17) |
 
 ## 2. Entry vs entry (edge vs random, in % of price; t)
 
 | Break | Group | Entry | Entries | Waited (median sessions) | 1d | 3d | 5d | 10d | 20d | NET 10d | Dropped 5% in 20d |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| TRIPLE | ETF | E0 break close | 2053 | 0 | -0.01 (t -2.8) | -0.09 (t -4.3) | -0.30 (t -5.3) | -0.17 (t -3.8) | -0.07 (t -3.0) | -0.22 (t -4.5) | 41% vs 34% |
-| TRIPLE | ETF | E1 retest 10 SMA, close back under | 1445 | 4 | -0.01 (t -2.5) | -0.01 (t -2.0) | +0.15 (t -1.2) | +0.06 (t -1.2) | +0.10 (t -1.6) | +0.40 (t -0.9) | 42% vs 34% |
-| TRIPLE | ETF | E1b retest 20 SMA, close back under | 1113 | 4 | -0.08 (t -1.8) | -0.15 (t -2.2) | +0.03 (t -1.2) | +0.13 (t -0.5) | +0.09 (t 0.0) | +0.11 (t -0.9) | 40% vs 34% |
-| TRIPLE | MEGA | E0 break close | 1853 | 0 | -0.00 (t -1.6) | +0.03 (t -1.3) | +0.18 (t -1.5) | +0.35 (t -1.1) | +0.57 (t -1.0) | +0.65 (t -1.0) | 59% vs 53% |
-| TRIPLE | MEGA | E1 retest 10 SMA, close back under | 1321 | 4 | +0.06 (t -0.6) | +0.18 (t -0.5) | +0.28 (t -0.7) | +0.24 (t -0.8) | +0.03 (t -1.1) | +0.50 (t -0.8) | 57% vs 53% |
-| TRIPLE | MEGA | E1b retest 20 SMA, close back under | 1009 | 4 | +0.07 (t -0.9) | +0.15 (t -0.6) | +0.12 (t -1.1) | +0.20 (t -0.7) | -0.41 (t -1.2) | +0.23 (t -0.8) | 54% vs 53% |
-| TRIPLE | HIGHBETA | E0 break close | 2653 | 0 | +0.29 (t -0.1) | +0.17 (t -1.5) | +0.22 (t -1.2) | +0.34 (t -1.5) | +0.23 (t -1.4) | +0.82 (t -1.0) | 71% vs 68% |
-| TRIPLE | HIGHBETA | E1 retest 10 SMA, close back under | 1904 | 4 | +0.02 (t -0.0) | +0.14 (t -0.3) | +0.38 (t 0.0) | +0.16 (t -0.4) | -0.02 (t -0.6) | +0.52 (t -0.4) | 69% vs 68% |
-| TRIPLE | HIGHBETA | E1b retest 20 SMA, close back under | 1443 | 4 | +0.02 (t -0.5) | +0.33 (t 0.5) | +0.41 (t 0.2) | -0.02 (t -0.8) | -0.64 (t -1.3) | +0.26 (t -0.6) | 69% vs 68% |
-| TRIPLE | NEW | E0 break close | 44256 | 0 | +0.01 (t -1.9) | +0.02 (t -2.3) | -0.06 (t -3.0) | -0.02 (t -2.5) | -0.03 (t -2.2) | +0.11 (t -2.2) | 50% vs 48% |
-| TRIPLE | NEW | E1 retest 10 SMA, close back under | 32019 | 4 | -0.03 (t -3.2) | -0.02 (t -2.4) | -0.00 (t -1.9) | -0.02 (t -1.9) | -0.08 (t -1.4) | +0.09 (t -1.7) | 50% vs 48% |
-| TRIPLE | NEW | E1b retest 20 SMA, close back under | 25064 | 4 | -0.02 (t -1.7) | -0.06 (t -1.8) | -0.05 (t -1.6) | -0.02 (t -1.2) | -0.01 (t -0.8) | +0.02 (t -1.3) | 49% vs 48% |
-| TRIPLE | QQQ | E0 break close | 215 | 0 | -0.03 (t -0.4) | -0.13 (t -1.0) | -0.03 (t -0.5) | +0.11 (t -0.1) | +0.01 (t -0.7) | +0.18 (t 0.0) | 43% vs 33% |
-| TRIPLE | QQQ | E1 retest 10 SMA, close back under | 156 | 4 | -0.01 (t 0.2) | +0.40 (t 1.5) | +0.81 (t 2.1) | +0.45 (t 0.8) | +0.59 (t 0.9) | +0.96 (t 1.5) | 42% vs 33% |
-| TRIPLE | QQQ | E1b retest 20 SMA, close back under | 117 | 4 | +0.09 (t 0.9) | +0.12 (t 0.7) | +0.08 (t 0.6) | -0.11 (t -0.1) | +0.00 (t 0.2) | +0.33 (t 1.0) | 43% vs 33% |
-| X1020 | ETF | E0 break close | 1551 | 0 | -0.04 (t -2.0) | -0.13 (t -2.9) | -0.15 (t -2.3) | +0.40 (t -0.1) | +0.26 (t -0.9) | +0.08 (t -1.4) | 40% vs 34% |
-| X1020 | ETF | E1 retest 10 SMA, close back under | 1125 | 4 | +0.08 (t -1.0) | +0.43 (t 0.1) | +0.47 (t 0.2) | +0.54 (t -0.3) | +0.24 (t -0.8) | +0.93 (t 0.0) | 40% vs 34% |
-| X1020 | ETF | E1b retest 20 SMA, close back under | 852 | 4 | +0.07 (t 0.6) | +0.34 (t 1.7) | +0.40 (t 1.1) | +0.37 (t 0.7) | +0.36 (t 0.7) | +0.53 (t 0.8) | 39% vs 34% |
-| X1020 | MEGA | E0 break close | 1467 | 0 | +0.00 (t -0.0) | -0.04 (t -0.7) | +0.00 (t -0.9) | +0.30 (t -0.8) | +0.33 (t -0.4) | +0.32 (t -0.7) | 54% vs 52% |
-| X1020 | MEGA | E1 retest 10 SMA, close back under | 1058 | 4 | +0.21 (t 0.2) | +0.42 (t 0.6) | +0.36 (t 0.0) | +0.56 (t -0.3) | +0.56 (t -0.1) | +0.95 (t -0.0) | 54% vs 52% |
-| X1020 | MEGA | E1b retest 20 SMA, close back under | 763 | 4 | +0.26 (t 1.7) | +0.32 (t 0.3) | +0.27 (t -0.1) | +0.30 (t 0.5) | -0.09 (t 0.6) | +0.53 (t 0.5) | 54% vs 52% |
-| X1020 | HIGHBETA | E0 break close | 1917 | 0 | +0.05 (t -1.2) | +0.00 (t -1.4) | +0.21 (t -1.2) | +0.43 (t -0.7) | -0.03 (t -0.7) | +0.69 (t -0.9) | 69% vs 67% |
-| X1020 | HIGHBETA | E1 retest 10 SMA, close back under | 1406 | 4 | +0.20 (t -0.6) | +0.24 (t -0.0) | +0.46 (t 0.1) | +0.43 (t -0.2) | +0.50 (t 0.4) | +0.78 (t -0.3) | 69% vs 68% |
-| X1020 | HIGHBETA | E1b retest 20 SMA, close back under | 987 | 3 | +0.14 (t -0.3) | +0.50 (t -0.2) | +0.84 (t 0.6) | +0.34 (t 0.1) | -0.12 (t -0.2) | +0.81 (t 0.2) | 68% vs 67% |
-| X1020 | NEW | E0 break close | 33185 | 0 | +0.01 (t -1.5) | -0.00 (t -2.1) | +0.02 (t -1.9) | +0.17 (t -1.3) | +0.15 (t -1.4) | +0.18 (t -1.3) | 49% vs 47% |
-| X1020 | NEW | E1 retest 10 SMA, close back under | 24633 | 4 | -0.00 (t -1.6) | +0.07 (t -1.2) | +0.10 (t -1.0) | +0.18 (t -1.3) | +0.16 (t -1.0) | +0.28 (t -1.1) | 49% vs 47% |
-| X1020 | NEW | E1b retest 20 SMA, close back under | 18421 | 4 | +0.00 (t -0.6) | +0.10 (t 0.5) | +0.16 (t 0.5) | +0.25 (t 0.2) | +0.19 (t -0.3) | +0.30 (t 0.3) | 48% vs 47% |
-| X1020 | QQQ | E0 break close | 163 | 0 | -0.21 (t -1.6) | -0.36 (t -1.6) | -0.19 (t -0.5) | +0.62 (t 1.7) | +0.04 (t 0.0) | -0.05 (t -0.0) | 40% vs 33% |
-| X1020 | QQQ | E1 retest 10 SMA, close back under | 120 | 4 | +0.03 (t 0.3) | +1.02 (t 3.4) | +0.91 (t 2.5) | +0.91 (t 1.7) | +0.70 (t 1.0) | +1.56 (t 2.7) | 44% vs 33% |
-| X1020 | QQQ | E1b retest 20 SMA, close back under | 86 | 4 | +0.31 (t 2.0) | +0.78 (t 2.8) | +0.50 (t 1.7) | +0.02 (t 0.1) | -0.16 (t -0.2) | +0.91 (t 1.7) | 47% vs 34% |
+| TRIPLE | ETF | E0 break close | 2055 | 0 | -0.01 (t -2.8) | -0.09 (t -4.4) | -0.31 (t -5.4) | -0.17 (t -3.8) | -0.07 (t -3.0) | -0.22 (t -4.5) | 41% vs 34% |
+| TRIPLE | ETF | E1 retest 10 SMA, close back under | 1447 | 4 | -0.01 (t -2.3) | -0.00 (t -1.9) | +0.15 (t -1.0) | +0.07 (t -1.1) | +0.11 (t -1.5) | +0.42 (t -0.8) | 42% vs 34% |
+| TRIPLE | ETF | E1b retest 20 SMA, close back under | 1112 | 4 | -0.08 (t -1.7) | -0.14 (t -2.1) | +0.02 (t -1.3) | +0.13 (t -0.5) | +0.08 (t -0.0) | +0.10 (t -0.9) | 40% vs 34% |
+| TRIPLE | MEGA | E0 break close | 1853 | 0 | -0.00 (t -1.6) | +0.02 (t -1.3) | +0.18 (t -1.5) | +0.35 (t -1.1) | +0.57 (t -1.0) | +0.65 (t -1.0) | 59% vs 53% |
+| TRIPLE | MEGA | E1 retest 10 SMA, close back under | 1321 | 4 | +0.06 (t -0.6) | +0.18 (t -0.5) | +0.28 (t -0.6) | +0.24 (t -0.9) | +0.03 (t -1.1) | +0.51 (t -0.8) | 57% vs 53% |
+| TRIPLE | MEGA | E1b retest 20 SMA, close back under | 1008 | 4 | +0.07 (t -0.8) | +0.16 (t -0.6) | +0.12 (t -1.1) | +0.23 (t -0.6) | -0.42 (t -1.2) | +0.26 (t -0.8) | 54% vs 53% |
+| TRIPLE | HIGHBETA | E0 break close | 2663 | 0 | +0.28 (t -0.2) | +0.15 (t -1.6) | +0.19 (t -1.2) | +0.31 (t -1.5) | +0.20 (t -1.4) | +0.79 (t -1.1) | 71% vs 68% |
+| TRIPLE | HIGHBETA | E1 retest 10 SMA, close back under | 1912 | 4 | +0.01 (t 0.1) | +0.13 (t -0.2) | +0.36 (t 0.0) | +0.14 (t -0.4) | -0.02 (t -0.6) | +0.50 (t -0.3) | 69% vs 68% |
+| TRIPLE | HIGHBETA | E1b retest 20 SMA, close back under | 1448 | 4 | +0.01 (t -0.5) | +0.31 (t 0.4) | +0.39 (t 0.2) | -0.00 (t -0.7) | -0.59 (t -1.2) | +0.27 (t -0.6) | 69% vs 68% |
+| TRIPLE | NEW | E0 break close | 44737 | 0 | +0.01 (t -1.9) | +0.02 (t -2.3) | -0.05 (t -2.9) | -0.01 (t -2.5) | -0.03 (t -2.2) | +0.11 (t -2.2) | 50% vs 47% |
+| TRIPLE | NEW | E1 retest 10 SMA, close back under | 32291 | 4 | -0.04 (t -3.2) | -0.02 (t -2.4) | -0.00 (t -1.9) | -0.04 (t -2.0) | -0.10 (t -1.5) | +0.09 (t -1.8) | 50% vs 48% |
+| TRIPLE | NEW | E1b retest 20 SMA, close back under | 25215 | 4 | -0.02 (t -1.8) | -0.07 (t -2.0) | -0.05 (t -1.6) | -0.01 (t -1.2) | -0.04 (t -0.9) | +0.02 (t -1.2) | 49% vs 47% |
+| TRIPLE | QQQ | E0 break close | 215 | 0 | -0.03 (t -0.4) | -0.14 (t -1.0) | -0.03 (t -0.5) | +0.11 (t -0.1) | +0.01 (t -0.7) | +0.18 (t 0.0) | 43% vs 33% |
+| TRIPLE | QQQ | E1 retest 10 SMA, close back under | 156 | 4 | -0.01 (t 0.2) | +0.40 (t 1.5) | +0.81 (t 2.1) | +0.45 (t 0.8) | +0.59 (t 0.9) | +0.95 (t 1.5) | 42% vs 33% |
+| TRIPLE | QQQ | E1b retest 20 SMA, close back under | 117 | 4 | +0.09 (t 0.9) | +0.15 (t 0.8) | +0.01 (t 0.4) | -0.11 (t -0.0) | -0.03 (t 0.2) | +0.32 (t 0.9) | 43% vs 33% |
+| X1020 | ETF | E0 break close | 1558 | 0 | -0.03 (t -1.9) | -0.12 (t -2.8) | -0.14 (t -2.3) | +0.41 (t -0.1) | +0.25 (t -0.9) | +0.10 (t -1.4) | 40% vs 34% |
+| X1020 | ETF | E1 retest 10 SMA, close back under | 1131 | 4 | +0.07 (t -1.0) | +0.42 (t 0.1) | +0.46 (t 0.2) | +0.55 (t -0.3) | +0.23 (t -0.9) | +0.92 (t -0.0) | 40% vs 34% |
+| X1020 | ETF | E1b retest 20 SMA, close back under | 859 | 4 | +0.07 (t 0.5) | +0.35 (t 1.7) | +0.39 (t 0.9) | +0.35 (t 0.6) | +0.34 (t 0.6) | +0.52 (t 0.7) | 39% vs 34% |
+| X1020 | MEGA | E0 break close | 1468 | 0 | +0.00 (t -0.0) | -0.04 (t -0.7) | -0.00 (t -0.9) | +0.30 (t -0.8) | +0.33 (t -0.4) | +0.31 (t -0.7) | 54% vs 52% |
+| X1020 | MEGA | E1 retest 10 SMA, close back under | 1058 | 4 | +0.21 (t 0.2) | +0.42 (t 0.7) | +0.36 (t 0.0) | +0.55 (t -0.4) | +0.56 (t -0.1) | +0.95 (t -0.0) | 54% vs 52% |
+| X1020 | MEGA | E1b retest 20 SMA, close back under | 764 | 4 | +0.25 (t 1.6) | +0.32 (t 0.3) | +0.24 (t -0.2) | +0.33 (t 0.6) | -0.09 (t 0.6) | +0.53 (t 0.5) | 54% vs 52% |
+| X1020 | HIGHBETA | E0 break close | 1925 | 0 | +0.05 (t -1.2) | +0.01 (t -1.4) | +0.22 (t -1.2) | +0.43 (t -0.8) | -0.03 (t -0.7) | +0.71 (t -0.9) | 69% vs 67% |
+| X1020 | HIGHBETA | E1 retest 10 SMA, close back under | 1412 | 4 | +0.21 (t -0.5) | +0.24 (t -0.0) | +0.45 (t 0.1) | +0.41 (t -0.2) | +0.47 (t 0.4) | +0.77 (t -0.2) | 69% vs 68% |
+| X1020 | HIGHBETA | E1b retest 20 SMA, close back under | 993 | 3 | +0.17 (t -0.2) | +0.51 (t -0.2) | +0.83 (t 0.6) | +0.31 (t 0.1) | -0.15 (t -0.1) | +0.80 (t 0.2) | 68% vs 67% |
+| X1020 | NEW | E0 break close | 33561 | 0 | +0.01 (t -1.5) | -0.00 (t -2.1) | +0.02 (t -1.8) | +0.18 (t -1.1) | +0.15 (t -1.4) | +0.18 (t -1.3) | 49% vs 47% |
+| X1020 | NEW | E1 retest 10 SMA, close back under | 24840 | 4 | +0.01 (t -1.2) | +0.09 (t -0.9) | +0.12 (t -0.8) | +0.20 (t -1.2) | +0.15 (t -1.0) | +0.31 (t -0.9) | 49% vs 47% |
+| X1020 | NEW | E1b retest 20 SMA, close back under | 18552 | 4 | +0.00 (t -0.5) | +0.11 (t 0.4) | +0.16 (t 0.3) | +0.25 (t 0.0) | +0.17 (t -0.4) | +0.30 (t 0.2) | 48% vs 47% |
+| X1020 | QQQ | E0 break close | 164 | 0 | -0.21 (t -1.6) | -0.35 (t -1.6) | -0.19 (t -0.5) | +0.63 (t 1.7) | +0.03 (t 0.0) | -0.04 (t -0.0) | 40% vs 33% |
+| X1020 | QQQ | E1 retest 10 SMA, close back under | 120 | 4 | +0.03 (t 0.3) | +1.01 (t 3.4) | +0.91 (t 2.5) | +0.90 (t 1.7) | +0.70 (t 1.0) | +1.56 (t 2.7) | 44% vs 33% |
+| X1020 | QQQ | E1b retest 20 SMA, close back under | 87 | 4 | +0.31 (t 2.0) | +0.77 (t 2.8) | +0.50 (t 1.7) | +0.02 (t 0.1) | -0.20 (t -0.3) | +0.92 (t 1.8) | 46% vs 34% |
 
 ## 3. Retest beats the break? (10-day edge by period: E1 minus E0)
 
 | Break | Group | 2000-15 | 2016-21 | 2022-26 | Verdict |
 |---|---|---|---|---|---|
-| TRIPLE | ETF | +0.39 | +0.40 | -0.47 | not consistent |
-| TRIPLE | MEGA | +0.11 | -0.38 | -0.42 | not consistent |
-| TRIPLE | HIGHBETA | +0.43 | -0.35 | -0.36 | not consistent |
-| TRIPLE | NEW | +0.10 | -0.12 | -0.14 | not consistent |
-| X1020 | ETF | +0.26 | +0.19 | -0.26 | not consistent |
-| X1020 | MEGA | +0.60 | +0.18 | -0.51 | not consistent |
-| X1020 | HIGHBETA | +0.46 | +0.47 | -0.51 | not consistent |
-| X1020 | NEW | +0.09 | -0.08 | -0.08 | not consistent |
+| TRIPLE | ETF | +0.41 | +0.40 | -0.46 | not consistent |
+| TRIPLE | MEGA | +0.10 | -0.38 | -0.42 | not consistent |
+| TRIPLE | HIGHBETA | +0.43 | -0.35 | -0.35 | not consistent |
+| TRIPLE | NEW | +0.07 | -0.14 | -0.16 | not consistent |
+| X1020 | ETF | +0.25 | +0.19 | -0.23 | not consistent |
+| X1020 | MEGA | +0.59 | +0.18 | -0.53 | not consistent |
+| X1020 | HIGHBETA | +0.46 | +0.47 | -0.55 | not consistent |
+| X1020 | NEW | +0.08 | -0.06 | -0.03 | not consistent |
 
 ## 4. Retest + hourly bearish divergence (2016+)
 
 | Break | Group | Divergence? | Entries | 1d | 3d | 5d | 10d | NET 10d |
 |---|---|---|---|---|---|---|---|---|
-| TRIPLE | ETF | yes | 46 | -0.31 (t -0.7) | -0.60 (t -1.5) | -0.22 (t -0.2) | -0.46 (t -1.0) | -0.37 (t -0.6) |
-| TRIPLE | ETF | no | 467 | -0.01 (t -0.8) | -0.08 (t -1.5) | -0.08 (t -1.4) | -0.24 (t -1.3) | +0.16 (t -0.9) |
-| TRIPLE | MEGA | yes | 31 | -0.45 (t -1.0) | +0.37 (t 0.5) | +0.07 (t 0.2) | +3.17 (t 2.3) | +2.54 (t 1.6) |
-| TRIPLE | MEGA | no | 528 | +0.10 (t 0.3) | -0.05 (t -1.1) | +0.15 (t -1.0) | -0.49 (t -1.9) | -0.02 (t -1.6) |
-| TRIPLE | HIGHBETA | yes | 92 | -0.30 (t -1.0) | +1.49 (t 0.7) | +2.27 (t 0.6) | +2.04 (t 0.7) | +3.10 (t 0.7) |
-| TRIPLE | HIGHBETA | no | 1254 | +0.13 (t -0.2) | +0.09 (t -1.2) | +0.27 (t -0.7) | -0.08 (t -0.7) | +0.36 (t -0.7) |
-| TRIPLE | NEW | yes | 884 | +0.12 (t 1.0) | +0.28 (t 2.4) | +0.28 (t 2.1) | -0.02 (t 0.8) | +0.45 (t 1.6) |
-| TRIPLE | NEW | no | 12607 | -0.03 (t -1.8) | -0.08 (t -1.9) | -0.09 (t -1.5) | -0.18 (t -1.4) | -0.02 (t -1.1) |
-| TRIPLE | ALL | yes | 1053 | +0.04 (t 0.1) | +0.35 (t 2.2) | +0.43 (t 2.0) | +0.23 (t 1.0) | +0.70 (t 1.6) |
-| TRIPLE | ALL | no | 14856 | -0.01 (t -1.5) | -0.07 (t -2.0) | -0.05 (t -1.5) | -0.18 (t -1.5) | +0.02 (t -1.2) |
-| X1020 | ETF | yes | 63 | +0.23 (t 1.7) | +0.97 (t 1.7) | +1.77 (t 2.6) | +2.23 (t 1.8) | +2.99 (t 2.5) |
-| X1020 | ETF | no | 360 | +0.05 (t -0.8) | +0.22 (t -0.8) | +0.22 (t -0.3) | +0.43 (t 0.3) | +0.67 (t 0.1) |
-| X1020 | MEGA | yes | 50 | +0.41 (t -0.2) | +0.15 (t -0.7) | -0.24 (t -1.0) | -0.15 (t -1.2) | -0.08 (t -1.0) |
-| X1020 | MEGA | no | 428 | +0.16 (t 1.1) | +0.38 (t 1.1) | +0.46 (t 0.7) | +0.38 (t -0.2) | +0.86 (t 0.7) |
-| X1020 | HIGHBETA | yes | 118 | +0.73 (t 2.3) | +1.91 (t 2.2) | +3.40 (t 2.4) | +3.56 (t 1.6) | +5.22 (t 2.2) |
-| X1020 | HIGHBETA | no | 889 | +0.20 (t -0.0) | +0.04 (t -0.2) | +0.15 (t -0.0) | -0.04 (t -0.6) | +0.25 (t -0.7) |
-| X1020 | NEW | yes | 1149 | +0.03 (t -0.9) | +0.11 (t -0.5) | +0.37 (t 0.5) | +0.60 (t 0.1) | +0.73 (t 0.2) |
-| X1020 | NEW | no | 9223 | +0.00 (t -1.2) | +0.05 (t -1.0) | +0.04 (t -1.0) | +0.13 (t -0.9) | +0.24 (t -0.8) |
-| X1020 | ALL | yes | 1380 | +0.11 (t -0.6) | +0.31 (t -0.3) | +0.67 (t 0.6) | +0.90 (t 0.1) | +1.19 (t 0.3) |
-| X1020 | ALL | no | 10900 | +0.03 (t -1.0) | +0.07 (t -0.9) | +0.07 (t -0.9) | +0.14 (t -0.9) | +0.28 (t -0.8) |
+| TRIPLE | ETF | yes | 50 | -0.23 (t -0.2) | -0.32 (t -0.6) | +0.16 (t 0.6) | +0.03 (t -0.1) | +0.27 (t 0.3) |
+| TRIPLE | ETF | no | 464 | -0.02 (t -0.8) | -0.11 (t -1.4) | -0.13 (t -1.4) | -0.29 (t -1.3) | +0.11 (t -0.8) |
+| TRIPLE | MEGA | yes | 37 | -0.21 (t -0.5) | +0.35 (t 0.6) | +0.08 (t 0.2) | +2.22 (t 1.8) | +1.94 (t 1.3) |
+| TRIPLE | MEGA | no | 522 | +0.09 (t 0.2) | -0.06 (t -1.2) | +0.15 (t -1.0) | -0.47 (t -2.0) | -0.00 (t -1.7) |
+| TRIPLE | HIGHBETA | yes | 118 | -0.14 (t -0.3) | +0.81 (t 0.4) | +1.82 (t 0.5) | +1.71 (t 0.6) | +2.48 (t 0.7) |
+| TRIPLE | HIGHBETA | no | 1235 | +0.11 (t -0.2) | +0.10 (t -0.9) | +0.23 (t -0.7) | -0.12 (t -0.6) | +0.33 (t -0.5) |
+| TRIPLE | NEW | yes | 1042 | +0.03 (t 0.7) | +0.19 (t 1.9) | +0.29 (t 2.2) | +0.02 (t 0.7) | +0.37 (t 1.5) |
+| TRIPLE | NEW | no | 12483 | -0.02 (t -1.6) | -0.07 (t -1.9) | -0.10 (t -1.7) | -0.16 (t -1.5) | +0.00 (t -1.2) |
+| TRIPLE | ALL | yes | 1247 | -0.00 (t 0.3) | +0.24 (t 1.6) | +0.42 (t 2.2) | +0.25 (t 1.2) | +0.61 (t 1.7) |
+| TRIPLE | ALL | no | 14704 | -0.00 (t -1.4) | -0.05 (t -1.9) | -0.06 (t -1.7) | -0.17 (t -1.5) | +0.03 (t -1.2) |
+| X1020 | ETF | yes | 73 | +0.13 (t 0.9) | +0.58 (t 1.1) | +1.44 (t 2.2) | +1.95 (t 2.1) | +2.41 (t 2.3) |
+| X1020 | ETF | no | 355 | +0.06 (t -0.6) | +0.28 (t -0.2) | +0.23 (t -0.1) | +0.46 (t 0.4) | +0.72 (t 0.3) |
+| X1020 | MEGA | yes | 67 | +0.29 (t -0.4) | -0.02 (t -1.1) | +0.00 (t -1.0) | +0.38 (t -1.0) | +0.29 (t -1.2) |
+| X1020 | MEGA | no | 411 | +0.17 (t 1.3) | +0.41 (t 1.0) | +0.44 (t 0.4) | +0.31 (t -0.5) | +0.84 (t 0.5) |
+| X1020 | HIGHBETA | yes | 133 | +0.39 (t 1.1) | +1.03 (t 1.2) | +2.30 (t 1.4) | +2.59 (t 0.9) | +3.51 (t 1.3) |
+| X1020 | HIGHBETA | no | 880 | +0.28 (t 0.5) | +0.14 (t 0.2) | +0.24 (t 0.3) | +0.00 (t -0.2) | +0.41 (t -0.2) |
+| X1020 | NEW | yes | 1381 | +0.00 (t -1.2) | -0.10 (t -1.5) | +0.20 (t 0.3) | +0.40 (t 0.1) | +0.44 (t -0.0) |
+| X1020 | NEW | no | 9040 | -0.01 (t -1.2) | +0.08 (t -0.7) | +0.08 (t -0.7) | +0.20 (t -0.6) | +0.32 (t -0.4) |
+| X1020 | ALL | yes | 1654 | +0.05 (t -1.3) | +0.03 (t -1.4) | +0.42 (t 0.3) | +0.64 (t 0.1) | +0.77 (t 0.0) |
+| X1020 | ALL | no | 10686 | +0.03 (t -0.8) | +0.10 (t -0.6) | +0.11 (t -0.6) | +0.20 (t -0.6) | +0.36 (t -0.4) |
 
 ## QQQ since 2022: each break, what came first, and each entry (+ = it fell)
 
@@ -276,5 +276,7 @@ Puts direction: positive = it fell. Random = every day of the same name and peri
 | 2026-07-07 | X1020 | down first | E1b retest 20 SMA, close back under | 2026-07-14 | +3.4% | +6.1% | +0.2% |
 | 2026-08-24 | TRIPLE | retest first | E0 break close | 2026-08-24 | -2.1% | -1.7% | -5.9% |
 | 2026-08-24 | TRIPLE | retest first | E1b retest 20 SMA, close back under | 2026-08-25 | -0.8% | -0.8% | -4.4% |
+| 2026-08-28 | X1020 | same day | E0 break close | 2026-08-28 | +1.0% | +1.0% | -2.9% |
+| 2026-08-28 | X1020 | same day | E1b retest 20 SMA, close back under | 2026-09-03 | +0.2% | -0.5% | -4.6% |
 
 Limits: today's names (survivorship hurts puts); stock moves, not option prices; daily bars can't tell the order of a retest and a new low on the same day ('same day').
