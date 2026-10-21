@@ -1,0 +1,144 @@
+name: Deploy trade bot (Cloudflare + Discord)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "trade-bot/**"
+      - ".github/workflows/deploy_trade_bot.yml"
+  repository_dispatch:
+    types: [deploy_trade_bot]
+
+concurrency:
+  group: deploy-trade-bot
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: trade-bot
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      WRANGLER_SEND_METRICS: "false"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check the two secrets exist
+        run: |
+          ok=1
+          [ -n "$CLOUDFLARE_API_TOKEN" ] || { echo "::error::Secret CF_API_TOKEN is missing (repo Settings > Secrets and variables > Actions)"; ok=0; }
+          [ -n "$DISCORD_BOT_TOKEN" ] || { echo "::error::Secret DISCORD_BOT_TOKEN is missing (repo Settings > Secrets and variables > Actions)"; ok=0; }
+          [ $ok = 1 ]
+
+      - name: Read settings from wrangler.toml
+        run: |
+          get() { grep -E "^$1 *=" wrangler.toml | head -1 | sed -E 's/^[^=]+= *"?([^"]*)"?.*/\1/'; }
+          echo "APP_ID=$(get DISCORD_APP_ID)" >> $GITHUB_ENV
+          echo "GUILD_ID=$(get GUILD_ID)" >> $GITHUB_ENV
+          echo "PRIVATE_CHANNEL_ID=$(get PRIVATE_CHANNEL_ID)" >> $GITHUB_ENV
+          echo "WORKER_NAME=$(get name)" >> $GITHUB_ENV
+
+      - name: Install and test
+        run: |
+          npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+          npm test
+
+      - name: Cloudflare account and workers.dev subdomain
+        run: |
+          set -e
+          CF=https://api.cloudflare.com/client/v4
+          AUTH="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          V=$(curl -s -H "$AUTH" $CF/user/tokens/verify | jq -r '.result.status // "invalid"')
+          echo "Token status: $V"
+          [ "$V" = "active" ] || { echo "::error::CF_API_TOKEN is not active. Make a new one with the 'Edit Cloudflare Workers' template."; exit 1; }
+          ACC=$(curl -s -H "$AUTH" "$CF/accounts?per_page=5" | jq -r '.result[0].id // empty')
+          [ -n "$ACC" ] || { echo "::error::Token can't see any Cloudflare account. Re-create it with 'All accounts' or your account selected."; exit 1; }
+          echo "CLOUDFLARE_ACCOUNT_ID=$ACC" >> $GITHUB_ENV
+          SUB=$(curl -s -H "$AUTH" $CF/accounts/$ACC/workers/subdomain | jq -r '.result.subdomain // empty')
+          if [ -z "$SUB" ]; then
+            for TRY in "tazmaniantrader" "tazmanian-trader-$(echo $ACC | cut -c1-6)"; do
+              R=$(curl -s -X PUT -H "$AUTH" -H "content-type: application/json" -d "{\"subdomain\":\"$TRY\"}" $CF/accounts/$ACC/workers/subdomain)
+              if [ "$(echo "$R" | jq -r '.success')" = "true" ]; then SUB=$TRY; echo "Created workers.dev subdomain $SUB"; break; fi
+              echo "Subdomain $TRY not available: $(echo "$R" | jq -c '.errors')"
+            done
+          fi
+          [ -n "$SUB" ] || { echo "::error::No workers.dev subdomain. Open Cloudflare > Workers & Pages once and pick one, then re-run."; exit 1; }
+          echo "WORKER_URL=https://${WORKER_NAME}.${SUB}.workers.dev" >> $GITHUB_ENV
+          echo "Worker URL will be https://${WORKER_NAME}.${SUB}.workers.dev"
+
+      - name: Deploy worker
+        run: npx wrangler deploy
+
+      - name: Give the worker the Discord bot token
+        run: printf '%s' "$DISCORD_BOT_TOKEN" | npx wrangler secret put DISCORD_BOT_TOKEN
+
+      - name: Wait for the worker URL to answer
+        run: |
+          for i in $(seq 1 30); do
+            BODY=$(curl -s --max-time 10 "$WORKER_URL" || true)
+            if echo "$BODY" | grep -q "trade bot is up"; then echo "Worker is up"; break; fi
+            echo "Not up yet ($i), waiting 10s"; sleep 10
+          done
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -d '{"type":1}' "$WORKER_URL")
+          echo "Unsigned request returned $CODE (must be 401)"
+          [ "$CODE" = "401" ] || { echo "::error::Worker should reject unsigned requests with 401"; exit 1; }
+
+      - name: Register the /t command in your server
+        run: |
+          cat > /tmp/cmd.json <<'JSON'
+          [{
+            "name": "t",
+            "type": 1,
+            "description": "Trade bot: in, half, out, plan, recap, help",
+            "default_member_permissions": "8",
+            "dm_permission": false,
+            "options": [{
+              "type": 3, "name": "text", "required": true,
+              "description": "like: in qqq 717p 10/23 .45 x2   or   help"
+            }]
+          }]
+          JSON
+          CODE=$(curl -s -o /tmp/cmd_out.json -w "%{http_code}" -X PUT \
+            -H "Authorization: Bot $DISCORD_BOT_TOKEN" -H "content-type: application/json" \
+            --data @/tmp/cmd.json "https://discord.com/api/v10/applications/$APP_ID/guilds/$GUILD_ID/commands")
+          echo "Discord command registration: HTTP $CODE"
+          if [ "$CODE" != "200" ]; then
+            cat /tmp/cmd_out.json; echo
+            echo "::error::Command registration failed. If 403/50001: re-invite the bot with the applications.commands scope. If 401: DISCORD_BOT_TOKEN is wrong."
+            exit 1
+          fi
+
+      - name: Point Discord at the worker (Interactions Endpoint URL)
+        run: |
+          for i in $(seq 1 10); do
+            CODE=$(curl -s -o /tmp/ep_out.json -w "%{http_code}" -X PATCH \
+              -H "Authorization: Bot $DISCORD_BOT_TOKEN" -H "content-type: application/json" \
+              -d "{\"interactions_endpoint_url\":\"$WORKER_URL\"}" "https://discord.com/api/v10/applications/@me")
+            echo "Set endpoint try $i: HTTP $CODE"
+            if [ "$CODE" = "200" ]; then echo "Discord verified the worker signature check."; exit 0; fi
+            jq -c '.' /tmp/ep_out.json || cat /tmp/ep_out.json
+            sleep 20
+          done
+          echo "::error::Discord would not accept the endpoint. The Public Key in wrangler.toml may not match the app, or the URL is not reachable yet."
+          exit 1
+
+      - name: Say hello in the private channel
+        run: |
+          MSG='{"content":"🤖🌪️ **Trade bot is online.** TEST MODE: alerts only show in this channel.\nType `/t help` to see the commands. Try: `/t in qqq 717p 10/30 .45 x2`\n\nPattern. Process. Paid. 🌪️🔴","allowed_mentions":{"parse":[]}}'
+          CODE=$(curl -s -o /tmp/hello.json -w "%{http_code}" -X POST \
+            -H "Authorization: Bot $DISCORD_BOT_TOKEN" -H "content-type: application/json" \
+            -d "$MSG" "https://discord.com/api/v10/channels/$PRIVATE_CHANNEL_ID/messages")
+          echo "Hello message: HTTP $CODE"
+          if [ "$CODE" != "200" ]; then
+            jq -c '.' /tmp/hello.json || cat /tmp/hello.json
+            echo "::error::Bot can't post in the private channel. Add the bot to that channel with View Channel + Send Messages."
+            exit 1
+          fi

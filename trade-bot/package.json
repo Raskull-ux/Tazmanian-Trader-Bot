@@ -1,0 +1,11 @@
+{
+  "name": "taz-trade-bot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node test/parse.test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.42.0"
+  }
+}

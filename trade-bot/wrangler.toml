@@ -1,0 +1,20 @@
+name = "taz-trade-bot"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = true
+
+[vars]
+DISCORD_APP_ID = "1562322157932118147"
+DISCORD_PUBLIC_KEY = "d714e7cf7ad164941c543ebfc62f1b422394125e4b101f84072f97e0c342dd02"
+GUILD_ID = "1411492462324617243"
+PRIVATE_CHANNEL_ID = "1562327911866830949"
+VIP_CHANNEL_ID = "1412516610845184123"
+FREE_CHANNEL_ID = ""
+
+[[durable_objects.bindings]]
+name = "STORE"
+class_name = "TradeStore"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["TradeStore"]
