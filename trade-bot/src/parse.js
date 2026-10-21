@@ -133,7 +133,7 @@ export function parseCommand(raw, nowMs) {
   if (toks[0] === "free") {
     route = "free";
     toks = toks.slice(1);
-    if (!toks.length) return { cmd: "error", msg: "Free what? Example: `/t free in qqq 717p 10/23 .45`" };
+    if (!toks.length) return { cmd: "error", msg: "Free what? Example: `free in qqq 717p 10/23 .45`" };
   }
 
   let cmd = CMD_WORDS[toks[0]];
@@ -143,14 +143,14 @@ export function parseCommand(raw, nowMs) {
     cmd = "in";
     rest = toks;
   }
-  if (!cmd) return { cmd: "error", msg: `I don't know "${toks[0]}". Type \`/t help\`.` };
+  if (!cmd) return { cmd: "error", msg: `I don't know "${toks[0]}". Type \`help\`.` };
 
   if (cmd === "in") return { ...parseEntry(rest, today, note), route };
   if (cmd === "trim" || cmd === "out") return { ...parseExit(cmd, rest, note), route };
   if (cmd === "plan") {
     let original = String(raw).trim().replace(/^(free\s+)?\S+\s*/i, ""); // keep his casing/wording
     const tick = rest.find(isTicker);
-    if (!tick) return { cmd: "error", msg: "Plan needs a ticker. Example: `/t plan qqq 727 stop 733`" };
+    if (!tick) return { cmd: "error", msg: "Plan needs a ticker. Example: `plan qqq 727 stop 733`" };
     original = original.replace(new RegExp(`^\\$?${tick}\\b\\s*`, "i"), "") || original;
     const sm = original.match(/stop\s*@?\$?(\d+(?:\.\d+)?)/i);
     return { cmd: "plan", ticker: tick.toUpperCase(), text: original, stop: sm ? +sm[1] : null, route };
@@ -161,7 +161,7 @@ export function parseCommand(raw, nowMs) {
   }
   if (cmd === "note") {
     const t = String(raw).trim().replace(/^\S+\s*/, "");
-    if (!t) return { cmd: "error", msg: "Note what? Example: `/t note 1h 10 SMA close target`" };
+    if (!t) return { cmd: "error", msg: "Note what? Example: `note 1h 10 SMA close target`" };
     return { cmd: "note", text: t };
   }
   return { cmd, route };
@@ -192,7 +192,7 @@ function parseEntry(toks, today, note) {
   if (!exp) missing.push("expiration (like 10/23)");
   if (price === null) missing.push("price (like .45)");
   if (missing.length) {
-    return { cmd: "error", msg: `Missing ${missing.join(", ")}. Example: \`/t in qqq 717p 10/23 .45 x2\`` };
+    return { cmd: "error", msg: `Missing ${missing.join(", ")}. Example: \`in qqq 717p 10/23 .45 x2\`` };
   }
   if (price <= 0) return { cmd: "error", msg: "Price has to be above 0." };
   return { cmd: "in", ticker, strike, right, exp, price, qty: qty || 1, note };
@@ -209,7 +209,7 @@ function parseExit(cmd, toks, note) {
     if (pr !== null && price === null) { price = pr; continue; }
   }
   if (price === null) {
-    const ex = cmd === "trim" ? "/t half .90" : "/t out .70";
+    const ex = cmd === "trim" ? "half .90" : "out .70";
     return { cmd: "error", msg: `Missing the price. Example: \`${ex}\`` };
   }
   return { cmd, ticker, price, qty, note };

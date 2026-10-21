@@ -90,6 +90,7 @@ jobs:
           CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -d '{"type":1}' "$WORKER_URL")
           echo "Unsigned request returned $CODE (must be 401)"
           [ "$CODE" = "401" ] || { echo "::error::Worker should reject unsigned requests with 401"; exit 1; }
+          echo "Channel watcher: $(curl -s --max-time 10 "$WORKER_URL/kick")"
 
       - name: Register the /t command in your server
         run: |
@@ -132,7 +133,7 @@ jobs:
 
       - name: Say hello in the private channel
         run: |
-          MSG='{"content":"🤖🌪️ **Trade bot is online.** TEST MODE: alerts only show in this channel.\nType `/t help` to see the commands. Try: `/t in qqq 717p 10/30 .45 x2`\n\nPattern. Process. Paid. 🌪️🔴","allowed_mentions":{"parse":[]}}'
+          MSG='{"content":"🤖🌪️ **Trade bot is online.** No slash needed now. Just type your trade here like a text, for example: `in qqq 717p 10/30 .45 x2`\nTEST MODE: alerts only show in this channel. ✅ on your message means it was logged. Type `help` for everything it does.\n\nPattern. Process. Paid. 🌪️🔴","allowed_mentions":{"parse":[]}}'
           CODE=$(curl -s -o /tmp/hello.json -w "%{http_code}" -X POST \
             -H "Authorization: Bot $DISCORD_BOT_TOKEN" -H "content-type: application/json" \
             -d "$MSG" "https://discord.com/api/v10/channels/$PRIVATE_CHANNEL_ID/messages")

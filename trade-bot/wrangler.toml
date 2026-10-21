@@ -3,6 +3,9 @@ main = "src/index.js"
 compatibility_date = "2025-09-01"
 workers_dev = true
 
+[triggers]
+crons = ["* * * * *"]
+
 [vars]
 DISCORD_APP_ID = "1562322157932118147"
 DISCORD_PUBLIC_KEY = "d714e7cf7ad164941c543ebfc62f1b422394125e4b101f84072f97e0c342dd02"

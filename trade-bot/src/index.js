@@ -1,4 +1,5 @@
-// Tazmanian trade bot: Discord /t command -> clean alert + trade log + rule checks.
+// Tazmanian trade bot: type a trade line in the private channel (no slash needed)
+// -> clean alert + trade log + rule checks. /t still works as a backup.
 // Runs free on Cloudflare Workers. State lives in one SQLite-backed Durable Object.
 // It NEVER places orders. Robinhood has no official API; this only posts and logs.
 
@@ -13,8 +14,24 @@ const NFA = "_Not financial advice. My own position._";
 
 // ---------------- Worker entry ----------------
 export default {
+  // Every minute: make sure the channel watcher is running.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(env.STORE.get(env.STORE.idFromName("taz")).ensureAlarm());
+  },
+
   async fetch(request, env) {
-    if (request.method === "GET") return new Response("Tazmanian trade bot is up.");
+    if (request.method === "GET") {
+      const u = new URL(request.url);
+      if (u.pathname === "/kick") {
+        const r = await env.STORE.get(env.STORE.idFromName("taz")).ensureAlarm();
+        return new Response(r);
+      }
+      if (u.pathname === "/status") {
+        const r = await env.STORE.get(env.STORE.idFromName("taz")).status();
+        return new Response(JSON.stringify(r, null, 1), { headers: { "content-type": "application/json" } });
+      }
+      return new Response("Tazmanian trade bot is up.");
+    }
     if (request.method !== "POST") return new Response("Method not allowed", { status: 405 });
 
     const sig = request.headers.get("x-signature-ed25519");
@@ -115,6 +132,131 @@ export class TradeStore extends DurableObject {
     `);
   }
 
+
+  // ---------------- channel watcher (no-slash mode) ----------------
+  api(method, path, body) {
+    const base = this.env.DISCORD_API || "https://discord.com/api/v10";
+    const headers = { authorization: `Bot ${this.env.DISCORD_BOT_TOKEN}` };
+    if (body !== undefined) headers["content-type"] = "application/json";
+    return fetch(base + path, {
+      method, headers, body: body === undefined ? undefined : JSON.stringify(body),
+      signal: AbortSignal.timeout(4000),
+    });
+  }
+
+  // Fast checks while you trade, slower when you don't.
+  interval(now) {
+    const e = etParts(now);
+    const wd = new Date(e.date + "T12:00:00Z").getUTCDay();
+    if (wd === 0 || wd === 6) return 60000;
+    const m = e.hour * 60 + e.minute;
+    if (m >= 8 * 60 && m < 16 * 60 + 30) return 5000;
+    if (m >= 7 * 60 && m < 21 * 60) return 15000;
+    return 60000;
+  }
+
+  async status() {
+    const a = await this.ctx.storage.getAlarm();
+    const g = (k) => this.getSetting(k, null);
+    const ok = g("last_poll_ok");
+    return {
+      mode: this.mode(), paper: this.paper(), next_check: a ? new Date(a).toISOString() : null,
+      last_ok: ok ? new Date(+ok).toISOString() : null, last_error: g("last_poll_error"),
+      trades: this.one("SELECT COUNT(*) n FROM positions").n,
+    };
+  }
+
+  async ensureAlarm() {
+    const a = await this.ctx.storage.getAlarm();
+    if (a === null || a < Date.now() - 30000) {
+      await this.ctx.storage.setAlarm(Date.now() + 1000);
+      return "watcher started";
+    }
+    return "watcher running";
+  }
+
+  async alarm() {
+    try {
+      await this.poll();
+      this.setSetting("last_poll_ok", String(Date.now()));
+    } catch (e) {
+      this.setSetting("last_poll_error", `${new Date().toISOString()} ${String(e && e.message || e).slice(0, 300)}`);
+    } finally {
+      await this.ctx.storage.setAlarm(Date.now() + this.interval(Date.now()));
+    }
+  }
+
+  async poll() {
+    const ch = this.env.PRIVATE_CHANNEL_ID;
+    const last = this.getSetting("last_msg_id", "");
+    if (!last) {
+      // First run: start from now. Old chat history is never replayed.
+      const r = await this.api("GET", `/channels/${ch}/messages?limit=1`);
+      if (!r.ok) throw new Error(`read channel: HTTP ${r.status}`);
+      const arr = await r.json();
+      this.setSetting("last_msg_id", arr.length ? arr[0].id : "0");
+      return;
+    }
+    const r = await this.api("GET", `/channels/${ch}/messages?after=${last}&limit=50`);
+    if (r.status === 429) return;
+    if (!r.ok) throw new Error(`read channel: HTTP ${r.status}`);
+    const msgs = (await r.json()).sort((a, b) => (BigInt(a.id) < BigInt(b.id) ? -1 : 1));
+    for (const m of msgs) {
+      this.setSetting("last_msg_id", m.id); // mark first: a crash never double-logs a trade
+      if (!m.author || m.author.bot) continue;
+      await this.onMessage(m);
+    }
+  }
+
+  async onMessage(m) {
+    const text = (m.content || "").trim();
+    if (!text || !isTradeLine(text)) return;
+    let out;
+    try {
+      out = await this.handle(text, Date.now());
+    } catch (e) {
+      out = { reply: `⚠️ Bot error, nothing was logged: ${String(e && e.message || e).slice(0, 300)}` };
+    }
+    // Plain chat that only looked like a command (no numbers, didn't parse) stays ignored.
+    const failed = out.reply.startsWith("⚠️") && out.reply.includes("Nothing was logged");
+    if (failed && !/\d/.test(text) && text.trim().split(/\s+/).length > 1) return;
+    await this.replyTo(m, out);
+    const emoji = failed ? "⚠️" : out.reply.startsWith("🔒") ? "🔒" : "✅";
+    await this.api("PUT", `/channels/${m.channel_id}/messages/${m.id}/reactions/${encodeURIComponent(emoji)}/@me`).catch(() => {});
+  }
+
+  async replyTo(m, out) {
+    const ref = { message_id: m.id, fail_if_not_exists: false };
+    const base = this.env.DISCORD_API || "https://discord.com/api/v10";
+    if (out.file) {
+      const form = new FormData();
+      form.append("payload_json", JSON.stringify({
+        content: out.reply.slice(0, 1990), message_reference: ref, allowed_mentions: { parse: [] },
+        attachments: [{ id: 0, filename: out.file.name }],
+      }));
+      form.append("files[0]", new Blob([out.file.content], { type: "text/csv" }), out.file.name);
+      await fetch(`${base}/channels/${m.channel_id}/messages`, {
+        method: "POST", headers: { authorization: `Bot ${this.env.DISCORD_BOT_TOKEN}` }, body: form,
+      });
+      return;
+    }
+    // Split long replies so nothing gets cut off.
+    const chunks = [];
+    let rest = out.reply;
+    while (rest.length > 1900) {
+      let cut = rest.lastIndexOf("\n", 1900);
+      if (cut < 500) cut = 1900;
+      chunks.push(rest.slice(0, cut));
+      rest = rest.slice(cut).replace(/^\n/, "");
+    }
+    chunks.push(rest);
+    for (let k = 0; k < chunks.length; k++) {
+      await this.api("POST", `/channels/${m.channel_id}/messages`, {
+        content: chunks[k], allowed_mentions: { parse: [] }, ...(k === 0 ? { message_reference: ref } : {}),
+      });
+    }
+  }
+
   // ---- small db helpers ----
   all(q, ...a) { return this.sql.exec(q, ...a).toArray(); }
   one(q, ...a) { const r = this.all(q, ...a); return r.length ? r[0] : null; }
@@ -150,21 +292,15 @@ export class TradeStore extends DurableObject {
 
   // ---- Discord REST (used only in live mode) ----
   async post(channel, content) {
-    const r = await fetch(`https://discord.com/api/v10/channels/${channel}/messages`, {
-      method: "POST",
-      headers: { authorization: `Bot ${this.env.DISCORD_BOT_TOKEN}`, "content-type": "application/json" },
-      body: JSON.stringify({ content: content.slice(0, 1990), allowed_mentions: { parse: [] } }),
-      signal: AbortSignal.timeout(2200),
-    });
+    const r = await this.api("POST", `/channels/${channel}/messages`,
+      { content: content.slice(0, 1990), allowed_mentions: { parse: [] } });
     if (!r.ok) throw new Error(`Discord said ${r.status} when posting. Check the bot can see and post in that channel.`);
     return (await r.json()).id;
   }
 
   async unpost(channel, id) {
     if (!channel || !id) return;
-    await fetch(`https://discord.com/api/v10/channels/${channel}/messages/${id}`, {
-      method: "DELETE", headers: { authorization: `Bot ${this.env.DISCORD_BOT_TOKEN}` },
-    }).catch(() => {});
+    await this.api("DELETE", `/channels/${channel}/messages/${id}`).catch(() => {});
   }
 
   targetChannel(route) {
@@ -207,14 +343,14 @@ export class TradeStore extends DurableObject {
       case "paper": {
         const v = c.value === null ? !this.paper() : c.value;
         this.setSetting("paper", v ? "1" : "0");
-        return { reply: v ? "📄 **PAPER MODE ON.** Every alert is labeled PAPER until you turn it off with `/t paper off`." : "💵 Paper mode off. Alerts are real again." };
+        return { reply: v ? "📄 **PAPER MODE ON.** Every alert is labeled PAPER until you turn it off with `paper off`." : "💵 Paper mode off. Alerts are real again." };
       }
       case "live":
         this.setSetting("mode", "live");
-        return { reply: "🟢 **LIVE.** Alerts now post to VIP. Go back to private-only with `/t test`." };
+        return { reply: "🟢 **LIVE.** Alerts now post to VIP. Go back to private-only with `test`." };
       case "test":
         this.setSetting("mode", "test");
-        return { reply: "🧪 **TEST MODE.** Alerts only show here. Switch with `/t live`." };
+        return { reply: "🧪 **TEST MODE.** Alerts only show here. Switch with `live`." };
       case "note": {
         const p = this.one("SELECT * FROM positions ORDER BY id DESC LIMIT 1");
         if (!p) return { reply: "⚠️ No trade to attach a note to yet." };
@@ -291,7 +427,7 @@ export class TradeStore extends DurableObject {
     let p;
     if (c.ticker) p = this.one("SELECT * FROM positions WHERE status='open' AND ticker=? ORDER BY id DESC LIMIT 1", c.ticker);
     else p = this.one("SELECT * FROM positions WHERE status='open' ORDER BY id DESC LIMIT 1");
-    if (!p) return { reply: `⚠️ No open ${c.ticker ? c.ticker + " " : ""}trade to ${isTrim ? "trim" : "close"}. Check \`/t open\`.` };
+    if (!p) return { reply: `⚠️ No open ${c.ticker ? c.ticker + " " : ""}trade to ${isTrim ? "trim" : "close"}. Check \`open\`.` };
 
     let sellQty, flags = [], forcedFull = false;
     if (isTrim) {
@@ -450,7 +586,7 @@ export class TradeStore extends DurableObject {
 }
 
 const HELP = [
-  "🌪️ **Trade bot commands** (type them after `/t`)",
+  "🌪️ **Trade bot**: just type these in this channel. No slash needed. ✅ means logged.",
   "`in qqq 717p 10/23 .45 x2`  entry (add `| your read` to save a note)",
   "`half .90`  sell half of the latest open trade",
   "`out .70`  close the rest (`out qqq .70` if more than one is open)",
@@ -462,3 +598,13 @@ const HELP = [
   "`live` / `test`  post to VIP, or only show here",
   "`free in ...`  send that alert to the free channel",
 ].join("\n");
+
+// Which messages in the private channel are meant for the bot. Everything else is ignored chat.
+const SOLO = new Set(["recap", "today", "status", "open", "positions", "log", "export", "undo", "help",
+  "commands", "live", "test", "paper", "paper on", "paper off"]);
+const LEAD = /^(free\s+)?(in|buy|bto|long|entry|half|trim|partial|out|sell|close|exit|stc|stopped|plan|setup|note)\s+\S/i;
+const BARE_CONTRACT = /^\$?[a-z]{1,5}\s+\d+(\.\d+)?(\/\d+(\.\d+)?)?\s*(c|p|call|calls|put|puts)\b/i;
+function isTradeLine(text) {
+  const t = text.trim().toLowerCase().replace(/\s+/g, " ");
+  return SOLO.has(t) || LEAD.test(t) || BARE_CONTRACT.test(t);
+}
