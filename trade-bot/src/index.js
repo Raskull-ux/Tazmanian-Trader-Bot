@@ -4,6 +4,7 @@
 // It NEVER places orders. Robinhood has no official API; this only posts and logs.
 
 import { DurableObject } from "cloudflare:workers";
+import { fetchMeter } from "./meter.js";
 import {
   parseCommand, etParts, fmtTime, planTradeDate, daysBetween,
   pct, fmtPct, money, contractLabel, fmtPx,
@@ -51,7 +52,7 @@ export default {
       const store = env.STORE.get(env.STORE.idFromName("taz"));
       let out;
       try {
-        out = await store.handle(text, Date.now());
+        out = await store.handle(text, Date.now(), { meterTimeout: 1800 });
       } catch (e) {
         return json(reply(`⚠️ Bot error, nothing was logged: ${String(e && e.message || e).slice(0, 300)}`));
       }
@@ -326,8 +327,16 @@ export class TradeStore extends DurableObject {
     }
   }
 
+  async meter(ticker, side) {
+    try {
+      const t = new Promise((res) => setTimeout(() => res(null), this.meterTimeout || 9000));
+      return await Promise.race([fetchMeter(this.env, ticker.split("/")[0], side), t]);
+    } catch (_) { return null; }
+  }
+
   // ---- command router ----
-  async handle(text, now) {
+  async handle(text, now, opts = {}) {
+    this.meterTimeout = opts.meterTimeout || 9000;
     const c = parseCommand(text, now);
     const e = etParts(now);
     const today = e.date;
@@ -339,6 +348,10 @@ export class TradeStore extends DurableObject {
       case "out": return this.cmdExit(c, now, today, false);
       case "plan": return this.cmdPlan(c, now);
       case "recap": return { reply: this.recap(today) };
+      case "check": {
+        const m = await this.meter(c.ticker, c.side);
+        return { reply: m ? `🔎 **${c.ticker}** ${c.side === "C" ? "calls" : "puts"} @ ${m.px.toFixed(2)}\n${m.text}\n_Nothing logged._` : `⚠️ Couldn't get ${c.ticker} data right now. Nothing logged.` };
+      }
       case "open": return { reply: this.openList() };
       case "paper": {
         const v = c.value === null ? !this.paper() : c.value;
@@ -413,8 +426,10 @@ export class TradeStore extends DurableObject {
     lines.push("", NFA, SIGN_OFF);
     const alert = lines.join("\n");
 
+    const mt = await this.meter(c.ticker, c.right);
     const extras = [
       `📒 Logged #${id}. Cost ${money(c.price * 100 * c.qty)} from your price.`,
+      mt ? mt.text : "⏱️ EARLY meter: no data right now",
       plan ? `🗺️ Plan on file: ${plan.text}` : null,
       ...flags,
     ];
@@ -592,6 +607,7 @@ const HELP = [
   "`out .70`  close the rest (`out qqq .70` if more than one is open)",
   "`plan qqq puts 727-733 rejection stop 733`  tomorrow's setup",
   "`note 1h 10 SMA close target`  add your read to the latest trade",
+  "`check qqq`  EARLY meter for puts (`check qqq c` for calls), nothing logged",
   "`open`  open trades   `recap`  today   `log`  spreadsheet file",
   "`undo`  remove the last thing you logged (and its post)",
   "`paper` / `paper off`  label everything PAPER",
@@ -602,7 +618,7 @@ const HELP = [
 // Which messages in the private channel are meant for the bot. Everything else is ignored chat.
 const SOLO = new Set(["recap", "today", "status", "open", "positions", "log", "export", "undo", "help",
   "commands", "live", "test", "paper", "paper on", "paper off"]);
-const LEAD = /^(free\s+)?(in|buy|bto|long|entry|half|trim|partial|out|sell|close|exit|stc|stopped|plan|setup|note)\s+\S/i;
+const LEAD = /^(free\s+)?(in|buy|bto|long|entry|half|trim|partial|out|sell|close|exit|stc|stopped|plan|setup|note|check|early|meter)\s+\S/i;
 const BARE_CONTRACT = /^\$?[a-z]{1,5}\s+\d+(\.\d+)?(\/\d+(\.\d+)?)?\s*(c|p|call|calls|put|puts)\b/i;
 function isTradeLine(text) {
   const t = text.trim().toLowerCase().replace(/\s+/g, " ");

@@ -28,3 +28,6 @@ assert.equal(planTradeDate(Date.UTC(2026, 9, 23, 22, 0)), "2026-10-26");
 assert.equal(planTradeDate(Date.UTC(2026, 9, 21, 13, 0)), "2026-10-21");
 assert.equal(nextTradingDay("2026-10-23"), "2026-10-26");
 console.log("parse tests: all passed");
+r = parseCommand("check qqq", NOW); assert.equal(r.cmd, "check"); assert.equal(r.ticker, "QQQ"); assert.equal(r.side, "P");
+r = parseCommand("check aapl c", NOW); assert.equal(r.side, "C");
+console.log("check tests: passed");

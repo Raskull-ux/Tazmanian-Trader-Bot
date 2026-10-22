@@ -23,6 +23,8 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN || secrets.CLOUDFLARE_API_TOKEN || secrets.CF_TOKEN || secrets.CLOUDFLARE_TOKEN }}
       DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
+      ALPACA_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
+      ALPACA_SECRET: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
       WRANGLER_SEND_METRICS: "false"
     steps:
       - uses: actions/checkout@v4
@@ -50,6 +52,7 @@ jobs:
         run: |
           npm ci --no-audit --no-fund || npm install --no-audit --no-fund
           npm test
+          node test/meter.test.mjs
 
       - name: Cloudflare account and workers.dev subdomain
         run: |
@@ -78,7 +81,15 @@ jobs:
         run: npx wrangler deploy
 
       - name: Give the worker the Discord bot token
-        run: printf '%s' "$DISCORD_BOT_TOKEN" | npx wrangler secret put DISCORD_BOT_TOKEN
+        run: |
+          printf '%s' "$DISCORD_BOT_TOKEN" | npx wrangler secret put DISCORD_BOT_TOKEN
+          if [ -n "$ALPACA_KEY_ID" ] && [ -n "$ALPACA_SECRET" ]; then
+            printf '%s' "$ALPACA_KEY_ID" | npx wrangler secret put ALPACA_KEY_ID
+            printf '%s' "$ALPACA_SECRET" | npx wrangler secret put ALPACA_SECRET
+            echo "Alpaca keys set (EARLY meter on)"
+          else
+            echo "::warning::No Alpaca secrets found, so the EARLY meter will say 'no data'"
+          fi
 
       - name: Wait for the worker URL to answer
         run: |
