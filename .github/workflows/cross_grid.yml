@@ -1,0 +1,24 @@
+name: Cross grid (all EMA SMA crosses)
+on:
+  repository_dispatch:
+    types: [cross_grid]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas numpy pyarrow
+      - run: set -o pipefail; python cross_grid.py 2>&1 | tail -120
+      - name: Commit results
+        run: |
+          git config user.name "taz-bot"; git config user.email "taz-bot@users.noreply.github.com"
+          git add results/expanded
+          git diff --cached --quiet && exit 0
+          git commit -m "Cross grid results"
+          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
