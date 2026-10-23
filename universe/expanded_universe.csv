@@ -1,0 +1,861 @@
+symbol,industry,sector_etf,group
+A,Life Sciences Tools & Services,XLV,peer
+AAL,Airlines,XLI,peer
+AAOI,Communications,SPY,peer
+AAPL,Technology,XLK,your 75
+ABBV,Biotechnology,XLV,peer
+ABNB,"Hotels, Restaurants & Leisure",XLY,your 75
+ABT,Health Care,XLV,peer
+ABVX,Biotechnology,XLV,peer
+ACGL,Insurance,XLF,peer
+ACMR,Semiconductors,XLK,peer
+ACN,Technology,XLK,peer
+ACWI,,SPY,peer
+ACWX,,SPY,peer
+ADBE,Technology,XLK,peer
+ADI,Semiconductors,XLK,peer
+ADP,Professional Services,SPY,peer
+ADSK,Technology,XLK,peer
+AEHR,Semiconductors,XLK,peer
+AEM,Metals & Mining,XLB,peer
+AEP,Utilities,XLU,peer
+AFRM,Financial Services,XLF,your 75
+AGG,,SPY,peer
+AIG,Insurance,XLF,peer
+AJG,Insurance,XLF,peer
+AKAM,Technology,XLK,peer
+ALAB,Semiconductors,XLK,peer
+ALC,Health Care,XLV,peer
+ALGM,Semiconductors,XLK,peer
+ALGN,Health Care,XLV,peer
+ALKS,Biotechnology,XLV,peer
+ALL,Insurance,XLF,peer
+ALLY,Financial Services,XLF,peer
+ALNY,Biotechnology,XLV,peer
+AMAT,Semiconductors,XLK,peer
+AMC,,,your 75
+AMD,Semiconductors,XLK,your 75
+AME,Electrical Equipment,SPY,peer
+AMG,Financial Services,XLF,peer
+AMGN,Biotechnology,XLV,peer
+AMKR,Semiconductors,XLK,peer
+AMP,Financial Services,XLF,peer
+AMT,Real Estate,XLRE,peer
+AMZN,Retail,XLY,your 75
+AN,Retail,XLY,peer
+ANET,Communications,SPY,peer
+ANF,Retail,XLY,peer
+AON,Insurance,XLF,peer
+APA,Energy,XLE,peer
+APD,Chemicals,XLB,peer
+APH,Electrical Equipment,SPY,peer
+APLD,Technology,XLK,peer
+APO,Financial Services,XLF,peer
+APP,Technology,XLK,peer
+AR,Energy,XLE,peer
+ARES,Financial Services,XLF,peer
+ARGX,Biotechnology,XLV,peer
+ARKK,,SPY,your 75
+ARM,Semiconductors,XLK,your 75
+ARMK,"Hotels, Restaurants & Leisure",XLY,peer
+ARWR,Biotechnology,XLV,peer
+AS,"Textiles, Apparel & Luxury Goods",SPY,peer
+ASML,Semiconductors,XLK,peer
+ASND,Biotechnology,XLV,peer
+ASST,Health Care,XLV,peer
+ASTS,Telecommunication,XLC,peer
+ASX,Semiconductors,XLK,peer
+ATI,Aerospace & Defense,XLI,peer
+AVAV,Aerospace & Defense,XLI,peer
+AVGO,Semiconductors,XLK,your 75
+AXON,Aerospace & Defense,XLI,peer
+AXP,Financial Services,XLF,peer
+AXSM,Pharmaceuticals,XLV,peer
+AXTI,Semiconductors,XLK,peer
+AZN,Pharmaceuticals,XLV,peer
+AZO,Retail,XLY,peer
+B,Metals & Mining,XLB,peer
+BA,Aerospace & Defense,XLI,your 75
+BABA,Retail,XLY,your 75
+BAC,Banking,XLF,your 75
+BAM,Financial Services,XLF,peer
+BAP,Banking,XLF,peer
+BAX,Health Care,XLV,peer
+BBIO,Biotechnology,XLV,peer
+BBWI,Retail,XLY,peer
+BBY,Retail,XLY,peer
+BCE,Telecommunication,XLC,peer
+BCS,Banking,XLF,peer
+BDX,Health Care,XLV,peer
+BE,Electrical Equipment,SPY,peer
+BEN,Financial Services,XLF,peer
+BIDU,Media,XLC,peer
+BIIB,Biotechnology,XLV,peer
+BIL,,SPY,peer
+BITO,,SPY,peer
+BJ,Retail,XLY,peer
+BKNG,"Hotels, Restaurants & Leisure",XLY,peer
+BKR,Energy,XLE,peer
+BLK,Financial Services,XLF,peer
+BMNR,Technology,XLK,peer
+BMO,Banking,XLF,peer
+BMRN,Biotechnology,XLV,peer
+BMY,Pharmaceuticals,XLV,peer
+BN,Financial Services,XLF,peer
+BND,,SPY,peer
+BNS,Banking,XLF,peer
+BNY,Financial Services,XLF,peer
+BOXX,,SPY,peer
+BP,Energy,XLE,peer
+BRK.B,Financial Services,XLF,peer
+BROS,"Hotels, Restaurants & Leisure",XLY,peer
+BSX,Health Care,XLV,peer
+BTDR,Technology,XLK,peer
+BTSG,Health Care,XLV,peer
+BURL,Retail,XLY,peer
+BWXT,Aerospace & Defense,XLI,peer
+BX,Financial Services,XLF,peer
+C,Banking,XLF,peer
+CAH,Health Care,XLV,peer
+CAI,Biotechnology,XLV,peer
+CAKE,"Hotels, Restaurants & Leisure",XLY,peer
+CANE,,,your 75
+CARR,Building,SPY,peer
+CART,Retail,XLY,peer
+CASY,Retail,XLY,peer
+CAT,Machinery,XLI,peer
+CAVA,"Hotels, Restaurants & Leisure",XLY,peer
+CB,Insurance,XLF,peer
+CBOE,Financial Services,XLF,peer
+CCI,Real Estate,XLRE,peer
+CCJ,Energy,XLE,peer
+CCL,"Hotels, Restaurants & Leisure",XLY,peer
+CDE,Metals & Mining,XLB,peer
+CDNS,Technology,XLK,peer
+CEG,Utilities,XLU,peer
+CF,Chemicals,XLB,peer
+CFG,Banking,XLF,peer
+CG,Financial Services,XLF,peer
+CHDN,"Hotels, Restaurants & Leisure",XLY,peer
+CHKP,Technology,XLK,peer
+CHRD,Energy,XLE,peer
+CHRW,Logistics & Transportation,SPY,peer
+CHTR,Media,XLC,peer
+CHWY,Retail,XLY,peer
+CHYM,Financial Services,XLF,peer
+CI,Health Care,XLV,peer
+CIEN,Communications,SPY,peer
+CIFR,Technology,XLK,peer
+CL,Consumer products,XLP,peer
+CLS,Electrical Equipment,SPY,peer
+CLSK,Technology,XLK,peer
+CM,Banking,XLF,peer
+CMCSA,Telecommunication,XLC,peer
+CME,Financial Services,XLF,peer
+CMG,"Hotels, Restaurants & Leisure",XLY,your 75
+CMI,Machinery,XLI,peer
+CNC,Health Care,XLV,peer
+CNI,Road & Rail,SPY,peer
+CNQ,Energy,XLE,peer
+COF,Financial Services,XLF,peer
+COHR,Electrical Equipment,SPY,peer
+COIN,Financial Services,XLF,your 75
+COO,Health Care,XLV,peer
+COP,Energy,XLE,peer
+COR,Health Care,XLV,peer
+CORO,,SPY,peer
+CORT,Pharmaceuticals,XLV,peer
+CORZ,Technology,XLK,peer
+COST,Retail,XLY,your 75
+CP,Road & Rail,SPY,peer
+CPAY,Financial Services,XLF,peer
+CPNG,Retail,XLY,peer
+CRBG,Financial Services,XLF,peer
+CRCL,Technology,XLK,peer
+CRDO,Semiconductors,XLK,peer
+CRGY,Energy,XLE,peer
+CRH,Construction,XLI,peer
+CRL,Life Sciences Tools & Services,XLV,peer
+CRM,Technology,XLK,your 75
+CROX,"Textiles, Apparel & Luxury Goods",SPY,peer
+CRS,Aerospace & Defense,XLI,peer
+CRSP,Biotechnology,XLV,peer
+CRWD,Technology,XLK,your 75
+CRWV,Technology,XLK,your 75
+CSCO,Communications,SPY,peer
+CSX,Road & Rail,SPY,peer
+CTAS,Commercial Services & Supplies,SPY,peer
+CTSH,Technology,XLK,peer
+CTVA,Chemicals,XLB,peer
+CVE,Energy,XLE,peer
+CVNA,Retail,XLY,your 75
+CVS,Health Care,XLV,peer
+CVX,Energy,XLE,peer
+CW,Aerospace & Defense,XLI,peer
+CYTK,Biotechnology,XLV,peer
+CZR,"Hotels, Restaurants & Leisure",XLY,peer
+DAL,Airlines,XLI,peer
+DASH,"Hotels, Restaurants & Leisure",XLY,peer
+DAVE,Financial Services,XLF,peer
+DBX,Technology,XLK,peer
+DDOG,Technology,XLK,peer
+DE,Machinery,XLI,peer
+DECK,"Textiles, Apparel & Luxury Goods",SPY,peer
+DELL,Technology,XLK,peer
+DFTX,Pharmaceuticals,XLV,peer
+DG,Retail,XLY,peer
+DGX,Health Care,XLV,peer
+DHI,Consumer products,XLP,peer
+DHR,Life Sciences Tools & Services,XLV,peer
+DHT,Energy,XLE,peer
+DIA,,SPY,your 75
+DINO,Energy,XLE,peer
+DIS,Media,XLC,your 75
+DK,Energy,XLE,peer
+DKNG,"Hotels, Restaurants & Leisure",XLY,peer
+DKS,Retail,XLY,peer
+DLR,Real Estate,XLRE,peer
+DLTR,Retail,XLY,peer
+DOCN,Technology,XLK,peer
+DOCU,Technology,XLK,peer
+DPZ,"Hotels, Restaurants & Leisure",XLY,peer
+DRI,"Hotels, Restaurants & Leisure",XLY,peer
+DT,Technology,XLK,peer
+DTM,Energy,XLE,peer
+DUK,Utilities,XLU,peer
+DVA,Health Care,XLV,peer
+DVN,Energy,XLE,peer
+DXCM,Health Care,XLV,peer
+EAT,"Hotels, Restaurants & Leisure",XLY,peer
+EBAY,Retail,XLY,your 75
+ECHO,Media,XLC,peer
+ECL,Chemicals,XLB,peer
+EEM,,SPY,peer
+EFA,,SPY,peer
+EHC,Health Care,XLV,peer
+ELAN,Pharmaceuticals,XLV,peer
+ELV,Health Care,XLV,peer
+EMB,,SPY,peer
+EMBJ,Aerospace & Defense,XLI,peer
+EMR,Electrical Equipment,SPY,peer
+ENB,Energy,XLE,peer
+ENPH,Semiconductors,XLK,peer
+ENTG,Semiconductors,XLK,peer
+EOG,Energy,XLE,peer
+EPAM,Technology,XLK,peer
+EPD,Energy,XLE,peer
+EQH,Financial Services,XLF,peer
+EQIX,Real Estate,XLRE,peer
+EQNR,Energy,XLE,peer
+EQT,Energy,XLE,peer
+ESTC,Technology,XLK,peer
+ET,Energy,XLE,peer
+ETHA,,SPY,peer
+ETN,Electrical Equipment,SPY,peer
+ETR,Utilities,XLU,peer
+ETSY,Retail,XLY,peer
+EVR,Financial Services,XLF,peer
+EW,Health Care,XLV,peer
+EWBC,Banking,XLF,peer
+EWJ,,SPY,peer
+EWT,,SPY,peer
+EWY,,SPY,peer
+EWZ,,SPY,peer
+EXC,Utilities,XLU,peer
+EXE,Energy,XLE,peer
+EXEL,Biotechnology,XLV,peer
+EXPE,"Hotels, Restaurants & Leisure",XLY,peer
+F,Automobiles,XLY,peer
+FANG,Energy,XLE,peer
+FAST,Trading Companies & Distributors,SPY,peer
+FCNCA,Banking,XLF,peer
+FCX,Metals & Mining,XLB,peer
+FDS,Financial Services,XLF,peer
+FDX,Logistics & Transportation,SPY,peer
+FERG,Trading Companies & Distributors,SPY,peer
+FFIV,Communications,SPY,peer
+FHN,Banking,XLF,peer
+FICO,Technology,XLK,peer
+FIG,Technology,XLK,peer
+FIGR,Financial Services,XLF,peer
+FIS,Financial Services,XLF,peer
+FISV,Financial Services,XLF,peer
+FITB,Banking,XLF,peer
+FIVE,Retail,XLY,peer
+FIX,Construction,XLI,peer
+FLEX,Electrical Equipment,SPY,peer
+FLUT,"Hotels, Restaurants & Leisure",XLY,peer
+FN,Electrical Equipment,SPY,peer
+FND,Retail,XLY,peer
+FORM,Semiconductors,XLK,peer
+FOXA,Media,XLC,peer
+FRO,Energy,XLE,peer
+FROG,Technology,XLK,peer
+FRSH,Technology,XLK,peer
+FSLR,Semiconductors,XLK,peer
+FSLY,Technology,XLK,peer
+FTAI,Aerospace & Defense,XLI,peer
+FTI,Energy,XLE,peer
+FTNT,Technology,XLK,peer
+FUTU,Financial Services,XLF,peer
+FWONK,Media,XLC,peer
+FXI,,SPY,peer
+GAP,Retail,XLY,peer
+GD,Aerospace & Defense,XLI,peer
+GDDY,Technology,XLK,peer
+GDX,,SPY,your 75
+GDXJ,,SPY,peer
+GE,Aerospace & Defense,XLI,peer
+GEHC,Health Care,XLV,peer
+GEN,Technology,XLK,peer
+GEV,Electrical Equipment,SPY,peer
+GFS,Semiconductors,XLK,peer
+GH,Health Care,XLV,peer
+GILD,Biotechnology,XLV,peer
+GIS,Food Products,XLP,peer
+GKOS,Health Care,XLV,peer
+GLD,,SPY,your 75
+GLW,Electrical Equipment,SPY,peer
+GLXY,Financial Services,XLF,peer
+GM,Automobiles,XLY,peer
+GMAB,Biotechnology,XLV,peer
+GME,Retail,XLY,peer
+GMED,Health Care,XLV,peer
+GNRC,Electrical Equipment,SPY,peer
+GOOG,Media,XLC,your 75
+GOOGL,Media,XLC,your 75
+GPN,Financial Services,XLF,peer
+GRAL,Biotechnology,XLV,peer
+GS,Financial Services,XLF,peer
+GSK,Pharmaceuticals,XLV,peer
+GTLB,Technology,XLK,peer
+GWRE,Technology,XLK,peer
+GWW,Trading Companies & Distributors,SPY,peer
+H,"Hotels, Restaurants & Leisure",XLY,peer
+HAL,Energy,XLE,peer
+HALO,Biotechnology,XLV,peer
+HBAN,Banking,XLF,peer
+HCA,Health Care,XLV,peer
+HD,Retail,XLY,peer
+HDB,Banking,XLF,peer
+HEI,Aerospace & Defense,XLI,peer
+HII,Aerospace & Defense,XLI,peer
+HIMS,Health Care,XLV,peer
+HL,Metals & Mining,XLB,peer
+HLI,Financial Services,XLF,peer
+HLT,"Hotels, Restaurants & Leisure",XLY,peer
+HNGE,Health Care,XLV,peer
+HON,Industrial Conglomerates,XLI,peer
+HOOD,Financial Services,XLF,your 75
+HPE,Technology,XLK,peer
+HPQ,Technology,XLK,peer
+HSBC,Banking,XLF,peer
+HSIC,Health Care,XLV,peer
+HUBS,Technology,XLK,peer
+HUM,Health Care,XLV,peer
+HUT,Technology,XLK,peer
+HWM,Aerospace & Defense,XLI,peer
+HYG,,SPY,peer
+IAU,,SPY,peer
+IBB,,SPY,peer
+IBIT,,SPY,peer
+IBKR,Financial Services,XLF,peer
+IBM,Technology,XLK,your 75
+IBN,Banking,XLF,peer
+IBRX,Biotechnology,XLV,peer
+ICE,Financial Services,XLF,peer
+IDXX,Health Care,XLV,peer
+IEF,,SPY,peer
+IEFA,,SPY,peer
+IEI,,SPY,peer
+IEMG,,SPY,peer
+IGV,,SPY,peer
+IJH,,SPY,peer
+IJR,,SPY,peer
+ILMN,Life Sciences Tools & Services,XLV,peer
+INCY,Biotechnology,XLV,peer
+INFQ,Technology,XLK,peer
+INFY,Technology,XLK,peer
+INSM,Biotechnology,XLV,peer
+INTC,Semiconductors,XLK,your 75
+INTU,Technology,XLK,peer
+IONQ,Technology,XLK,peer
+IONS,Biotechnology,XLV,peer
+IOT,Technology,XLK,peer
+IOVA,Biotechnology,XLV,peer
+IQV,Life Sciences Tools & Services,XLV,peer
+IR,Machinery,XLI,peer
+IREN,Technology,XLK,peer
+ISRG,Health Care,XLV,peer
+IT,Technology,XLK,peer
+ITUB,Banking,XLF,peer
+ITW,Machinery,XLI,peer
+IUSB,,SPY,peer
+IVV,,SPY,peer
+IVZ,Financial Services,XLF,peer
+IWD,,SPY,peer
+IWF,,SPY,peer
+IWM,,SPY,your 75
+IYR,,SPY,peer
+JAAA,,SPY,peer
+JAZZ,Pharmaceuticals,XLV,peer
+JBHT,Road & Rail,SPY,peer
+JBL,Electrical Equipment,SPY,peer
+JCI,Building,SPY,peer
+JD,Retail,XLY,peer
+JEF,Financial Services,XLF,peer
+JEPQ,,SPY,peer
+JHX,Construction,XLI,peer
+JKHY,Financial Services,XLF,peer
+JNJ,Pharmaceuticals,XLV,peer
+JNK,,SPY,peer
+JPM,Banking,XLF,your 75
+JPST,,SPY,peer
+JXN,Financial Services,XLF,peer
+KDP,Beverages,XLP,peer
+KEY,Banking,XLF,peer
+KEYS,Electrical Equipment,SPY,peer
+KGS,Energy,XLE,peer
+KHC,Food Products,XLP,peer
+KKR,Financial Services,XLF,peer
+KLAC,Semiconductors,XLK,peer
+KMB,Consumer products,XLP,peer
+KMI,Energy,XLE,peer
+KMX,Retail,XLY,peer
+KNX,Road & Rail,SPY,peer
+KO,Beverages,XLP,peer
+KOD,Biotechnology,XLV,peer
+KORU,,SPY,peer
+KR,Retail,XLY,peer
+KRE,,SPY,your 75
+KRMN,Aerospace & Defense,XLI,peer
+KRYS,Biotechnology,XLV,peer
+KTOS,Aerospace & Defense,XLI,peer
+KVUE,Consumer products,XLP,peer
+KVYO,Technology,XLK,peer
+KWEB,,SPY,peer
+KYMR,Biotechnology,XLV,peer
+LAD,Retail,XLY,peer
+LEN,Consumer products,XLP,peer
+LEU,Energy,XLE,peer
+LH,Health Care,XLV,peer
+LHX,Aerospace & Defense,XLI,peer
+LIN,Chemicals,XLB,peer
+LITE,Communications,SPY,your 75
+LLY,Pharmaceuticals,XLV,peer
+LMT,Aerospace & Defense,XLI,your 75
+LNG,Energy,XLE,peer
+LOW,Retail,XLY,peer
+LPLA,Financial Services,XLF,peer
+LQD,,SPY,peer
+LQDA,Pharmaceuticals,XLV,peer
+LRCX,Semiconductors,XLK,peer
+LSCC,Semiconductors,XLK,peer
+LTH,"Hotels, Restaurants & Leisure",XLY,peer
+LULU,"Textiles, Apparel & Luxury Goods",SPY,your 75
+LUNR,Aerospace & Defense,XLI,peer
+LVS,"Hotels, Restaurants & Leisure",XLY,peer
+LYFT,Road & Rail,SPY,peer
+LYV,Media,XLC,peer
+M,Retail,XLY,peer
+MA,Financial Services,XLF,peer
+MAGS,,SPY,peer
+MANH,Technology,XLK,peer
+MAR,"Hotels, Restaurants & Leisure",XLY,peer
+MARA,Technology,XLK,peer
+MBB,,SPY,peer
+MCD,"Hotels, Restaurants & Leisure",XLY,your 75
+MCHP,Semiconductors,XLK,peer
+MCK,Health Care,XLV,peer
+MCO,Financial Services,XLF,peer
+MDB,Technology,XLK,peer
+MDGL,Biotechnology,XLV,peer
+MDLZ,Food Products,XLP,peer
+MDT,Health Care,XLV,peer
+MDY,,SPY,peer
+MELI,Retail,XLY,peer
+MET,Insurance,XLF,peer
+META,Media,XLC,your 75
+MGM,"Hotels, Restaurants & Leisure",XLY,peer
+MGY,Energy,XLE,peer
+MKSI,Semiconductors,XLK,peer
+MKTX,Financial Services,XLF,peer
+MLM,Construction,XLI,peer
+MMM,Industrial Conglomerates,XLI,peer
+MNST,Beverages,XLP,peer
+MO,Tobacco,SPY,peer
+MOG.A,Aerospace & Defense,XLI,peer
+MOH,Health Care,XLV,peer
+MPC,Energy,XLE,peer
+MPWR,Semiconductors,XLK,peer
+MRK,Pharmaceuticals,XLV,peer
+MRNA,Biotechnology,XLV,your 75
+MRSH,Insurance,XLF,peer
+MRVL,Semiconductors,XLK,peer
+MS,Financial Services,XLF,peer
+MSCI,Financial Services,XLF,peer
+MSFT,Technology,XLK,your 75
+MSGS,Media,XLC,peer
+MSI,Communications,SPY,peer
+MSTR,Technology,XLK,your 75
+MTB,Banking,XLF,peer
+MTCH,Media,XLC,peer
+MTD,Life Sciences Tools & Services,XLV,peer
+MTN,"Hotels, Restaurants & Leisure",XLY,peer
+MTSI,Semiconductors,XLK,peer
+MTUM,,SPY,peer
+MTZ,Construction,XLI,peer
+MU,Semiconductors,XLK,your 75
+MUB,,SPY,peer
+MUSA,Retail,XLY,peer
+MUU,,SPY,peer
+MXL,Semiconductors,XLK,peer
+NBIS,Technology,XLK,peer
+NBIX,Biotechnology,XLV,peer
+NCLH,"Hotels, Restaurants & Leisure",XLY,peer
+NDAQ,Financial Services,XLF,peer
+NEE,Utilities,XLU,peer
+NEM,Metals & Mining,XLB,peer
+NET,Technology,XLK,peer
+NFLX,Media,XLC,your 75
+NKE,"Textiles, Apparel & Luxury Goods",SPY,your 75
+NKTR,Pharmaceuticals,XLV,peer
+NOC,Aerospace & Defense,XLI,peer
+NOK,Communications,SPY,peer
+NOW,Technology,XLK,peer
+NRG,Utilities,XLU,peer
+NSC,Road & Rail,SPY,peer
+NTAP,Technology,XLK,peer
+NTNX,Technology,XLK,peer
+NTRA,Biotechnology,XLV,peer
+NTRS,Financial Services,XLF,peer
+NTSK,Technology,XLK,peer
+NU,Banking,XLF,peer
+NUE,Metals & Mining,XLB,peer
+NVDA,Semiconductors,XLK,your 75
+NVDL,,SPY,peer
+NVMI,Semiconductors,XLK,peer
+NVO,Pharmaceuticals,XLV,peer
+NVS,Pharmaceuticals,XLV,peer
+NVT,Electrical Equipment,SPY,peer
+NVTS,Semiconductors,XLK,peer
+NWSA,Media,XLC,peer
+NXPI,Semiconductors,XLK,peer
+NYT,Media,XLC,peer
+O,Real Estate,XLRE,peer
+ODFL,Road & Rail,SPY,peer
+OKE,Energy,XLE,peer
+OKLO,Utilities,XLU,peer
+OKTA,Technology,XLK,peer
+OLLI,Retail,XLY,peer
+OMC,Media,XLC,peer
+ON,Semiconductors,XLK,peer
+ONB,Banking,XLF,peer
+ONC,Biotechnology,XLV,peer
+ONON,"Textiles, Apparel & Luxury Goods",SPY,peer
+ONTO,Semiconductors,XLK,peer
+OPCH,Health Care,XLV,peer
+ORCL,Technology,XLK,your 75
+ORLY,Retail,XLY,peer
+OTIS,Machinery,XLI,peer
+OVV,Energy,XLE,peer
+OXY,Energy,XLE,peer
+P,Technology,XLK,peer
+PANW,Technology,XLK,your 75
+PATH,Technology,XLK,peer
+PAYX,Professional Services,SPY,peer
+PBF,Energy,XLE,peer
+PBR,Energy,XLE,peer
+PBR.A,Energy,XLE,peer
+PCAR,Machinery,XLI,peer
+PCG,Utilities,XLU,peer
+PCOR,Technology,XLK,peer
+PCVX,Biotechnology,XLV,peer
+PDD,Retail,XLY,your 75
+PEG,Utilities,XLU,peer
+PEN,Health Care,XLV,peer
+PENG,Semiconductors,XLK,peer
+PEP,Beverages,XLP,peer
+PFE,Pharmaceuticals,XLV,your 75
+PFGC,Retail,XLY,peer
+PG,Consumer products,XLP,peer
+PGR,Insurance,XLF,peer
+PH,Machinery,XLI,peer
+PINS,Media,XLC,peer
+PLD,Real Estate,XLRE,peer
+PLNT,"Hotels, Restaurants & Leisure",XLY,peer
+PLTR,Technology,XLK,your 75
+PM,Tobacco,SPY,peer
+PNC,Banking,XLF,peer
+PNFP,Banking,XLF,peer
+PODD,Health Care,XLV,peer
+PR,Energy,XLE,peer
+PRAX,Biotechnology,XLV,peer
+PSQ,,SPY,peer
+PSX,Energy,XLE,peer
+PTC,Technology,XLK,peer
+PTGX,Biotechnology,XLV,peer
+PURR,Biotechnology,XLV,peer
+PWR,Construction,XLI,peer
+PYPL,Financial Services,XLF,peer
+Q,Semiconductors,XLK,peer
+QBTS,Technology,XLK,peer
+QCOM,Semiconductors,XLK,peer
+QID,,SPY,peer
+QLD,,SPY,peer
+QLYS,Technology,XLK,peer
+QQQ,,SPY,your 75
+QQQM,,SPY,peer
+QSR,"Hotels, Restaurants & Leisure",XLY,peer
+RACE,Automobiles,XLY,peer
+RBLX,Media,XLC,peer
+RBRK,Technology,XLK,peer
+RCL,"Hotels, Restaurants & Leisure",XLY,peer
+RDDT,Media,XLC,your 75
+RDW,Aerospace & Defense,XLI,peer
+REGN,Biotechnology,XLV,peer
+RF,Banking,XLF,peer
+RGTI,Semiconductors,XLK,peer
+RIOT,Technology,XLK,peer
+RIVN,Automobiles,XLY,peer
+RJF,Financial Services,XLF,peer
+RKLB,Aerospace & Defense,XLI,your 75
+RKT,Financial Services,XLF,peer
+RL,"Textiles, Apparel & Luxury Goods",SPY,peer
+RMBS,Semiconductors,XLK,peer
+RMD,Health Care,XLV,peer
+RNG,Technology,XLK,peer
+ROIV,Biotechnology,XLV,peer
+ROK,Electrical Equipment,SPY,peer
+ROKU,Media,XLC,your 75
+ROP,Technology,XLK,peer
+ROST,Retail,XLY,peer
+RPRX,Pharmaceuticals,XLV,peer
+RRC,Energy,XLE,peer
+RSG,Commercial Services & Supplies,SPY,peer
+RSP,,SPY,peer
+RTX,Aerospace & Defense,XLI,peer
+RVMD,Biotechnology,XLV,peer
+RVTY,Life Sciences Tools & Services,XLV,peer
+RWM,,SPY,peer
+RY,Banking,XLF,peer
+S,Technology,XLK,peer
+SAIA,Road & Rail,SPY,peer
+SAIL,Technology,XLK,peer
+SAN,Banking,XLF,peer
+SAP,Technology,XLK,peer
+SBUX,"Hotels, Restaurants & Leisure",XLY,peer
+SCHB,,SPY,peer
+SCHD,,SPY,peer
+SCHG,,SPY,peer
+SCHW,Financial Services,XLF,peer
+SCHX,,SPY,peer
+SDGR,Health Care,XLV,peer
+SE,Retail,XLY,peer
+SEI,Energy,XLE,peer
+SF,Financial Services,XLF,peer
+SFM,Retail,XLY,peer
+SGOV,,SPY,peer
+SH,,SPY,peer
+SHEL,Energy,XLE,peer
+SHOP,Technology,XLK,your 75
+SHV,,SPY,peer
+SHW,Chemicals,XLB,peer
+SHY,,SPY,peer
+SIMO,Semiconductors,XLK,peer
+SIRI,Media,XLC,peer
+SITM,Semiconductors,XLK,peer
+SLB,Energy,XLE,peer
+SLV,,SPY,your 75
+SM,Energy,XLE,peer
+SMCI,Technology,XLK,your 75
+SMH,,SPY,your 75
+SMMT,Biotechnology,XLV,peer
+SMTC,Semiconductors,XLK,peer
+SN,Consumer products,XLP,peer
+SNAP,,,your 75
+SNDK,Technology,XLK,peer
+SNOW,Technology,XLK,your 75
+SNPS,Technology,XLK,peer
+SNX,Electrical Equipment,SPY,peer
+SNY,Pharmaceuticals,XLV,peer
+SO,Utilities,XLU,peer
+SOFI,Financial Services,XLF,your 75
+SOXL,,SPY,peer
+SOXS,,SPY,peer
+SOXX,,SPY,peer
+SPGI,Financial Services,XLF,peer
+SPHR,Media,XLC,peer
+SPMO,,SPY,peer
+SPOT,Media,XLC,peer
+SPTL,,SPY,peer
+SPXL,,SPY,peer
+SPXS,,SPY,peer
+SPY,,SPY,your 75
+SPYM,,SPY,peer
+SQQQ,,SPY,peer
+SRRK,Biotechnology,XLV,peer
+STE,Health Care,XLV,peer
+STM,Semiconductors,XLK,peer
+STNG,Energy,XLE,peer
+STRC,Technology,XLK,peer
+STT,Financial Services,XLF,peer
+STX,Technology,XLK,peer
+STZ,Beverages,XLP,peer
+SU,Energy,XLE,peer
+SWKS,Semiconductors,XLK,peer
+SYF,Financial Services,XLF,peer
+SYK,Health Care,XLV,peer
+SYNA,Semiconductors,XLK,peer
+SYRE,Biotechnology,XLV,peer
+SYY,Retail,XLY,peer
+T,Telecommunication,XLC,your 75
+TCOM,"Hotels, Restaurants & Leisure",XLY,peer
+TD,Banking,XLF,peer
+TDG,Aerospace & Defense,XLI,peer
+TEAM,Technology,XLK,peer
+TEL,Electrical Equipment,SPY,peer
+TEM,Life Sciences Tools & Services,XLV,peer
+TENB,Technology,XLK,peer
+TER,Semiconductors,XLK,peer
+TFC,Banking,XLF,peer
+TFX,Health Care,XLV,peer
+TGT,Retail,XLY,peer
+TGTX,Biotechnology,XLV,peer
+THC,Health Care,XLV,peer
+TJX,Retail,XLY,peer
+TKO,Media,XLC,peer
+TLH,,SPY,peer
+TLN,Utilities,XLU,peer
+TLT,,SPY,your 75
+TMO,Life Sciences Tools & Services,XLV,peer
+TMUS,Telecommunication,XLC,peer
+TNA,,SPY,peer
+TOST,Financial Services,XLF,peer
+TPG,Financial Services,XLF,peer
+TPL,Energy,XLE,peer
+TPR,"Textiles, Apparel & Luxury Goods",SPY,peer
+TQQQ,,SPY,peer
+TRGP,Energy,XLE,peer
+TRMB,Technology,XLK,peer
+TROW,Financial Services,XLF,peer
+TRP,Energy,XLE,peer
+TRV,Insurance,XLF,peer
+TSCO,Retail,XLY,peer
+TSEM,Semiconductors,XLK,peer
+TSLA,Automobiles,XLY,your 75
+TSM,Semiconductors,XLK,peer
+TT,Building,SPY,peer
+TTAN,Technology,XLK,peer
+TTD,Media,XLC,peer
+TTE,Energy,XLE,peer
+TTWO,Media,XLC,peer
+TVTX,Biotechnology,XLV,peer
+TW,Financial Services,XLF,peer
+TWLO,Technology,XLK,peer
+TWST,Biotechnology,XLV,peer
+TXG,Life Sciences Tools & Services,XLV,peer
+TXN,Semiconductors,XLK,peer
+TXRH,"Hotels, Restaurants & Leisure",XLY,peer
+TXT,Aerospace & Defense,XLI,peer
+TYL,Technology,XLK,peer
+U,Technology,XLK,peer
+UAL,Airlines,XLI,peer
+UBER,Road & Rail,SPY,your 75
+UBS,Financial Services,XLF,peer
+UHS,Health Care,XLV,peer
+ULTA,Retail,XLY,your 75
+UMC,Semiconductors,XLK,peer
+UNG,,SPY,peer
+UNH,Health Care,XLV,your 75
+UNP,Road & Rail,SPY,peer
+UPS,Logistics & Transportation,SPY,peer
+UPST,Financial Services,XLF,peer
+URI,Trading Companies & Distributors,SPY,peer
+USB,Banking,XLF,peer
+USFD,Retail,XLY,peer
+USFR,,SPY,peer
+USHY,,SPY,peer
+USO,,SPY,your 75
+UTHR,Biotechnology,XLV,peer
+V,Financial Services,XLF,peer
+VALE,Metals & Mining,XLB,peer
+VCIT,,SPY,peer
+VCLT,,SPY,peer
+VCSH,,SPY,peer
+VEA,,SPY,peer
+VEEV,Health Care,XLV,peer
+VFC,"Textiles, Apparel & Luxury Goods",SPY,peer
+VG,Energy,XLE,peer
+VGIT,,SPY,peer
+VGSH,,SPY,peer
+VGT,,SPY,peer
+VIAV,Communications,SPY,peer
+VIK,"Hotels, Restaurants & Leisure",XLY,peer
+VKTX,Biotechnology,XLV,peer
+VLO,Energy,XLE,peer
+VLY,Banking,XLF,peer
+VMC,Construction,XLI,peer
+VMRK,Real Estate,XLRE,peer
+VNQ,,SPY,peer
+VOO,,SPY,peer
+VOYA,Financial Services,XLF,peer
+VRSN,Technology,XLK,peer
+VRT,Electrical Equipment,SPY,peer
+VRTX,Biotechnology,XLV,peer
+VSAT,Communications,SPY,peer
+VST,Utilities,XLU,peer
+VSXY,Retail,XLY,peer
+VT,,SPY,peer
+VTEB,,SPY,peer
+VTI,,SPY,peer
+VTR,Real Estate,XLRE,peer
+VTRS,Pharmaceuticals,XLV,peer
+VTV,,SPY,peer
+VUG,,SPY,peer
+VWO,,SPY,peer
+VXUS,,SPY,peer
+VXX,Banking,XLF,peer
+VZ,Telecommunication,XLC,peer
+W,Retail,XLY,peer
+WAT,Life Sciences Tools & Services,XLV,peer
+WDAY,Technology,XLK,peer
+WDC,Technology,XLK,peer
+WELL,Real Estate,XLRE,peer
+WEX,Financial Services,XLF,peer
+WFC,Banking,XLF,peer
+WING,"Hotels, Restaurants & Leisure",XLY,peer
+WK,Technology,XLK,peer
+WM,Commercial Services & Supplies,SPY,peer
+WMB,Energy,XLE,peer
+WMT,Retail,XLY,your 75
+WOLF,Semiconductors,XLK,peer
+WSM,Retail,XLY,peer
+WULF,Technology,XLK,peer
+WWD,Aerospace & Defense,XLI,peer
+WYNN,"Hotels, Restaurants & Leisure",XLY,peer
+XBI,,SPY,peer
+XEL,Utilities,XLU,peer
+XENE,Biotechnology,XLV,peer
+XLB,,SPY,peer
+XLC,,SPY,peer
+XLE,,SPY,your 75
+XLF,,SPY,your 75
+XLI,,SPY,peer
+XLK,,SPY,your 75
+XLP,,SPY,peer
+XLU,,SPY,peer
+XLV,,SPY,your 75
+XLY,,SPY,peer
+XOM,Energy,XLE,your 75
+XOP,,SPY,peer
+XP,Financial Services,XLF,peer
+XPO,Road & Rail,SPY,peer
+XYZ,Financial Services,XLF,peer
+YUM,"Hotels, Restaurants & Leisure",XLY,peer
+ZBH,Health Care,XLV,peer
+ZETA,Technology,XLK,peer
+ZION,Banking,XLF,peer
+ZM,Technology,XLK,peer
+ZS,Technology,XLK,peer
+ZTS,Pharmaceuticals,XLV,peer
