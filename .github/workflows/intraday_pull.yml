@@ -1,0 +1,26 @@
+name: Intraday pull
+on:
+  repository_dispatch:
+    types: [intraday_pull]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas
+      - env:
+          SYMS: ${{ github.event.client_payload.syms || 'QQQ,SPY,NVDA,META,AAPL,AMD,TSLA,AVGO,MSFT,GOOGL,AMZN,NFLX,HOOD,PLTR,CMG,SLV' }}
+        run: python intraday_pull.py
+      - run: |
+          git config user.name "taz-bot"; git config user.email "taz-bot@users.noreply.github.com"
+          git add -f results/live/m5.csv.gz results/live/daily.csv.gz
+          git diff --cached --quiet && exit 0
+          git commit -m "Intraday pull"
+          ok=0; for i in 1 2 3; do if git pull --rebase -X theirs && git push; then ok=1; break; fi; sleep 5; done
+          [ $ok = 1 ] || { echo "::error::push failed"; exit 1; }
