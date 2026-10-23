@@ -88,7 +88,7 @@ def post(text):
     for chunk in [text[i:i + 1900] for i in range(0, len(text), 1900)]:
         r = requests.post(f"https://discord.com/api/v10/channels/{CH}/messages", headers={"Authorization": f"Bot {TOKEN}"},
                           json={"content": chunk, "allowed_mentions": {"parse": []}}, timeout=20)
-        print("discord", r.status_code); time.sleep(1)
+        print(f"::notice::discord post {r.status_code}"); time.sleep(1)
 
 
 def main():
@@ -96,7 +96,7 @@ def main():
     data = pull(syms); q = ind(data["QQQ"].copy())
     last = q.index[-1].date(); today = dt.datetime.now(dt.timezone(dt.timedelta(hours=-4))).date()
     if last != today and not FORCE:
-        print(f"Latest bar {last} is not today {today} (holiday or data not updated). Nothing posted."); return
+        print(f"::notice::Latest bar {last} is not today {today}. Nothing posted."); return
     mine = set(U[U.group == "your 75"].symbol)
     out = {"stair": [], "long": [], "pocket": []}
     for s, x in data.items():
@@ -116,6 +116,7 @@ def main():
     L += ["", "**3. Shortlist: between the 200 and the falling 10 SMA** (no edge by itself · your calls here were right 57%)"]
     L += fmt(out["pocket"], 10) or ["   none today"]
     L += ["", "Next: `grade TICKER` for any of these, `check TICKER` before entry. Stop = a close over the top. A week+ out, 2 losses = done.", "", "Pattern. Process. Paid. 🌪️🔴"]
+    print(f"::notice::stocks {len(data)} | stair {len(out['stair'])} | long {len(out['long'])} | pocket {len(out['pocket'])} | " + " ; ".join(f"{k}: " + ", ".join(sorted(z[2] for z in v)[:15]) for k, v in out.items()))
     post("\n".join(L))
 
 
