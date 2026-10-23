@@ -14,11 +14,15 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install yfinance pandas numpy pyarrow scikit-learn
-      - run: set -o pipefail; python top_spots.py 2>&1 | tail -120
+      - run: |
+          set -o pipefail; python top_spots.py 2>&1 | tail -150
+          ls -la results/expanded
+          head -c 3000 results/expanded/TOP_SPOTS.md | tr '\n' '~' | sed 's/~/%0A/g' | xargs -0 -I{} echo "::notice title=report::{}"
       - name: Commit results
         run: |
           git config user.name "taz-bot"; git config user.email "taz-bot@users.noreply.github.com"
-          git add results/expanded
+          git add results/expanded/TOP_SPOTS.md results/expanded/top_spots_sample.parquet
           git diff --cached --quiet && exit 0
           git commit -m "Bear spot study results"
-          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
+          ok=0; for i in 1 2 3; do if git pull --rebase -X theirs && git push; then ok=1; break; fi; sleep 5; done
+          [ $ok = 1 ] || { echo "::error::push failed"; exit 1; }

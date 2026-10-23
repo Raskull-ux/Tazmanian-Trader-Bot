@@ -96,7 +96,7 @@ def main():
         f["sym"] = s; frames.append(f)
         print("built", s, flush=True)
     D = pd.concat(frames); D["train"] = D.index < "2022-01-01"
-    D.to_parquet(f"{OUT}/top_spots_rows.parquet")
+    D.sample(min(len(D), 60000), random_state=1).to_parquet(f"{OUT}/top_spots_sample.parquet")
     X = [c for c in D.columns if c not in ("DUMP", "RIP", "A", "sym", "train")]
     tr, te = D[D.train], D[~D.train]
     L = ["# The bear spot: big drops off a top vs. matched charts that didn't drop", "",
