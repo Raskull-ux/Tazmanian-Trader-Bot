@@ -13,6 +13,8 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.metrics import roc_auc_score
 
 OUT = "results/expanded"; os.makedirs(OUT, exist_ok=True)
+ALL = os.environ.get("ALL_SETUPS", "") == "1"
+TAG = "_all" if ALL else ""
 U = pd.read_csv("universe/expanded_universe.csv")
 SECT = sorted(set(U.sector_etf.dropna()) | {"SPY", "QQQ"})
 
@@ -69,7 +71,7 @@ def main():
     for s, x in F.items():
         if s in SECT and s not in set(U.symbol): continue
         o, h, l, c, v = (x[k].values for k in "ohlcv"); A = x.atr.values; e8 = x.e8.values; s10 = x.s10.values
-        e10 = x.e10.values; s50 = x.s50.values; s200 = x.s200.values; R = x.rsi.values; M = x.macd.values; S = x.sig.values
+        e10 = x.e10.values; S20 = x.s20.values; s50 = x.s50.values; s200 = x.s200.values; R = x.rsi.values; M = x.macd.values; S = x.sig.values
         hh20 = x.hh20.values; r5 = x.r5.values; v20 = x.v20.values
         qq = q.reindex(x.index); q_c, q_o, q_e8, q_r5 = qq.c.values, qq.o.values, qq.e8.values, qq.r5.values
         sec = F.get(smap.get(s)); sec_r5 = sec.r5.reindex(x.index).values if sec is not None else None
@@ -88,6 +90,18 @@ def main():
                     if G[st] and all(Rd[j] for j in range(st + 1, e)) and all(h[j + 1] < h[j] for j in range(st, e - 1)) and h[e] < h[st] and h[st] >= hh20[st] and R[e] < 50:
                         setups.append(("longstair", st)); break
             if M[e] < S[e] and M[e - 1] >= S[e - 1] and M[e] > 0 and (hh20[e] - h[e]) <= A[e]: setups.append(("macdtop", e))
+            if ALL:
+                s20 = S20
+                if s10[e] < s20[e] and s10[e - 1] >= s20[e - 1]: setups.append(("cross 10/20", e))
+                if e8[e] < s20[e] and e8[e - 1] >= s20[e - 1]: setups.append(("cross 8/20", e))
+                if s10[e] < s200[e] and s10[e - 1] >= s200[e - 1]: setups.append(("cross 10/200", e))
+                if s20[e] < s200[e] and s20[e - 1] >= s200[e - 1]: setups.append(("cross 20/200", e))
+                if e8[e] < s200[e] and e8[e - 1] >= s200[e - 1]: setups.append(("cross 8/200", e))
+                if s10[e] > s200[e] and s10[e] - s200[e] <= 1.5 * A[e] and s10[e] < s10[e - 3] and s200[e] - 0.25 * A[e] <= c[e] < s10[e]:
+                    setups.append(("pocket", e))
+                    if (h[e - 3:e + 1].max() - l[e - 3:e + 1].min()) <= 2 * A[e] and h[e] >= e8[e] > c[e]: setups.append(("pocket + 8EMA tag", e))
+                pc = lambda i: c[i] < e8[i] and c[i] < s10[i] and s10[i] > s20[i] and s10[i] < s10[i - 1]
+                if pc(e) and not pc(e - 1): setups.append(("pre-cross", e))
             if not setups: continue
             y20 = race(h, l, c, A, e, 2.0, 20); y5 = race(h, l, c, A, e, 1.5, 5)
             base = dict(sym=s, date=x.index[e], y20=y20, y5=y5,
@@ -99,9 +113,9 @@ def main():
                         vol_ratio=v[e] / v20[e] if v20[e] else np.nan, gap_up=float(o[e] > c[e - 1]),
                         vs200=(c[e] - s200[e]) / A[e], body=(c[e] - o[e]) / max(h[e] - l[e], 1e-9))
             for nm, st in setups:
-                rows.append(dict(base, setup=nm, stair_len=run[e - 1] if nm == "stairHH" else e - st - 1,
+                rows.append(dict(base, setup=nm, stair_len=run[e - 1] if nm == "stairHH" else (e - st - 1 if nm == "longstair" else 0),
                                  below_top=(h[st] - c[e]) / A[e]))
-    r = pd.DataFrame(rows); r["train"] = r.date < "2022-01-01"; r.to_csv(f"{OUT}/stack_rows.csv.gz", index=False)
+    r = pd.DataFrame(rows); r["train"] = r.date < "2022-01-01"; r.to_csv(f"{OUT}/stack_rows{TAG}.csv.gz", index=False)
 
     cond = {"stock under 8 EMA": r.under8 == 1, "stock under 50": r.under50 == 1, "10 EMA under 10 SMA": r.bear1010 == 1,
             "RSI < 40": r.rsi < 40, "MACD still above signal": r.macd_above == 1, "high volatility (ATR% top third)": r.atr_pct >= r.atr_pct.quantile(2 / 3),
@@ -111,7 +125,7 @@ def main():
             "gapped up": r.gap_up == 1, "within 2 ATR of the top": r.below_top <= 2, "3+ ATR under the top": r.below_top >= 3,
             "far over the 200 (8+ ATR)": r.vs200 >= 8, "near the 200 (<3 ATR)": r.vs200 < 3, "small body (<30%)": r.body.abs() < 0.3}
     lines = ["# Finding the edge: filters chosen on 2016-21, judged on 2022-26", ""]
-    for setup in ["stairHH", "longstair", "macdtop"]:
+    for setup in sorted(r.setup.unique()):
         for y in ["y20", "y5"]:
             g = r[(r.setup == setup)].dropna(subset=[y])
             tr, te = g[g.train], g[~g.train]
@@ -139,7 +153,7 @@ def main():
                 top = te[p >= np.quantile(p, 0.8)]
                 lines += ["", f"Model (trained 2016-21): test AUC {auc:.3f} | top 20% of model scores in 2022-26: {top[y].mean()*100:.1f}% (n {len(top)}) vs {bte*100:.1f}%"]
             lines.append("")
-    open(f"{OUT}/STACK_REPORT.md", "w").write("\n".join(lines) + "\n"); print("\n".join(lines))
+    open(f"{OUT}/STACK_REPORT{TAG}.md", "w").write("\n".join(lines) + "\n"); print("\n".join(lines))
 
 
 if __name__ == "__main__":
