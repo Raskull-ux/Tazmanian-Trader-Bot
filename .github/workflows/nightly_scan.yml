@@ -1,0 +1,22 @@
+name: Nightly scan
+on:
+  schedule:
+    - cron: "10 21 * * 1-5"   # 5:10 PM ET in summer, 4:10 PM ET in winter
+  repository_dispatch:
+    types: [nightly_scan]
+  workflow_dispatch:
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas requests
+      - env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
+          PRIVATE_CHANNEL_ID: "1562327911866830949"
+          FORCE: ${{ github.event.client_payload.force || '' }}
+        run: python nightly_scan.py

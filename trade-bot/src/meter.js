@@ -104,7 +104,7 @@ export function computeMeter({ daily, hist5, today5, side }) {
 function fmt(x, d) { return Number.isFinite(x) ? x.toFixed(d) : "n/a"; }
 
 // ---------- data (Alpaca free plan) ----------
-async function getBars(env, sym, params) {
+export async function getBars(env, sym, params) {
   const out = []; let token = null;
   for (let page = 0; page < 5; page++) {
     const q = new URLSearchParams({ ...params, limit: "10000", ...(token ? { page_token: token } : {}) });

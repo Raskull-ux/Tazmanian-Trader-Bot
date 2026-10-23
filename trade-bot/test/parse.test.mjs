@@ -31,3 +31,5 @@ console.log("parse tests: all passed");
 r = parseCommand("check qqq", NOW); assert.equal(r.cmd, "check"); assert.equal(r.ticker, "QQQ"); assert.equal(r.side, "P");
 r = parseCommand("check aapl c", NOW); assert.equal(r.side, "C");
 console.log("check tests: passed");
+r = parseCommand("grade hood", NOW); assert.equal(r.cmd, "grade"); assert.equal(r.ticker, "HOOD");
+console.log("grade parse: passed");

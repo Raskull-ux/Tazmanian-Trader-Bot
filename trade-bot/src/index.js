@@ -5,6 +5,7 @@
 
 import { DurableObject } from "cloudflare:workers";
 import { fetchMeter } from "./meter.js";
+import { fetchGrade } from "./grade.js";
 import {
   parseCommand, etParts, fmtTime, planTradeDate, daysBetween,
   pct, fmtPct, money, contractLabel, fmtPx,
@@ -131,6 +132,7 @@ export class TradeStore extends DurableObject {
       );
       CREATE TABLE IF NOT EXISTS settings (k TEXT PRIMARY KEY, v TEXT);
     `);
+    try { this.sql.exec("ALTER TABLE positions ADD COLUMN grade TEXT"); } catch (_) { /* already there */ }
   }
 
 
@@ -327,6 +329,13 @@ export class TradeStore extends DurableObject {
     }
   }
 
+  async grade(ticker, side) {
+    try {
+      const t = new Promise((res) => setTimeout(() => res(null), this.meterTimeout || 9000));
+      return await Promise.race([fetchGrade(this.env, ticker.split("/")[0], side), t]);
+    } catch (_) { return null; }
+  }
+
   async meter(ticker, side) {
     try {
       const t = new Promise((res) => setTimeout(() => res(null), this.meterTimeout || 9000));
@@ -348,6 +357,10 @@ export class TradeStore extends DurableObject {
       case "out": return this.cmdExit(c, now, today, false);
       case "plan": return this.cmdPlan(c, now);
       case "recap": return { reply: this.recap(today) };
+      case "grade": {
+        const g = await this.grade(c.ticker, c.side);
+        return { reply: g ? `${g.text}\n_Nothing logged._` : `⚠️ Couldn't get ${c.ticker} daily data right now. Nothing logged.` };
+      }
       case "check": {
         const m = await this.meter(c.ticker, c.side);
         return { reply: m ? `🔎 **${c.ticker}** ${c.side === "C" ? "calls" : "puts"} @ ${m.px.toFixed(2)}\n${m.text}\n_Nothing logged._` : `⚠️ Couldn't get ${c.ticker} data right now. Nothing logged.` };
@@ -426,10 +439,12 @@ export class TradeStore extends DurableObject {
     lines.push("", NFA, SIGN_OFF);
     const alert = lines.join("\n");
 
-    const mt = await this.meter(c.ticker, c.right);
+    const [mt, gr] = await Promise.all([this.meter(c.ticker, c.right), this.grade(c.ticker, c.right)]);
+    if (gr && gr.g) this.sql.exec("UPDATE positions SET grade=? WHERE id=?", `${gr.g.letter} (${gr.g.score}/6)`, id);
     const extras = [
       `📒 Logged #${id}. Cost ${money(c.price * 100 * c.qty)} from your price.`,
       mt ? mt.text : "⏱️ EARLY meter: no data right now",
+      gr ? gr.text : "📊 Grade: no data right now",
       plan ? `🗺️ Plan on file: ${plan.text}` : null,
       ...flags,
     ];
@@ -568,7 +583,7 @@ export class TradeStore extends DurableObject {
       const r = this.realized(p.id);
       const res = p.status === "closed" ? `${money(r.dollars)} (${fmtPct(r.pct)})` : r.soldQty ? `open, ${money(r.dollars)} banked so far` : "open";
       if (p.status === "closed" && !p.paper) total += r.dollars;
-      lines.push(`${p.rule_break ? "🔒" : p.status === "closed" ? (r.dollars >= 0 ? "✅" : "❌") : "⏳"} #${p.id} ${contractLabel(p)} in ${fmtPx(p.entry)} x${p.qty} | ${res}${p.paper ? " | PAPER" : ""}`);
+      lines.push(`${p.rule_break ? "🔒" : p.status === "closed" ? (r.dollars >= 0 ? "✅" : "❌") : "⏳"} #${p.id} ${contractLabel(p)} in ${fmtPx(p.entry)} x${p.qty} | ${res}${p.grade ? " | grade " + p.grade : ""}${p.paper ? " | PAPER" : ""}`);
       if (p.flags) lines.push(`   ${p.flags}`);
       if (p.note) lines.push(`   📝 ${p.note}`);
     }
@@ -580,14 +595,14 @@ export class TradeStore extends DurableObject {
   cmdLog() {
     const rows = this.all("SELECT * FROM positions ORDER BY id");
     const head = ["id", "date", "time_et", "ticker", "strike", "type", "exp", "entry", "qty", "status",
-      "avg_exit", "result_usd", "result_pct", "paper", "route", "rule_break", "flags", "note"];
+      "avg_exit", "result_usd", "result_pct", "grade", "paper", "route", "rule_break", "flags", "note"];
     const esc = (v) => { const s = v === null || v === undefined ? "" : String(v).replace(/\*\*/g, ""); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
     const lines = [head.join(",")];
     for (const p of rows) {
       const r = this.realized(p.id);
       lines.push([p.id, p.trade_date, fmtTime(p.opened_at), p.ticker, p.strike, p.right === "C" ? "call" : "put", p.exp,
         p.entry, p.qty, p.status, r.avgExit === null ? "" : r.avgExit.toFixed(2), r.soldQty ? r.dollars.toFixed(2) : "",
-        r.pct === null ? "" : r.pct.toFixed(1), p.paper ? "yes" : "no", p.route, p.rule_break ? "yes" : "no", p.flags, p.note].map(esc).join(","));
+        r.pct === null ? "" : r.pct.toFixed(1), p.grade || "", p.paper ? "yes" : "no", p.route, p.rule_break ? "yes" : "no", p.flags, p.note].map(esc).join(","));
     }
     lines.push("");
     lines.push("fills");
@@ -608,6 +623,7 @@ const HELP = [
   "`plan qqq puts 727-733 rejection stop 733`  tomorrow's setup",
   "`note 1h 10 SMA close target`  add your read to the latest trade",
   "`check qqq`  EARLY meter for puts (`check qqq c` for calls), nothing logged",
+  "`grade hood`  daily setup grade A to D with each piece (`grade hood c` for calls)",
   "`open`  open trades   `recap`  today   `log`  spreadsheet file",
   "`undo`  remove the last thing you logged (and its post)",
   "`paper` / `paper off`  label everything PAPER",
@@ -618,7 +634,7 @@ const HELP = [
 // Which messages in the private channel are meant for the bot. Everything else is ignored chat.
 const SOLO = new Set(["recap", "today", "status", "open", "positions", "log", "export", "undo", "help",
   "commands", "live", "test", "paper", "paper on", "paper off"]);
-const LEAD = /^(free\s+)?(in|buy|bto|long|entry|half|trim|partial|out|sell|close|exit|stc|stopped|plan|setup|note|check|early|meter)\s+\S/i;
+const LEAD = /^(free\s+)?(in|buy|bto|long|entry|half|trim|partial|out|sell|close|exit|stc|stopped|plan|setup|note|check|early|meter|grade|score)\s+\S/i;
 const BARE_CONTRACT = /^\$?[a-z]{1,5}\s+\d+(\.\d+)?(\/\d+(\.\d+)?)?\s*(c|p|call|calls|put|puts)\b/i;
 function isTradeLine(text) {
   const t = text.trim().toLowerCase().replace(/\s+/g, " ");

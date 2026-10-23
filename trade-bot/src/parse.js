@@ -15,6 +15,7 @@ const CMD_WORDS = {
   help: "help", commands: "help",
   open: "open", positions: "open",
   check: "check", early: "check", meter: "check",
+  grade: "grade", score: "grade",
 };
 
 const NOT_TICKERS = new Set([
@@ -155,6 +156,12 @@ export function parseCommand(raw, nowMs) {
     original = original.replace(new RegExp(`^\\$?${tick}\\b\\s*`, "i"), "") || original;
     const sm = original.match(/stop\s*@?\$?(\d+(?:\.\d+)?)/i);
     return { cmd: "plan", ticker: tick.toUpperCase(), text: original, stop: sm ? +sm[1] : null, route };
+  }
+  if (cmd === "grade") {
+    const tick = rest.find(isTicker);
+    if (!tick) return { cmd: "error", msg: "Grade what? Example: `grade hood` (puts) or `grade hood c` (calls)" };
+    const side = rest.some((t) => ["c", "call", "calls"].includes(t)) ? "C" : "P";
+    return { cmd: "grade", ticker: tick.toUpperCase(), side };
   }
   if (cmd === "check") {
     const tick = rest.find(isTicker);
