@@ -9,7 +9,7 @@
 🟢 10-year yield: 4.99 (+0.00%)
 🟢 Oil: 103.27 (+0.00%)
 🟢 Gold: 4,007.90 (+0.00%)
-🟢 Bitcoin: 79,604.15 (+0.00%)
+🟢 Bitcoin: 80,348.61 (+0.00%)
 
 🗓️ **Economic calendar (ET)**
 ➖ No high or medium impact US data today.
@@ -23,6 +23,17 @@
 💼 **Earnings today** (big names and the ones we trade)
 🌅 Before the open: VZ
 🌙 After the close: WELL, CDNS, NUE, PSA, HIG, CLS, CINF, BRO, PFG
+
+🧱 **Gray box levels**
+📦 **QQQ** (closed 704.40): box above 713.61-722.22 · box below 702.16-702.2 · filled levels 691.96, 696.06, 699.81, 705.35
+📦 **SPY** (closed 759.97): box above 760.88-761.31 · box below 759.5-759.9 · filled levels 750.01, 750.33, 752.05, 763.15
+
+🗓️📆 **THIS WEEK**
+**Mon**: 💼 VZ (am), WELL (pm)
+**Tue**: 💼 BA (am), KO (am), NVS (am), HOOD (pm), V (pm), HSBC
+**Wed**: Atlanta Fed GDPNow · 💼 GEV (am), SAN (am), APH (am), GOOG (pm), GOOGL (pm), MSFT (pm), CVNA (pm), EBAY (pm)
+**Thu**: 💼 LLY (am), MA (am), MRK (am), CAT (am), SHEL (am), LIN (am), TTE (am), BUD (am)
+**Fri**: Core PCE Price Index; Core PCE Prices; GDP; GDP Price Index; GDP Sales; PCE price index; PCE Price index; PCE Prices; Atlanta Fed GDPNow; Dallas Fed PCE · 💼 XOM (am), ABBV (am), CVX (am), AZN (am)
 
 ⚠️ Big data at 8:30 or 10:00 can whip the open. Let the first candles settle. Plan the trade, trade the plan. 🧘
 
