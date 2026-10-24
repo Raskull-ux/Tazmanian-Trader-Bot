@@ -213,7 +213,11 @@ def send(text):
         cur += line + "\n"
     chunks.append(cur)
     for ch in chunks:
-        if os.environ.get("DRY") or not TOKEN: print(ch); print("-----"); continue
+        if os.environ.get("DRY") or not TOKEN:
+            print(ch); print("-----")
+            os.makedirs("results/morning", exist_ok=True)
+            with open(f"results/morning/preview_{DAY}.txt", "a", encoding="utf-8") as f: f.write(ch + "\n-----\n")
+            continue
         r = requests.post(f"https://discord.com/api/v10/channels/{CH}/messages", headers={"Authorization": f"Bot {TOKEN}"},
                           json={"content": ch, "allowed_mentions": {"parse": []}}, timeout=20)
         print(f"::notice::discord post {r.status_code}"); time.sleep(1.5)
@@ -223,6 +227,12 @@ if __name__ == "__main__":
     if not os.environ.get("FORCE"):
         if DAY.weekday() >= 5: print("::notice::weekend, nothing posted"); raise SystemExit
         if NOW.hour != 8: print(f"::notice::it is {NOW:%H:%M} ET, not the 8 AM run; nothing posted"); raise SystemExit
+    if os.environ.get("DRY"):
+        try: os.remove(f"results/morning/preview_{DAY}.txt")
+        except OSError: pass
     send(post1())
     send(post2())
-    if notes: print("::warning::" + " | ".join(notes[:20]))
+    if notes:
+        print("::warning::" + " | ".join(notes[:20]))
+        if os.environ.get("DRY"):
+            with open(f"results/morning/preview_{DAY}.txt", "a", encoding="utf-8") as f: f.write("SOURCE ISSUES: " + " | ".join(notes) + "\n")
