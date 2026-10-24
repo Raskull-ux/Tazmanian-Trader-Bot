@@ -1,0 +1,43 @@
+name: Gray Box Fade
+on:
+  schedule:
+    - cron: "25 21 * * 1-5"   # 5:25 PM ET in summer, 4:25 PM ET in winter: grade today's list, then post tomorrow's
+  repository_dispatch:
+    types: [gray_box]
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Run even if Yahoo's latest bar is not today (1 = yes)"
+        default: ""
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas requests
+      - name: Grade today's list
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
+          PRIVATE_CHANNEL_ID: "1562327911866830949"
+          FORCE: ${{ github.event.inputs.force || github.event.client_payload.force || '' }}
+        run: python gray_box_bot.py grade
+      - name: Post the best 10 for the next session
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
+          PRIVATE_CHANNEL_ID: "1562327911866830949"
+          FORCE: ${{ github.event.inputs.force || github.event.client_payload.force || '' }}
+        run: python gray_box_bot.py nightly
+      - name: Save the list and the scorecard
+        run: |
+          git config user.name "taz-bot"; git config user.email "taz-bot@users.noreply.github.com"
+          git add -f results/gray_box || true
+          git diff --cached --quiet && exit 0
+          git commit -m "Gray Box Fade: list and grades"
+          ok=0; for i in 1 2 3; do if git pull --rebase -X theirs && git push; then ok=1; break; fi; sleep 5; done
+          [ $ok = 1 ] || { echo "::error::push failed"; exit 1; }
