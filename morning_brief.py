@@ -212,10 +212,21 @@ def week_ahead():
         names = []
         if er:
             pre, post, other = er
-            names = [f"{s} (am)" for _, s, _, _ in pre] + [f"{s} (pm)" for _, s, _, _ in post] + [s for _, s, _, _ in other]
-        if not big and not names: continue
-        line = f"**{d:%a}**: " + "; ".join(dict.fromkeys(e["title"] for e in big))
-        if names: line += (" · " if big else "") + "💼 " + ", ".join(names[:8])
+            allr = [(m, mc, s, " (am)") for mc, s, m, _ in pre] + [(m, mc, s, " (pm)") for mc, s, m, _ in post] + [(m, mc, s, "") for mc, s, m, _ in other]
+            allr.sort(key=lambda z: (-z[0], -z[1])); seen = set()
+            for m, mc, s, tag in allr:
+                base = s.rstrip("L") if s in ("GOOGL",) else s
+                if base in seen: continue
+                seen.add(base); names.append(f"**{s}**{tag}" if m else f"{s}{tag}")
+        big = [e for e in big if not any(k in e["title"] for k in ("GDPNow", "Atlanta Fed", "Dallas Fed"))]
+        concepts = []
+        for e in big:
+            hit = next((k for k in ("FOMC", "Powell", "Interest Rate", "CPI", "PPI", "Non-Farm", "Nonfarm", "Unemployment Rate", "GDP", "PCE", "Retail Sales", "ISM", "Payrolls") if k in e["title"]), e["title"])
+            label = {"Interest Rate": "Fed rate decision", "Non-Farm": "Jobs report", "Nonfarm": "Jobs report", "Payrolls": "Jobs report"}.get(hit, hit)
+            if label not in concepts: concepts.append(label)
+        if not concepts and not names: continue
+        line = f"**{d:%a}**: " + ", ".join(concepts)
+        if names: line += (" · " if concepts else "") + "💼 " + ", ".join(names[:8])
         L.append(line)
     return L if len(L) > 2 else []
 
