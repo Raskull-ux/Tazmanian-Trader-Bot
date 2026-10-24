@@ -24,7 +24,7 @@ jobs:
       - run: pip install yfinance pandas requests
       - env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
-          WHERE: ${{ github.event.inputs.where || github.event.client_payload.where || 'private' }}
+          WHERE: ${{ github.event.inputs.where || github.event.client_payload.where || 'vip' }}
           DATE: ${{ github.event.inputs.date || github.event.client_payload.date || '' }}
           DRY: ${{ github.event.inputs.dry || github.event.client_payload.dry || '' }}
           FORCE: ${{ (github.event_name != 'schedule') && '1' || '' }}
