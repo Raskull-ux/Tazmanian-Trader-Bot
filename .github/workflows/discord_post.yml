@@ -1,0 +1,23 @@
+name: Discord post
+on:
+  repository_dispatch:
+    types: [discord_post]
+  workflow_dispatch:
+    inputs:
+      post_dir: { description: "Folder under posts/ with the .md messages", required: true }
+      where: { description: "vip or private", default: "private" }
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
+          POST_DIR: posts/${{ github.event.inputs.post_dir || github.event.client_payload.post_dir }}
+          WHERE: ${{ github.event.inputs.where || github.event.client_payload.where || 'private' }}
+        run: python post_discord.py
