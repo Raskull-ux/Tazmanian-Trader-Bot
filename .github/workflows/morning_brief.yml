@@ -1,0 +1,29 @@
+name: Morning brief
+on:
+  schedule:
+    - cron: "0 12 * * 1-5"   # 8:00 AM ET while daylight time is on (the script skips it otherwise)
+    - cron: "0 13 * * 1-5"   # 8:00 AM ET in winter
+  repository_dispatch:
+    types: [morning_brief]
+  workflow_dispatch:
+    inputs:
+      date: { description: "Date to build for (YYYY-MM-DD), blank = today", default: "" }
+      where: { description: "private or vip", default: "" }
+      dry: { description: "1 = print only, don't post", default: "" }
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas requests
+      - env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
+          WHERE: ${{ github.event.inputs.where || github.event.client_payload.where || 'private' }}
+          DATE: ${{ github.event.inputs.date || github.event.client_payload.date || '' }}
+          DRY: ${{ github.event.inputs.dry || github.event.client_payload.dry || '' }}
+          FORCE: ${{ (github.event_name != 'schedule') && '1' || '' }}
+        run: python morning_brief.py
