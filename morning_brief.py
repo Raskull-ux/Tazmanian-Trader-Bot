@@ -43,25 +43,66 @@ def get(url, **kw):
 
 
 # ------------------------------------------------------------------ calendar + Fed
-def econ():
-    events, loaded = [], 0
+_FF = None
+def ff_all():
+    """All USD events from the ForexFactory weekly files, plus the date span the files cover."""
+    global _FF
+    if _FF is not None: return _FF
+    ev, span = [], []
     for wk in ("thisweek", "nextweek"):
         r = get(f"https://nfs.faireconomy.media/ff_calendar_{wk}.json")
         if not r: continue
-        loaded += 1
         for e in r.json():
             try: t = dt.datetime.fromisoformat(e["date"]).astimezone(NY)
             except Exception: continue
-            if t.date() != DAY or e.get("country") != "USD": continue
+            span.append(t.date())
+            if e.get("country") != "USD": continue
             title = e.get("title", "")
-            fed = any(k in title for k in ("FOMC", "Fed", "Powell", "Speaks", "Federal"))
-            if e.get("impact") in ("High", "Medium") or fed:
-                events.append(dict(t=t, title=title, impact=e.get("impact", ""), fc=e.get("forecast", ""), prev=e.get("previous", ""), fed=fed))
+            ev.append(dict(t=t, title=title, impact=e.get("impact", ""), fc=e.get("forecast", ""), prev=e.get("previous", ""),
+                           fed=any(k in title for k in FEDKEYS)))
+    _FF = (ev, (min(span), max(span)) if span else None)
+    return _FF
+
+
+FEDKEYS = ("FOMC", "Fed ", "Fed's", "Powell", "Speaks", "Federal", "Beige Book", "Monetary Policy")
+HIGH = ("CPI", "PPI", "Non-Farm", "Nonfarm", "Unemployment Rate", "GDP", "PCE", "Retail Sales", "ISM", "Interest Rate", "FOMC Statement", "Payrolls")
+MED = ("Jobless Claims", "JOLTS", "Consumer Confidence", "Michigan", "Durable", "Housing Starts", "New Home", "Pending Home", "Existing Home",
+       "ADP", "PMI", "Industrial Production", "Crude Oil Inventories", "Trade Balance", "Auction", "Empire State", "Philadelphia Fed", "Personal")
+
+
+def nasdaq_econ(day):
+    r = get(f"https://api.nasdaq.com/api/calendar/economicevents?date={day.isoformat()}")
+    if not r: return None
+    out = []
+    for x in ((r.json().get("data") or {}).get("rows")) or []:
+        if x.get("country") != "United States": continue
+        title = (x.get("eventName") or "").strip(); g = (x.get("gmt") or "").strip()
+        try:
+            hh, mm = map(int, g.split(":")); t = dt.datetime(day.year, day.month, day.day, hh, mm, tzinfo=dt.timezone.utc).astimezone(NY)
+        except Exception:
+            t = dt.datetime(day.year, day.month, day.day, 0, 0, tzinfo=NY)
+        fed = any(k in title for k in FEDKEYS)
+        imp = "High" if any(k in title for k in HIGH) else "Medium" if any(k in title for k in MED) else ""
+        if imp or fed:
+            clean = lambda v: "" if (v or "").strip() in ("", "&nbsp;") else v.strip()
+            out.append(dict(t=t, title=title, impact=imp, fc=clean(x.get("consensus")), prev=clean(x.get("previous")), fed=fed))
+    return out
+
+
+def econ(day=None):
+    """Today's US events that matter: high and medium impact data plus every Fed item. None = no source loaded."""
+    day = day or DAY
+    ev, span = ff_all()
+    if span and span[0] <= day <= span[1]:
+        rows = [e for e in ev if e["t"].date() == day and (e["impact"] in ("High", "Medium") or e["fed"])]
+    else:
+        rows = nasdaq_econ(day)
+        if rows is None: return None
     seen, out = set(), []
-    for e in sorted(events, key=lambda z: z["t"]):
+    for e in sorted(rows, key=lambda z: z["t"]):
         k = (e["t"], e["title"])
         if k not in seen: seen.add(k); out.append(e)
-    return out if loaded else None
+    return out
 
 
 def trump():
@@ -72,18 +113,20 @@ def trump():
         for e in r.json():
             d = e.get("date") or ""
             if d != DAY.isoformat(): continue
-            tm = (e.get("time") or "").strip()
+            tm = (e.get("time_formatted") or "").strip()
             det = (e.get("details") or e.get("type") or "").strip()
+            if det.startswith("TBD:"): det = det[4:].strip()
             loc = (e.get("location") or "").strip()
-            if det: out.append((tm, det, loc))
+            if det and (tm, det) not in [(a, b) for a, b, _ in out]: out.append((tm, det, loc))
     except Exception as ex:
         notes.append(f"trump calendar parse {type(ex).__name__}"); return None
     return out
 
 
 # ------------------------------------------------------------------ earnings
-def earnings():
-    r = get(f"https://api.nasdaq.com/api/calendar/earnings?date={DAY.isoformat()}")
+def earnings(day=None, min_cap=20e9, mine_cap=0.0):
+    day = day or DAY
+    r = get(f"https://api.nasdaq.com/api/calendar/earnings?date={day.isoformat()}")
     if not r: return None
     rows = ((r.json().get("data") or {}).get("rows")) or []
     def cap(x):
@@ -92,7 +135,7 @@ def earnings():
     pre, post, other = [], [], []
     for x in rows:
         s = x.get("symbol", ""); mc = cap(x.get("marketCap"))
-        if mc < 20e9 and s not in MINE: continue
+        if mc < min_cap and not (s in MINE and mc >= mine_cap): continue
         item = (mc, s, s in MINE, x.get("epsForecast") or "")
         tm = x.get("time", "")
         (pre if "pre" in tm else post if "after" in tm else other).append(item)
@@ -111,7 +154,8 @@ def quotes():
             x = yf.Ticker(s).history(period="5d", interval="1d")
             last = yf.Ticker(s).history(period="1d", interval="5m", prepost=True)
             px = float(last.Close.iloc[-1]) if len(last) else float(x.Close.iloc[-1])
-            prev = float(x.Close.iloc[-2]) if x.index[-1].date() >= DAY else float(x.Close.iloc[-1])
+            before = x[[d.date() < DAY for d in x.index]]
+            prev = float(before.Close.iloc[-1]) if len(before) else float(x.Close.iloc[0])
             out.append((name, px, (px / prev - 1) * 100))
         except Exception as e:
             notes.append(f"{s} {type(e).__name__}")
@@ -131,11 +175,62 @@ def premarket(syms):
 
 
 # ------------------------------------------------------------------ posts
+def key_levels():
+    """Nearest gray boxes above and below QQQ and SPY, with filled box edges, from the Gray Box Fade rules."""
+    try:
+        from gray_box_bot import pull_daily, setups
+        data = pull_daily(["QQQ", "SPY"])
+    except Exception as e:
+        notes.append(f"levels {type(e).__name__}"); return []
+    out = []
+    for s in ("QQQ", "SPY"):
+        x = data.get(s)
+        if x is None: continue
+        x = x[[d.date() < DAY for d in x.index]]
+        rows = setups(s, x)
+        up = [r for r in rows if r["side"] == "PUT"]; dn = [r for r in rows if r["side"] == "CALL"]
+        parts = []
+        if up: parts.append(f"box above {up[0]['box_lo']}-{up[0]['box_hi']}")
+        if dn: parts.append(f"box below {dn[0]['box_lo']}-{dn[0]['box_hi']}")
+        fl = sorted({float(v) for r in rows for v in str(r.get("filled_levels") or "").split()})
+        if fl: parts.append("filled levels " + ", ".join(f"{v:g}" for v in fl[:4]))
+        out.append(f"📦 **{s}** (closed {x.c.iloc[-1]:.2f}): " + (" · ".join(parts) if parts else "no box within 1.5 daily ranges"))
+    return out
+
+
+def week_ahead():
+    """Monday only: the week's high-impact US events and the biggest earnings."""
+    mon = DAY; days = [mon + dt.timedelta(days=i) for i in range(5)]
+    L = ["", "🗓️📆 **THIS WEEK**"]
+    ev, span = ff_all()
+    for d in days:
+        if span and span[0] <= d <= span[1]:
+            big = [e for e in ev if e["t"].date() == d and (e["impact"] == "High" or any(k in e["title"] for k in ("FOMC", "Powell")))]
+        else:
+            big = [e for e in (nasdaq_econ(d) or []) if e["impact"] == "High" or any(k in e["title"] for k in ("FOMC", "Powell"))]
+        er = earnings(d, min_cap=150e9, mine_cap=30e9)
+        names = []
+        if er:
+            pre, post, other = er
+            names = [f"{s} (am)" for _, s, _, _ in pre] + [f"{s} (pm)" for _, s, _, _ in post] + [s for _, s, _, _ in other]
+        if not big and not names: continue
+        line = f"**{d:%a}**: " + "; ".join(dict.fromkeys(e["title"] for e in big))
+        if names: line += (" · " if big else "") + "💼 " + ", ".join(names[:8])
+        L.append(line)
+    return L if len(L) > 2 else []
+
+
+HOLIDAYS = {"2026-11-26", "2026-12-25", "2027-01-01", "2027-01-18", "2027-02-15", "2027-03-26", "2027-05-31", "2027-06-18",
+            "2027-07-05", "2027-09-06", "2027-11-25", "2027-12-24"}
+EARLY = {"2026-11-27": "1:00 PM", "2026-12-24": "1:00 PM", "2027-11-26": "1:00 PM"}
+
+
 def fmt_t(t): return t.strftime("%-I:%M %p").lower()
 
 
 def post1():
     L = [f"☀️🌪️ **GOOD MORNING, TAZ TRADERS** 🌪️☀️", f"📅 **{DAY:%A, %B %-d}** · market briefing", ""]
+    if DAY.isoformat() in EARLY: L += [f"⏰ **Early close today at {EARLY[DAY.isoformat()]} ET.** Plan around it.", ""]
     q = quotes() if not os.environ.get("NO_QUOTES") else []
     if q:
         L.append("📈 **Pre-market**")
@@ -172,6 +267,9 @@ def post1():
         if post: L.append(f"🌙 After the close: {nm(post)}")
         if other: L.append(f"🕐 Time not set: {nm(other)}")
         if not (pre or post or other): L.append("➖ No major earnings today.")
+    lv = key_levels() if not os.environ.get("NO_QUOTES") else []
+    if lv: L += ["", "🧱 **Gray box levels**"] + lv
+    if DAY.weekday() == 0: L += week_ahead()
     L += ["", "⚠️ Big data at 8:30 or 10:00 can whip the open. Let the first candles settle. Plan the trade, trade the plan. 🧘",
           "", "Pattern. Process. Paid. 🌪️🔴"]
     return "\n".join(L)
@@ -226,6 +324,7 @@ def send(text):
 if __name__ == "__main__":
     if not os.environ.get("FORCE"):
         if DAY.weekday() >= 5: print("::notice::weekend, nothing posted"); raise SystemExit
+        if DAY.isoformat() in HOLIDAYS: print("::notice::market holiday, nothing posted"); raise SystemExit
         if NOW.hour != 8: print(f"::notice::it is {NOW:%H:%M} ET, not the 8 AM run; nothing posted"); raise SystemExit
     if os.environ.get("DRY"):
         try: os.remove(f"results/morning/preview_{DAY}.txt")
