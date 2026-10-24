@@ -1,0 +1,19 @@
+name: Probe sources
+on:
+  repository_dispatch:
+    types: [probe_sources]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install requests && python probe_sources.py
+      - run: |
+          git config user.name "taz-bot"; git config user.email "taz-bot@users.noreply.github.com"
+          git add -f results/morning/probe; git diff --cached --quiet && exit 0
+          git commit -m "Source probe"; for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
