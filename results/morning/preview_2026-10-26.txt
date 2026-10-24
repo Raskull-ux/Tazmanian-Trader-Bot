@@ -2,14 +2,14 @@
 📅 **Monday, October 26** · market briefing
 
 📈 **Pre-market**
-🟢 S&P futures: 7,659.75 (+0.00%)
+🟢 S&P futures: 7,672.50 (+0.17%)
 🟢 Nasdaq futures: 29,117.75 (+0.00%)
-🟢 Dow futures: 52,394.00 (+0.00%)
+🟢 Dow futures: 52,451.00 (+0.11%)
 🟢 VIX: 19.45 (+0.00%)
 🟢 10-year yield: 4.99 (+0.00%)
-🟢 Oil: 103.27 (+0.00%)
+🟢 Oil: 103.44 (+0.16%)
 🟢 Gold: 4,007.90 (+0.00%)
-🟢 Bitcoin: 80,348.61 (+0.00%)
+🟢 Bitcoin: 80,359.35 (+0.00%)
 
 🗓️ **Economic calendar (ET)**
 ➖ No high or medium impact US data today.
@@ -30,10 +30,10 @@
 
 🗓️📆 **THIS WEEK**
 **Mon**: 💼 VZ (am), WELL (pm)
-**Tue**: 💼 BA (am), KO (am), NVS (am), HOOD (pm), V (pm), HSBC
-**Wed**: Atlanta Fed GDPNow · 💼 GEV (am), SAN (am), APH (am), GOOG (pm), GOOGL (pm), MSFT (pm), CVNA (pm), EBAY (pm)
-**Thu**: 💼 LLY (am), MA (am), MRK (am), CAT (am), SHEL (am), LIN (am), TTE (am), BUD (am)
-**Fri**: Core PCE Price Index; Core PCE Prices; GDP; GDP Price Index; GDP Sales; PCE price index; PCE Price index; PCE Prices; Atlanta Fed GDPNow; Dallas Fed PCE · 💼 XOM (am), ABBV (am), CVX (am), AZN (am)
+**Tue**: 💼 **BA** (am), **HOOD** (pm), V (pm), KO (am), HSBC, NVS (am)
+**Wed**: 💼 **GOOG** (pm), **MSFT** (pm), **CVNA** (pm), **EBAY** (pm), **CMG** (pm), GEV (am), SAN (am), KLAC (pm)
+**Thu**: FOMC, Fed rate decision · 💼 **AMZN** (pm), **INTC** (pm), **MSTR** (pm), **COIN** (pm), LLY (am), MA (am), MRK (am), CAT (am)
+**Fri**: PCE, GDP · 💼 **XOM** (am), ABBV (am), CVX (am), AZN (am)
 
 ⚠️ Big data at 8:30 or 10:00 can whip the open. Let the first candles settle. Plan the trade, trade the plan. 🧘
 
