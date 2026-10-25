@@ -1,8 +1,34 @@
 {
  "status": 200,
  "type": "list",
- "len": 6837,
+ "len": 6844,
  "first": [
+  {
+   "date": "2026-10-26",
+   "time": "19:00:00",
+   "time_formatted": "7:00 PM",
+   "year": 2026,
+   "month": "October",
+   "day": 26,
+   "day_of_week": "Monday",
+   "type": "Pool Report Schedule",
+   "details": "The President holds a political rally in Corinth, Mississippi [CDT Local]",
+   "location": "Crossroads Arena, Corinth, MS",
+   "coverage": "Pre-Credentialed Media",
+   "daily_text": "",
+   "url": null,
+   "video_url": null,
+   "day_summary": {
+    "trump_property": null,
+    "political_rally": null,
+    "golf": null,
+    "fundraiser": null,
+    "international": null
+   },
+   "newmonth": true,
+   "daycount": 1,
+   "lastdaily": false
+  },
   {
    "date": "2026-10-25",
    "time": null,
@@ -25,7 +51,6 @@
     "fundraiser": null,
     "international": null
    },
-   "newmonth": true,
    "daycount": 8,
    "lastdaily": false
   },
@@ -39,25 +64,6 @@
    "day_of_week": "Sunday",
    "type": "President Schedule",
    "details": "TBD: The President arrives Port Huron, Michigan",
-   "location": "McMorron Place Arena, Port Huron, MI",
-   "coverage": "Out-of-Town Travel Pool",
-   "daily_text": "",
-   "url": null,
-   "video_url": null,
-   "lastdaily": false,
-   "daycount": null,
-   "newmonth": false
-  },
-  {
-   "date": "2026-10-25",
-   "time": null,
-   "time_formatted": null,
-   "year": 2026,
-   "month": "October",
-   "day": 25,
-   "day_of_week": "Sunday",
-   "type": "President Schedule",
-   "details": "TBD: The President departs Port Huron, Michigan en route the White House",
    "location": "McMorron Place Arena, Port Huron, MI",
    "coverage": "Out-of-Town Travel Pool",
    "daily_text": "",

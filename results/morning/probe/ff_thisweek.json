@@ -1,57 +1,57 @@
 {
  "status": 200,
  "type": "list",
- "len": 86,
+ "len": 96,
  "first": [
   {
-   "title": "IMF Meetings",
-   "country": "All",
-   "date": "2026-10-18T10:15:00-04:00",
+   "title": "Bank Holiday",
+   "country": "NZD",
+   "date": "2026-10-25T15:00:00-04:00",
+   "impact": "Holiday",
+   "forecast": "",
+   "previous": ""
+  },
+  {
+   "title": "RBA Assist Gov Jones Speaks",
+   "country": "AUD",
+   "date": "2026-10-25T17:10:00-04:00",
    "impact": "Low",
    "forecast": "",
    "previous": ""
   },
   {
-   "title": "BusinessNZ Services Index",
-   "country": "NZD",
-   "date": "2026-10-18T17:30:00-04:00",
+   "title": "German ifo Business Climate",
+   "country": "EUR",
+   "date": "2026-10-26T05:00:00-04:00",
    "impact": "Low",
-   "forecast": "",
-   "previous": "51.2"
-  },
-  {
-   "title": "Trade Balance",
-   "country": "NZD",
-   "date": "2026-10-18T17:45:00-04:00",
-   "impact": "Low",
-   "forecast": "-775M",
-   "previous": "-1349M"
+   "forecast": "90.0",
+   "previous": "89.9"
   }
  ],
  "last": [
   {
-   "title": "Daylight Saving Time Shift",
-   "country": "CHF",
-   "date": "2026-10-24T21:00:00-04:00",
-   "impact": "Holiday",
+   "title": "FOMC Member Musalem Speaks",
+   "country": "USD",
+   "date": "2026-10-30T12:30:00-04:00",
+   "impact": "Low",
    "forecast": "",
    "previous": ""
   },
   {
-   "title": "Daylight Saving Time Shift",
-   "country": "EUR",
-   "date": "2026-10-24T21:00:00-04:00",
-   "impact": "Holiday",
-   "forecast": "",
-   "previous": ""
+   "title": "Manufacturing PMI",
+   "country": "CNY",
+   "date": "2026-10-30T21:30:00-04:00",
+   "impact": "Low",
+   "forecast": "50.1",
+   "previous": "50.1"
   },
   {
-   "title": "Daylight Saving Time Shift",
-   "country": "GBP",
-   "date": "2026-10-24T21:00:00-04:00",
-   "impact": "Holiday",
-   "forecast": "",
-   "previous": ""
+   "title": "Non-Manufacturing PMI",
+   "country": "CNY",
+   "date": "2026-10-30T21:30:00-04:00",
+   "impact": "Low",
+   "forecast": "50.5",
+   "previous": "50.2"
   }
  ]
 }
