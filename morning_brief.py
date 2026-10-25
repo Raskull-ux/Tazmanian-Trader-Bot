@@ -190,7 +190,8 @@ def treasury_official(day):
         if (x.get("competitiveAuctionCloseDate") or "")[:10] != day.isoformat(): continue
         if x.get("securityType") == "Bill": continue
         tm = (x.get("competitiveAuctionCloseTime") or "").lower().replace(" ", "").lstrip("0")
-        out.append(dict(tm=tm, title=f"{x.get('securityTerm', '')} {x.get('securityType', '')} auction".strip(), impact="Medium"))
+        kind = "FRN" if (x.get("floatingRate") or "").lower() in ("yes", "true") else ("TIPS" if (x.get("tips") or "").lower() in ("yes", "true") else x.get("securityType", ""))
+        out.append(dict(tm=tm, title=f"{x.get('securityTerm', '')} {kind} auction".strip(), impact="Medium" if kind in ("Note", "Bond") else ""))
     return out
 
 
@@ -336,7 +337,7 @@ def post1():
     def hm(tm):
         try: return dt.datetime.strptime(tm.replace(" ", ""), "%I:%M%p").strftime("%H:%M")
         except Exception: return "99:99"
-    rows += [(hm(o["tm"]), f"{'🚨' if o['impact'] == 'High' else '⚠️'} {o['tm']} · **{o['title']}**") for o in extra]
+    rows += [(hm(o["tm"]), f"{'🚨' if o['impact'] == 'High' else '⚠️' if o['impact'] else '▫️'} {o['tm']} · **{o['title']}**") for o in extra]
     if ev is None and not off:
         L.append("❔ Couldn't load the economic calendar this morning. Check before the open.")
     elif rows:
@@ -345,15 +346,18 @@ def post1():
         L.append("➖ No high or medium impact US data today.")
     L += ["", "🏛️ **Fed watch**"]
     flines = []
+    def hm2(tm):
+        try: return dt.datetime.strptime(tm.replace(" ", "").replace(".", ""), "%I:%M%p").strftime("%H:%M")
+        except Exception: return "99:99"
     for e in fedoff or []:
-        flines.append(f"🎙️ {e['tm']} · **{e['title']}**")
+        flines.append((hm2(e["tm"]), f"🎙️ {e['tm']} · **{e['title']}**"))
     names_off = " ".join(e["title"] for e in (fedoff or []))
     for e in fed:
         last = [w for w in e["title"].replace("Speaks", "").split() if w[:1].isupper() and w not in ("FOMC", "Member", "Fed", "Chair", "Gov", "Vice", "President")]
         if last and last[-1] in names_off: continue
-        flines.append(f"🎙️ {fmt_t(e['t'])} · **{e['title']}**")
+        flines.append((e["t"].strftime("%H:%M"), f"🎙️ {fmt_t(e['t'])} · **{e['title']}**"))
     if ev is None and fedoff is None: L.append("❔ Fed calendars didn't load this morning. Watch the headlines.")
-    else: L += flines or ["➖ No Fed speakers, testimony or FOMC items today."]
+    else: L += [x for _, x in sorted(set(flines))] or ["➖ No Fed speakers, testimony or FOMC items today."]
     tr = trump()
     L += ["", "🇺🇸 **Trump today**"]
     if tr is None: L.append("❔ Couldn't load his public schedule this morning. Watch the headlines.")
