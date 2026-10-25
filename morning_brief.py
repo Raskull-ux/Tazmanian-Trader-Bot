@@ -13,7 +13,7 @@ Every source is optional: if one fails, the post says so instead of guessing.
 Env: DISCORD_BOT_TOKEN, WHERE (private | vip), DATE (YYYY-MM-DD, for testing), FORCE=1 (skip the 8 AM clock check),
      DRY=1 (print instead of posting)
 """
-import os, glob, json, time, datetime as dt
+import os, glob, json, time, re as _re, datetime as dt
 from zoneinfo import ZoneInfo
 import pandas as pd, requests
 
@@ -115,6 +115,10 @@ def trump():
             tm = (e.get("time_formatted") or "").strip()
             det = (e.get("details") or e.get("type") or "").strip()
             if det.startswith("TBD:"): det = det[4:].strip()
+            m = _re.search(r"\s*\[(\w+) Local\]", det)
+            if m:
+                det = (det[:m.start()] + det[m.end():]).strip()
+                if tm: tm = f"{tm} {m.group(1)}"
             loc = (e.get("location") or "").strip()
             if det and (tm, det) not in [(a, b) for a, b, _ in out]: out.append((tm, det, loc))
     except Exception as ex:
@@ -176,7 +180,7 @@ def census_official(day):
             if d != day: continue
             name = str(x[icol])
             hit = next((v for k, v in CENSUS.items() if k.lower() in name.lower()), None)
-            if hit: out.append(dict(tm=str(x[tcol]).lower().replace(" ", "") if tcol else "", title=hit[0], impact=hit[1]))
+            if hit: out.append(dict(tm=str(x[tcol]).lower() if tcol else "", title=hit[0], impact=hit[1]))
     return out
 
 
@@ -188,7 +192,7 @@ def treasury_official(day):
     for x in r.json():
         if (x.get("competitiveAuctionCloseDate") or "")[:10] != day.isoformat(): continue
         if x.get("securityType") == "Bill": continue
-        tm = (x.get("competitiveAuctionCloseTime") or "").lower().replace(" ", "").lstrip("0")
+        tm = (x.get("competitiveAuctionCloseTime") or "").lower().lstrip("0")
         kind = "FRN" if (x.get("floatingRate") or "").lower() in ("yes", "true") else ("TIPS" if (x.get("tips") or "").lower() in ("yes", "true") else x.get("securityType", ""))
         out.append(dict(tm=tm, title=f"{x.get('securityTerm', '')} {kind} auction".strip(), impact="Medium" if kind in ("Note", "Bond") else ""))
     return out
