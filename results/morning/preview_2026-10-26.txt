@@ -2,23 +2,23 @@
 📅 **Monday, October 26** · market briefing
 
 📈 **Pre-market**
-🟢 S&P futures: 7,672.50 (+0.17%)
+🟢 S&P futures: 7,659.75 (+0.00%)
 🟢 Nasdaq futures: 29,117.75 (+0.00%)
-🟢 Dow futures: 52,451.00 (+0.11%)
+🟢 Dow futures: 52,394.00 (+0.00%)
 🟢 VIX: 19.45 (+0.00%)
 🟢 10-year yield: 4.99 (+0.00%)
-🟢 Oil: 103.44 (+0.16%)
+🟢 Oil: 103.27 (+0.00%)
 🟢 Gold: 4,007.90 (+0.00%)
-🟢 Bitcoin: 80,359.35 (+0.00%)
+🟢 Bitcoin: 80,510.00 (+0.00%)
 
 🗓️ **Economic calendar (ET)**
-➖ No high or medium impact US data today.
+⚠️ 1:00pm · **2-Year Note auction**
 
 🏛️ **Fed watch**
-➖ No Fed speakers or FOMC items on the calendar today.
+➖ No Fed speakers, testimony or FOMC items today.
 
 🇺🇸 **Trump today**
-➖ No public events on his schedule.
+🎤 7:00 PM · The President holds a political rally in Corinth, Mississippi [CDT Local] (Crossroads Arena, Corinth, MS)
 
 💼 **Earnings today** (big names and the ones we trade)
 🌅 Before the open: VZ
@@ -31,9 +31,9 @@
 🗓️📆 **THIS WEEK**
 **Mon**: 💼 VZ (am), WELL (pm)
 **Tue**: 💼 **BA** (am), **HOOD** (pm), V (pm), KO (am), HSBC, NVS (am)
-**Wed**: 💼 **GOOG** (pm), **MSFT** (pm), **CVNA** (pm), **EBAY** (pm), **CMG** (pm), GEV (am), SAN (am), KLAC (pm)
-**Thu**: FOMC, Fed rate decision · 💼 **AMZN** (pm), **INTC** (pm), **MSTR** (pm), **COIN** (pm), LLY (am), MA (am), MRK (am), CAT (am)
-**Fri**: PCE, GDP · 💼 **XOM** (am), ABBV (am), CVX (am), AZN (am)
+**Wed**: Federal Funds Rate, FOMC · 💼 **GOOG** (pm), **MSFT** (pm), **CVNA** (pm), **EBAY** (pm), **CMG** (pm), GEV (am), SAN (am), KLAC (pm)
+**Thu**: GDP, PCE · 💼 **AMZN** (pm), **INTC** (pm), **MSTR** (pm), **COIN** (pm), LLY (am), MA (am), MRK (am), CAT (am)
+**Fri**: FOMC · 💼 **XOM** (am), ABBV (am), CVX (am), AZN (am)
 
 ⚠️ Big data at 8:30 or 10:00 can whip the open. Let the first candles settle. Plan the trade, trade the plan. 🧘
 
