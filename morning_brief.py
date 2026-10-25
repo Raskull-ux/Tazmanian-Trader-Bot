@@ -123,6 +123,77 @@ def trump():
     return out
 
 
+
+# ------------------------------------------------------------------ official sources (Fed, Census, Treasury)
+import html as _html, io as _io, re as _re
+
+
+def fed_official(day):
+    """Federal Reserve Board calendar (federalreserve.gov/json/calendar.json): Board speeches, testimony, FOMC."""
+    r = get("https://www.federalreserve.gov/json/calendar.json")
+    if not r: return None
+    try: j = json.loads(r.content.decode("utf-8-sig"))
+    except Exception as e: notes.append(f"fed json {type(e).__name__}"); return None
+    out = []
+    for e in j.get("events", []):
+        if e.get("month") != day.strftime("%Y-%m"): continue
+        nums = set()
+        for part in str(e.get("days", "")).replace(" ", "").split(","):
+            try:
+                if "-" in part: a, b = part.split("-"); nums |= set(range(int(a), int(b) + 1))
+                elif part: nums.add(int(part))
+            except ValueError: pass
+        if day.day not in nums: continue
+        typ = e.get("type", ""); title = _html.unescape(e.get("title", "")).strip()
+        if not any(k in typ + " " + title for k in ("Speech", "Testimony", "FOMC", "Beige", "Monetary Policy", "Press Conference", "Discussion")): continue
+        tm = (e.get("time") or "").replace("a.m.", "am").replace("p.m.", "pm").strip()
+        topic = _html.unescape(e.get("description", "")).strip()
+        out.append(dict(tm=tm, title=title + (f" ({topic})" if topic and len(topic) < 60 else ""), typ=typ))
+    return out
+
+
+CENSUS = {"Advance Monthly Sales for Retail": ("Retail Sales", "High"), "Durable Goods": ("Durable Goods Orders", "Medium"),
+          "New Residential Construction": ("Housing Starts and Building Permits", "Medium"), "New Residential Sales": ("New Home Sales", "Medium"),
+          "Advance Economic Indicators": ("Advance Trade, Retail and Wholesale Inventories", "Medium"),
+          "International Trade in Goods and Services": ("Trade Balance", "Medium"), "Construction Spending": ("Construction Spending", "Medium"),
+          "Manufacturers' Shipments": ("Factory Orders", "Medium")}
+
+
+def census_official(day):
+    """Census Bureau economic indicator release schedule (official)."""
+    r = get("https://www.census.gov/economic-indicators/calendar-listview.html")
+    if not r: return None
+    try: tables = pd.read_html(_io.StringIO(r.text))
+    except Exception as e: notes.append(f"census parse {type(e).__name__}"); return None
+    out = []
+    for t in tables:
+        cols = [str(c).lower() for c in t.columns]
+        if not any("release" in c for c in cols): continue
+        t.columns = cols
+        dcol = next(c for c in cols if "release" in c); icol = next((c for c in cols if "indicator" in c), cols[0]); tcol = next((c for c in cols if c.startswith("time")), None)
+        for _, x in t.iterrows():
+            try: d = pd.to_datetime(str(x[dcol])).date()
+            except Exception: continue
+            if d != day: continue
+            name = str(x[icol])
+            hit = next((v for k, v in CENSUS.items() if k.lower() in name.lower()), None)
+            if hit: out.append(dict(tm=str(x[tcol]).lower().replace(" ", "") if tcol else "", title=hit[0], impact=hit[1]))
+    return out
+
+
+def treasury_official(day):
+    """TreasuryDirect upcoming auctions: notes, bonds, TIPS and FRNs closing today (bills skipped)."""
+    r = get("https://www.treasurydirect.gov/TA_WS/securities/upcoming?format=json")
+    if not r: return None
+    out = []
+    for x in r.json():
+        if (x.get("competitiveAuctionCloseDate") or "")[:10] != day.isoformat(): continue
+        if x.get("securityType") == "Bill": continue
+        tm = (x.get("competitiveAuctionCloseTime") or "").lower().replace(" ", "").lstrip("0")
+        out.append(dict(tm=tm, title=f"{x.get('securityTerm', '')} {x.get('securityType', '')} auction".strip(), impact="Medium"))
+    return out
+
+
 # ------------------------------------------------------------------ earnings
 def earnings(day=None, min_cap=20e9, mine_cap=0.0):
     day = day or DAY
@@ -249,18 +320,37 @@ def post1():
         L.append("")
     ev = econ()
     data = [e for e in (ev or []) if not e["fed"]]; fed = [e for e in (ev or []) if e["fed"]]
+    off = (census_official(DAY) or []) + (treasury_official(DAY) or [])
+    fedoff = fed_official(DAY)
+    fams = (("Retail", "Retail"), ("Durable", "Durable"), ("Housing", "Housing Starts"), ("Building Permits", "Housing Starts"),
+            ("New Home", "New Home"), ("Trade Balance", "Trade"), ("Trade", "Trade"), ("Auction", "Auction"), ("Construction", "Construction"), ("Factory", "Factory"))
+    fam = lambda t: next((v for k, v in fams if k.lower() in t.lower()), t)
+    have = {fam(e["title"]) + (e["title"].split()[0] if "Auction" in e["title"] else "") for e in data}
+    extra = [o for o in off if fam(o["title"]) + (o["title"].split()[0] if "auction" in o["title"].lower() else "") not in have]
     L.append("🗓️ **Economic calendar (ET)**")
-    if ev is None:
+    rows = [(e["t"].strftime("%H:%M"), f"{'🚨' if e['impact'] == 'High' else '⚠️'} {fmt_t(e['t'])} · **{e['title']}**"
+             + ("".join(f" · {lab} {v}" for lab, v in (("forecast", e["fc"]), ("prior", e["prev"])) if v))) for e in data]
+    def hm(tm):
+        try: return dt.datetime.strptime(tm.replace(" ", ""), "%I:%M%p").strftime("%H:%M")
+        except Exception: return "99:99"
+    rows += [(hm(o["tm"]), f"{'🚨' if o['impact'] == 'High' else '⚠️'} {o['tm']} · **{o['title']}**") for o in extra]
+    if ev is None and not off:
         L.append("❔ Couldn't load the economic calendar this morning. Check before the open.")
-    elif data:
-        for e in data:
-            extra = " · ".join(z for z in (f"forecast {e['fc']}" if e["fc"] else "", f"prior {e['prev']}" if e["prev"] else "") if z)
-            L.append(f"{'🚨' if e['impact'] == 'High' else '⚠️'} {fmt_t(e['t'])} · **{e['title']}**" + (f" · {extra}" if extra else ""))
+    elif rows:
+        L += [r for _, r in sorted(rows)]
     else:
         L.append("➖ No high or medium impact US data today.")
     L += ["", "🏛️ **Fed watch**"]
-    if ev is None: L.append("❔ Calendar didn't load, so Fed speakers are unknown this morning.")
-    else: L += [f"🎙️ {fmt_t(e['t'])} · **{e['title']}**" for e in fed] or ["➖ No Fed speakers or FOMC items on the calendar today."]
+    flines = []
+    for e in fedoff or []:
+        flines.append(f"🎙️ {e['tm']} · **{e['title']}**")
+    names_off = " ".join(e["title"] for e in (fedoff or []))
+    for e in fed:
+        last = [w for w in e["title"].replace("Speaks", "").split() if w[:1].isupper() and w not in ("FOMC", "Member", "Fed", "Chair", "Gov", "Vice", "President")]
+        if last and last[-1] in names_off: continue
+        flines.append(f"🎙️ {fmt_t(e['t'])} · **{e['title']}**")
+    if ev is None and fedoff is None: L.append("❔ Fed calendars didn't load this morning. Watch the headlines.")
+    else: L += flines or ["➖ No Fed speakers, testimony or FOMC items today."]
     tr = trump()
     L += ["", "🇺🇸 **Trump today**"]
     if tr is None: L.append("❔ Couldn't load his public schedule this morning. Watch the headlines.")
