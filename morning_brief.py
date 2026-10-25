@@ -30,12 +30,12 @@ WATCH = MINE | set(U.symbol)
 notes = []
 
 
-def get(url, **kw):
-    for i in range(3):
+def get(url, quiet=False, **kw):
+    for i in range(1 if quiet else 3):
         try:
             r = requests.get(url, headers=UA, timeout=25, **kw)
             if r.status_code == 200: return r
-            notes.append(f"{url.split('/')[2]} {r.status_code}")
+            if not quiet: notes.append(f"{url.split('/')[2]} {r.status_code}")
         except Exception as e:
             notes.append(f"{url.split('/')[2]} {type(e).__name__}")
         time.sleep(2 + 2 * i)
@@ -50,7 +50,7 @@ def ff_all():
     if _FF is not None: return _FF
     ev, span = [], []
     for wk in ("thisweek", "nextweek"):
-        r = get(f"https://nfs.faireconomy.media/ff_calendar_{wk}.json")
+        r = get(f"https://nfs.faireconomy.media/ff_calendar_{wk}.json", quiet=(wk == "nextweek"))
         if not r: continue
         for e in r.json():
             try: t = dt.datetime.fromisoformat(e["date"]).astimezone(NY)
@@ -292,8 +292,11 @@ def week_ahead():
         big = [e for e in big if not any(k in e["title"] for k in ("GDPNow", "Atlanta Fed", "Dallas Fed"))]
         concepts = []
         for e in big:
-            hit = next((k for k in ("FOMC", "Powell", "Interest Rate", "CPI", "PPI", "Non-Farm", "Nonfarm", "Unemployment Rate", "GDP", "PCE", "Retail Sales", "ISM", "Payrolls") if k in e["title"]), e["title"])
-            label = {"Interest Rate": "Fed rate decision", "Non-Farm": "Jobs report", "Nonfarm": "Jobs report", "Payrolls": "Jobs report"}.get(hit, hit)
+            if "Speaks" in e["title"]:
+                if "Fed speakers" not in concepts: concepts.append("Fed speakers")
+                continue
+            hit = next((k for k in ("Federal Funds Rate", "FOMC", "Powell", "Interest Rate", "CPI", "PPI", "Non-Farm", "Nonfarm", "Unemployment Rate", "GDP", "PCE", "Retail Sales", "ISM", "Payrolls") if k in e["title"]), e["title"])
+            label = {"Federal Funds Rate": "Fed rate decision", "FOMC": "Fed rate decision", "Interest Rate": "Fed rate decision", "Non-Farm": "Jobs report", "Nonfarm": "Jobs report", "Payrolls": "Jobs report"}.get(hit, hit)
             if label not in concepts: concepts.append(label)
         if not concepts and not names: continue
         line = f"**{d:%a}**: " + ", ".join(concepts)
