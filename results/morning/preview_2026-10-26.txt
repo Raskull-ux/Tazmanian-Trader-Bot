@@ -9,7 +9,7 @@
 🟢 10-year yield: 4.99 (+0.00%)
 🟢 Oil: 103.27 (+0.00%)
 🟢 Gold: 4,007.90 (+0.00%)
-🟢 Bitcoin: 80,510.00 (+0.00%)
+🟢 Bitcoin: 80,504.76 (+0.00%)
 
 🗓️ **Economic calendar (ET)**
 ⚠️ 1:00pm · **2-Year Note auction**
@@ -31,9 +31,9 @@
 🗓️📆 **THIS WEEK**
 **Mon**: 💼 VZ (am), WELL (pm)
 **Tue**: 💼 **BA** (am), **HOOD** (pm), V (pm), KO (am), HSBC, NVS (am)
-**Wed**: Federal Funds Rate, FOMC · 💼 **GOOG** (pm), **MSFT** (pm), **CVNA** (pm), **EBAY** (pm), **CMG** (pm), GEV (am), SAN (am), KLAC (pm)
+**Wed**: Fed rate decision · 💼 **GOOG** (pm), **MSFT** (pm), **CVNA** (pm), **EBAY** (pm), **CMG** (pm), GEV (am), SAN (am), KLAC (pm)
 **Thu**: GDP, PCE · 💼 **AMZN** (pm), **INTC** (pm), **MSTR** (pm), **COIN** (pm), LLY (am), MA (am), MRK (am), CAT (am)
-**Fri**: FOMC · 💼 **XOM** (am), ABBV (am), CVX (am), AZN (am)
+**Fri**: Fed speakers · 💼 **XOM** (am), ABBV (am), CVX (am), AZN (am)
 
 ⚠️ Big data at 8:30 or 10:00 can whip the open. Let the first candles settle. Plan the trade, trade the plan. 🧘
 
@@ -74,4 +74,3 @@ From last night's scan (2026-10-23 close). Live only after it **arms**, then tag
 Pattern. Process. Paid. 🌪️🔴
 
 -----
-SOURCE ISSUES: nfs.faireconomy.media 404 | nfs.faireconomy.media 404 | nfs.faireconomy.media 404
