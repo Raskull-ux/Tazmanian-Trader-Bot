@@ -96,8 +96,7 @@ def econ(day=None):
     if span and span[0] <= day <= span[1]:
         rows = [e for e in ev if e["t"].date() == day and (e["impact"] in ("High", "Medium") or e["fed"])]
     else:
-        rows = nasdaq_econ(day)
-        if rows is None: return None
+        return None   # Nasdaq's economic calendar was dropped: it put events on the wrong days
     seen, out = set(), []
     for e in sorted(rows, key=lambda z: z["t"]):
         k = (e["t"], e["title"])
@@ -279,7 +278,7 @@ def week_ahead():
         if span and span[0] <= d <= span[1]:
             big = [e for e in ev if e["t"].date() == d and (e["impact"] == "High" or any(k in e["title"] for k in ("FOMC", "Powell")))]
         else:
-            big = [e for e in (nasdaq_econ(d) or []) if e["impact"] == "High" or any(k in e["title"] for k in ("FOMC", "Powell"))]
+            big = []
         er = earnings(d, min_cap=150e9, mine_cap=30e9)
         names = []
         if er:
