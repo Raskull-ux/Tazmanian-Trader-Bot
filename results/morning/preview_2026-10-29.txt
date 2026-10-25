@@ -1,0 +1,75 @@
+☀️🌪️ **GOOD MORNING, TAZ TRADERS** 🌪️☀️
+📅 **Thursday, October 29** · market briefing
+
+📈 **Pre-market**
+🟢 S&P futures: 7,659.75 (+0.00%)
+🟢 Nasdaq futures: 29,117.75 (+0.00%)
+🟢 Dow futures: 52,394.00 (+0.00%)
+🟢 VIX: 19.45 (+0.00%)
+🟢 10-year yield: 4.99 (+0.00%)
+🟢 Oil: 103.27 (+0.00%)
+🟢 Gold: 4,007.90 (+0.00%)
+🟢 Bitcoin: 80,510.09 (+0.00%)
+
+🗓️ **Economic calendar (ET)**
+⚠️ 8:30 am · **Advance GDP Price Index q/q** · forecast 3.5% · prior 6.2%
+⚠️ 8:30 am · **Unemployment Claims** · forecast 198K · prior 194K
+🚨 8:30 am · **Advance GDP q/q** · forecast 3.2% · prior 1.5%
+🚨 8:30 am · **Core PCE Price Index m/m** · forecast 0.3% · prior 0.2%
+⚠️ 1:00pm · **7-Year Note auction**
+
+🏛️ **Fed watch**
+➖ No Fed speakers, testimony or FOMC items today.
+
+🇺🇸 **Trump today**
+➖ No public events on his schedule.
+
+💼 **Earnings today** (big names and the ones we trade)
+🌅 Before the open: LLY, MA, MRK, CAT, SHEL, LIN, TTE, BUD, BMY, MO, TT, ING
+🌙 After the close: **AMZN**, **INTC**, **MSTR**, **COIN**, **RDDT**, GILD, SNDK, SYK, SBUX, MDLZ, RSG, AJG
+🕐 Time not set: ABEV, RKT
+
+🧱 **Gray box levels**
+📦 **QQQ** (closed 704.40): box above 713.61-722.22 · box below 702.16-702.2 · filled levels 691.96, 696.06, 699.81, 705.35
+📦 **SPY** (closed 759.97): box above 760.88-761.31 · box below 759.5-759.9 · filled levels 750.01, 750.33, 752.05, 763.15
+
+⚠️ Big data at 8:30 or 10:00 can whip the open. Let the first candles settle. Plan the trade, trade the plan. 🧘
+
+Pattern. Process. Paid. 🌪️🔴
+
+-----
+🎯🌪️ **TODAY'S TRADE IDEAS: GRAY BOX FADE** 🌪️🎯
+From last night's scan (2026-10-23 close). Live only after it **arms**, then tags the **trigger**. 📦
+
+1️⃣ 🟢 **QQQ CALLS**
+⏳ ARM above **708.23** · 🚨 TRIGGER **703.41** · 🛑 STOP **697.38**
+💰 HALF **704.61** then stop to entry · 🏃 RUNNER **712.45**
+⏳ pre-market 704.88 · 0.3 daily range from arming
+
+2️⃣ 🟢 **WMT CALLS**
+⏳ ARM above **120.76** · 🚨 TRIGGER **119.7** · 🛑 STOP **118.39**
+💰 HALF **119.97** then stop to entry · 🏃 RUNNER **121.68**
+⏳ pre-market 119.98 · 0.3 daily range from arming
+
+3️⃣ 🔻 **NVDA PUTS**
+⏳ ARM below **208.0** · 🚨 TRIGGER **210.39** · 🛑 STOP **213.38**
+💰 HALF **209.79** then stop to entry · 🏃 RUNNER **205.91**
+⛔ pre-market 211.11 is already past the trigger. If it opens there, SKIP.
+
+4️⃣ 🔻 **AMD PUTS**
+⏳ ARM below **509.46** · 🚨 TRIGGER **521.17** · 🛑 STOP **535.81**
+💰 HALF **518.25** then stop to entry · 🏃 RUNNER **499.22**
+⏳ pre-market 516.80 · 0.3 daily range from arming
+
+5️⃣ 🟢 **AMD CALLS**
+⏳ ARM above **522.57** · 🚨 TRIGGER **510.86** · 🛑 STOP **496.22**
+💰 HALF **513.78** then stop to entry · 🏃 RUNNER **532.81**
+⏳ pre-market 516.80 · 0.2 daily range from arming
+
+📋 Expiry a week+ out · contracts under 500 or a debit spread · 2 losses = done · stop set at entry, never moved further away.
+📊 Every setup gets graded after the close. Wins and losses.
+
+Pattern. Process. Paid. 🌪️🔴
+
+-----
+SOURCE ISSUES: nfs.faireconomy.media 404 | nfs.faireconomy.media 404 | nfs.faireconomy.media 404
