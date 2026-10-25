@@ -9,16 +9,16 @@
 🟢 10-year yield: 4.99 (+0.00%)
 🟢 Oil: 103.27 (+0.00%)
 🟢 Gold: 4,007.90 (+0.00%)
-🟢 Bitcoin: 80,523.68 (+0.00%)
+🟢 Bitcoin: 80,528.49 (+0.00%)
 
 🗓️ **Economic calendar (ET)**
-⚠️ 11:30am · **2-Year Note auction**
+▫️ 11:30am · **2-Year FRN auction**
 
 🏛️ **Fed watch**
-🎙️ 2:30 pm · **FOMC Press Conference**
 🎙️ 2:00 pm · **FOMC Meeting**
-🎙️ 2:00 pm · **Federal Funds Rate**
 🎙️ 2:00 pm · **FOMC Statement**
+🎙️ 2:00 pm · **Federal Funds Rate**
+🎙️ 2:30 pm · **FOMC Press Conference**
 
 🇺🇸 **Trump today**
 ➖ No public events on his schedule.
