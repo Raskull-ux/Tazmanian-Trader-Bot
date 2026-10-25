@@ -2,14 +2,14 @@
 📅 **Monday, October 26** · market briefing
 
 📈 **Pre-market**
-🟢 S&P futures: 7,659.75 (+0.00%)
-🟢 Nasdaq futures: 29,117.75 (+0.00%)
-🟢 Dow futures: 52,394.00 (+0.00%)
+🟢 S&P futures: 7,693.00 (+0.00%)
+🔴 Nasdaq futures: 29,316.25 (-0.01%)
+🟢 Dow futures: 52,548.00 (+0.00%)
 🟢 VIX: 19.45 (+0.00%)
 🟢 10-year yield: 4.99 (+0.00%)
-🟢 Oil: 103.27 (+0.00%)
-🟢 Gold: 4,007.90 (+0.00%)
-🟢 Bitcoin: 80,504.76 (+0.00%)
+🟢 Oil: 102.05 (+0.00%)
+🟢 Gold: 4,016.30 (+0.00%)
+🟢 Bitcoin: 80,329.18 (+0.00%)
 
 🗓️ **Economic calendar (ET)**
 ⚠️ 1:00pm · **2-Year Note auction**
