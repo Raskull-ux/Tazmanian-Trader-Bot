@@ -4,12 +4,16 @@ SYMS = os.environ.get("SYMS", "QQQ,SPY,NVDA,META,AAPL,AMD,TSLA,AVGO,MSFT,GOOGL,A
 os.makedirs("results/live", exist_ok=True)
 fr, dl = [], []
 for s in SYMS:
+    s = s.strip().replace(".", "-")
+    m = d = None
     for _ in range(3):
         try:
             m = yf.Ticker(s).history(period="60d", interval="5m", prepost=True, auto_adjust=False)
             d = yf.Ticker(s).history(period="2y", interval="1d", auto_adjust=False); break
         except Exception as e:
             print("retry", s, e); time.sleep(3)
+    if m is None or d is None or m.empty or d.empty:
+        print("skip", s, "(no data)"); continue
     m = m[["Open", "High", "Low", "Close", "Volume"]].copy(); m.columns = ["o", "h", "l", "c", "v"]
     m.index = m.index.tz_convert("America/New_York").tz_localize(None); m["sym"] = s; fr.append(m)
     d = d[["Open", "High", "Low", "Close", "Volume"]].copy(); d.columns = ["o", "h", "l", "c", "v"]
