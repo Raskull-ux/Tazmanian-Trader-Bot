@@ -10,7 +10,7 @@ Rules (unchanged from the study, claude/gray_box_fade_study.md in the Project):
   Setup    puts: nearest box above the close; calls: nearest box below. Box edge within 1.5 daily ranges (ATR 14).
   Arm      price must first trade 0.4 range away from the trigger (the real move in). Skip if it opens past the trigger.
   Trigger  a tenth of a range before the box edge.
-  Exits    stop half a range past entry; half off after a tenth of a range; stop to entry; runner to three quarters
+  Exits    stop half a range past entry; half off after half a range (was a tenth, too small to pay on options); stop to entry; runner to three quarters
            of a range or out at the close.
 Ranking (a hypothesis until live grading says otherwise): stock tier from the minute-bar test, box distance,
 gap-through (extra weight on calls), stacked box edges.
@@ -21,7 +21,7 @@ Local test: LOCAL_BARS=<stock_bars.csv> LOCAL_5M=<dir with SYM_5Min.csv> ASOF=YY
 import os, sys, time, glob, datetime as dt
 import numpy as np, pandas as pd, requests
 
-KS, K1, K2, TAG, POP, LOOKBACK, MAXDIST, N_UNI, N_TOP = 0.5, 0.1, 0.75, 0.1, 0.4, 120, 1.5, 200, 10
+KS, K1, K2, TAG, POP, LOOKBACK, MAXDIST, N_UNI, N_TOP = 0.5, 0.5, 0.75, 0.1, 0.4, 120, 1.5, 200, 10
 TIER = {"QQQ": 3, "PLTR": 3, "AMD": 2, "WMT": 2, "NVDA": 2, "TSLA": 1, "AAPL": 1, "META": 1}
 SKIP = {"SPY", "AVGO", "MSFT", "UNH"}
 OUT = "results/gray_box"
