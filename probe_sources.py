@@ -5,6 +5,17 @@ BLS_UA = {"User-Agent": "TazmanianTraderBot/1.0 (contact: taz-bot@users.noreply.
 os.makedirs("results/morning/probe", exist_ok=True)
 import glob
 for f in glob.glob("results/morning/probe/*.json"): os.remove(f)
+import re as _re2
+try:
+    t = requests.get("https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm", headers=UA, timeout=25).text
+    open("results/morning/probe/fomc_calendar.html", "w").write(t)
+    hist = requests.get("https://www.federalreserve.gov/monetarypolicy/fomc_historical_year.htm", headers=UA, timeout=25).text
+    open("results/morning/probe/fomc_hist_index.html", "w").write(hist[:400000])
+    for y in range(2019, 2021):
+        r = requests.get(f"https://www.federalreserve.gov/monetarypolicy/fomchistorical{y}.htm", headers=UA, timeout=25)
+        open(f"results/morning/probe/fomc_{y}.html", "w").write(r.text)
+except Exception as e:
+    open("results/morning/probe/fomc_error.txt", "w").write(repr(e))
 for name, url in {
     "bea_ics": "https://www.bea.gov/news/schedule/icalendar",
     "bls_ics": "https://www.bls.gov/schedule/news_release/bls.ics",
