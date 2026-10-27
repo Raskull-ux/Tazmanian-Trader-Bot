@@ -1,0 +1,15 @@
+name: Discord read
+on:
+  repository_dispatch:
+    types: [discord_read]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install requests
+      - env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
+          DAY: ${{ github.event.client_payload.day || '' }}
+        run: python discord_read.py
