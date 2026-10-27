@@ -31,5 +31,5 @@ for name in CHS:
 chunk = []
 for line in out or ["no messages"]:
     chunk.append(line)
-    if len(chunk) == 25: print("::notice title=discord::" + " %0A".join(chunk)); chunk = []
-if chunk: print("::notice title=discord::" + " %0A".join(chunk))
+    if len(chunk) == 25: print("::notice title=discord::" + DAY + " | " + " %0A".join(chunk)); chunk = []
+if chunk: print("::notice title=discord::" + DAY + " | " + " %0A".join(chunk))
