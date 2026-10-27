@@ -12,4 +12,6 @@ jobs:
       - env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
           DAY: ${{ github.event.client_payload.day || '' }}
+          CHANNELS: ${{ github.event.client_payload.channels || 'PRIVATE,VIP' }}
+          ONLY_TAZ: ${{ github.event.client_payload.only_taz || '' }}
         run: python discord_read.py
