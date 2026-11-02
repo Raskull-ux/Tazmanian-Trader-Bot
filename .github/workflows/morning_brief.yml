@@ -1,8 +1,6 @@
 name: Morning brief
 on:
-  schedule:
-    - cron: "0 12 * * 1-5"   # 8:00 AM ET while daylight time is on (the script skips it otherwise)
-    - cron: "0 13 * * 1-5"   # 8:00 AM ET in winter
+  # schedule removed 2026-11-02: replaced by the Watchlist bot (watchlist.yml)
   repository_dispatch:
     types: [morning_brief]
   workflow_dispatch:

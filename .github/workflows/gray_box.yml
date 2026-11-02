@@ -1,7 +1,6 @@
 name: Gray Box Fade
 on:
-  schedule:
-    - cron: "25 21 * * 1-5"   # 5:25 PM ET in summer, 4:25 PM ET in winter: grade today's list, then post tomorrow's
+  # schedule removed 2026-11-02: replaced by the Watchlist bot (watchlist.yml)
   repository_dispatch:
     types: [gray_box]
   workflow_dispatch:

@@ -1,0 +1,46 @@
+name: Watchlist
+on:
+  repository_dispatch:
+    types: [watchlist_evening, watchlist_morning]
+  workflow_dispatch:
+    inputs:
+      mode: { description: "evening or morning", default: "evening" }
+      force: { description: "1 = run even if the date check says no", default: "" }
+      where: { description: "private or vip", default: "" }
+  schedule:
+    - cron: "30 22 * * 1-5"   # backup only (5:30 PM EST / 6:30 PM EDT). The on-time start is the 4:45 PM scheduled task. Posts once per date.
+permissions:
+  contents: write
+concurrency:
+  group: watchlist
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy requests
+      - name: Run
+        env:
+          APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
+          APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
+          WHERE: ${{ github.event.client_payload.where || inputs.where || 'private' }}
+          FORCE: ${{ github.event.client_payload.force || inputs.force || '' }}
+          MODE: ${{ github.event.action == 'watchlist_morning' && 'morning' || (github.event.action == 'watchlist_evening' && 'evening') || inputs.mode || 'evening' }}
+        run: |
+          set -o pipefail
+          python watchlist.py "$MODE" 2>&1 | tee run.log
+          tail -n 3 run.log | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}' | xargs -0 -I{} echo "::notice title=watchlist::{}"
+      - name: Save the list and grades
+        run: |
+          git config user.name "taz-bot"; git config user.email "taz-bot@users.noreply.github.com"
+          git add results/watchlist 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git commit -m "Watchlist: lists and grades"
+          ok=0; for i in 1 2 3; do if git pull --rebase -X theirs && git push; then ok=1; break; fi; sleep 5; done
+          [ $ok = 1 ] || { echo "::error::push failed"; exit 1; }

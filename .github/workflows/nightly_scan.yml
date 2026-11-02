@@ -1,7 +1,6 @@
 name: Nightly scan
 on:
-  schedule:
-    - cron: "10 21 * * 1-5"   # 5:10 PM ET in summer, 4:10 PM ET in winter
+  # schedule removed 2026-11-02: replaced by the Watchlist bot (watchlist.yml)
   repository_dispatch:
     types: [nightly_scan]
   workflow_dispatch:
