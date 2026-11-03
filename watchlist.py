@@ -14,7 +14,8 @@ Only setups that held up on data the rules never saw are used (puts side):
   LAG    (your 75 names only, where it was tested) lagging at the top: QQQ up over 5 days, the stock 2%+ weaker, under its daily 8 EMA, within 1 ATR of its 20-day high.
          75 stocks 2016-26: 52.1% vs 46.0% normal (1.5 ATR down before 1.5 ATR up, 5 days), held in both 2016-21 and 2022-26.
 Levels:
-  STAIR / LONG  trigger = a trade under the setup day's low; stop = a daily close over the top; target = 2 ATR under the setup close
+  STAIR / LONG  trigger = a trade under the setup day's low; stop = a daily close over the top, or 2 ATR over the setup close if the
+                top is farther (the study's own 2 ATR race); target = 2 ATR under the setup close
   LAG           entry = the open, or a pop back to the setup close; stop = 1.5 ATR over the setup close; target = 1.5 ATR under it
 
 Data: Alpaca free plan (SIP daily bars, 15 minutes delayed; IEX snapshots for pre-market). Posts with the Discord bot token.
@@ -152,7 +153,7 @@ def find(sym, x, q):
         st = i - 1 - run
         if h[st] >= hh20[st] and c[st] > s50[st] and h[i - 1] < h[i] < h[st] and R[i] < 50:
             star = bool(R[i] < 40 and q5 < 0)
-            hits.append(dict(setup="STAIR", star=star, trigger=l[i], stop=h[st], target=c[i] - 2 * A,
+            hits.append(dict(setup="STAIR", star=star, trigger=l[i], stop=min(h[st], c[i] + 2 * A), top=h[st], target=c[i] - 2 * A,
                              why=f"{run} lower highs off the {h[st]:.2f} top, green higher high today still under it, RSI {R[i]:.0f}"))
     if G[i]:
         for k in (4, 5):
@@ -160,7 +161,7 @@ def find(sym, x, q):
             if G[st] and all(Rd[j] for j in range(st + 1, i)) and all(h[j + 1] < h[j] for j in range(st, i - 1)) \
                     and h[i] < h[st] and h[st] >= hh20[st] and R[i] < 50:
                 star = bool(c[i] < s50[i])
-                hits.append(dict(setup="LONG", star=star, trigger=l[i], stop=h[st], target=c[i] - 2 * A,
+                hits.append(dict(setup="LONG", star=star, trigger=l[i], stop=min(h[st], c[i] + 2 * A), top=h[st], target=c[i] - 2 * A,
                                  why=f"green top {h[st]:.2f}, {k} red lower highs, green today under the top, RSI {R[i]:.0f}"))
                 break
     r5 = x.r5.values[i]
@@ -191,16 +192,16 @@ def grade_item(it, x):
             if r.l <= tgt: return "target", f"target {tgt:.2f} hit {day} (in at the {entered:.2f} open)", True
         else:
             if entered is None:
-                if r.o >= stop: return "skip", f"opened {r.o:.2f}, over the top", True
+                if r.o >= stop: return "skip", f"opened {r.o:.2f}, over the stop", True
                 if r.l < trig:
                     entered = min(r.o, trig)
                     if r.l <= tgt: return "target", f"triggered and hit target {tgt:.2f} {day}", True
-                    if r.c > stop: return "stop", f"triggered, then closed over the top {day}", True
+                    if r.c > stop: return "stop", f"triggered, then closed over the stop {stop:.2f} {day}", True
                     continue
                 if k == len(fut) and len(fut) == HOLD_DAYS: return "none", f"never broke {trig:.2f} in {HOLD_DAYS} days", True
                 continue
             if r.l <= tgt: return "target", f"target {tgt:.2f} hit {day} (in at {entered:.2f})", True
-            if r.c > stop: return "stop", f"closed over the top {stop:.2f} {day}", True
+            if r.c > stop: return "stop", f"closed over the stop {stop:.2f} {day}", True
     last = fut.iloc[-1]
     if entered is None:
         return "open", f"not triggered yet (low {fut.l.min():.2f}, trigger {trig:.2f})", len(fut) >= HOLD_DAYS
@@ -247,7 +248,8 @@ def fmt_item(n, it):
         lines.append(f"   Stop: **{it['stop']:.2f}** (1.5 ATR) · Target: **{it['target']:.2f}** (1.5 ATR) · 5 days max")
     else:
         lines.append(f"   Trigger: a break under **{it['trigger']:.2f}** (today's low)")
-        lines.append(f"   Stop: a close over **{it['stop']:.2f}** (the top) · Target: **{it['target']:.2f}** (2 ATR) · 5 days max")
+        where = "the top" if it["stop"] >= it.get("top", it["stop"]) - 0.005 else f"2 ATR, the {it['top']:.2f} top is too far"
+        lines.append(f"   Stop: a close over **{it['stop']:.2f}** ({where}) · Target: **{it['target']:.2f}** (2 ATR) · 5 days max")
     lines.append(f"   Odds: {STATS[it['setup'] + ('*' if it['star'] else '')] if it['star'] else STATS[it['setup']]}")
     return "\n".join(lines)
 
