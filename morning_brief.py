@@ -382,7 +382,7 @@ def post1():
     if lv: L += ["", "🧱 **Gray box levels**"] + lv
     if DAY.weekday() == 0: L += week_ahead()
     L += ["", "⚠️ Big data at 8:30 or 10:00 can whip the open. Let the first candles settle. Plan the trade, trade the plan. 🧘",
-          "", "Pattern. Process. Paid. 🌪️🔴"]
+          "", "Not advice. Education and entertainment only.", "Pattern. Process. Paid. 🌪️🔴"]
     return "\n".join(L)
 
 
@@ -411,7 +411,7 @@ def post2():
               f"💰 HALF **{z.half}** then stop to entry · 🏃 RUNNER **{z.runner}**",
               f"{status}", ""]
     L += ["📋 Expiry a week+ out · contracts under 500 or a debit spread · 2 losses = done · stop set at entry, never moved further away.",
-          "📊 Every setup gets graded after the close. Wins and losses.", "", "Pattern. Process. Paid. 🌪️🔴"]
+          "📊 Every setup gets graded after the close. Wins and losses.", "", "💡 Idea, not a position I'm in. Not advice. Education and entertainment only.", "Pattern. Process. Paid. 🌪️🔴"]
     return "\n".join(L)
 
 

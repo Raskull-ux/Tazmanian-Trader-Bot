@@ -115,7 +115,7 @@ def main():
     L += fmt(out["long"], 10) or ["   none today"]
     L += ["", "**3. Shortlist: between the 200 and the falling 10 SMA** (no edge by itself · your calls here were right 57%)"]
     L += fmt(out["pocket"], 10) or ["   none today"]
-    L += ["", "Next: `grade TICKER` for any of these, `check TICKER` before entry. Stop = a close over the top. A week+ out, 2 losses = done.", "", "Pattern. Process. Paid. 🌪️🔴"]
+    L += ["", "Next: `grade TICKER` for any of these, `check TICKER` before entry. Stop = a close over the top. A week+ out, 2 losses = done.", "", "💡 Idea, not a position I'm in. Not advice. Education and entertainment only.", "Pattern. Process. Paid. 🌪️🔴"]
     print(f"::notice::stocks {len(data)} | stair {len(out['stair'])} | long {len(out['long'])} | pocket {len(out['pocket'])} | " + " ; ".join(f"{k}: " + ", ".join(sorted(z[2] for z in v)[:15]) for k, v in out.items()))
     post("\n".join(L))
 

@@ -181,7 +181,7 @@ def nightly():
     top["k1"], top["k2"], top["ks"] = K1, K2, KS          # the exit settings this list was built with, for grading
     os.makedirs(f"{OUT}/lists", exist_ok=True)
     top.to_csv(f"{OUT}/lists/{last}.csv", index=False); r.to_csv(f"{OUT}/candidates_latest.csv", index=False)
-    L = [f"📦🌪️ **Gray Box Fade: best {len(top)} for the next session** (boxes as of {last:%a %b %d} close · {len(uni)} stocks scanned · {len(r)} setups found)", "",
+    L = [f"📦🌪️ **Gray Box Fade IDEAS: best {len(top)} for the next session** (boxes as of {last:%a %b %d} close · {len(uni)} stocks scanned · {len(r)} setups found)", "",
          "Live only after price trades past the **arm** level, then tags the **trigger**. Skip if it opens past the trigger.", ""]
     for z in top.itertuples():
         note = []
@@ -191,7 +191,7 @@ def nightly():
         icon = "🔻" if z.side == "PUT" else "🟢"
         L.append(f"{z.rank}. {icon} **{z.sym} {z.side}** · arm {'above' if z.side == 'CALL' else 'below'} {z.arm} · trigger **{z.trigger}** · stop {z.stop} · half {z.half} · runner {z.runner}")
         L.append(f"    box {z.box_lo}-{z.box_hi} ({z.box_from}) · {z.dist} range from close" + (f" · {', '.join(note)}" if note else ""))
-    L += ["", "Expiry a week+ out · contracts under $500 (else a debit spread) · 2 losses = done.", "Graded after tomorrow's close. Pattern. Process. Paid. 🌪️🔴"]
+    L += ["", "Expiry a week+ out · contracts under $500 (else a debit spread) · 2 losses = done.", "Graded after tomorrow's close.", "💡 Idea, not a position I'm in. Not advice. Education and entertainment only.", "Pattern. Process. Paid. 🌪️🔴"]
     print(f"::notice::gray box: {len(r)} setups, top: " + ", ".join(f"{z.sym} {z.side}" for z in top.itertuples()))
     post("\n".join(L))
 
@@ -290,7 +290,7 @@ def grade():
     L += ["", f"Triggered {len(trig)} of {len(g)} · half off {hit} · stopped {stp}" + (f" · avg {trig.result_range.mean():+.2f} range" if len(trig) else "")]
     allt = g_all[g_all.result_range.notna()]
     if len(allt): L.append(f"Running total since start: {len(allt)} triggered · half off {allt.result.str.contains('HALF').sum()} · stopped {allt.result.str.contains('STOPPED').sum()} · avg {allt.result_range.mean():+.3f} range")
-    L.append(f"Half off scored at {k1:g} range (this list's K1). Stock moves only, no option P&L. Pattern. Process. Paid. 🌪️🔴")
+    L.append(f"Half off scored at {k1:g} range (this list's K1). Stock moves only, no option P&L. Not advice. Education and entertainment only. Pattern. Process. Paid. 🌪️🔴")
     post("\n".join(L))
 
 

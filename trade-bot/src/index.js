@@ -12,7 +12,9 @@ import {
 } from "./parse.js";
 
 const SIGN_OFF = "Pattern. Process. Paid. 🌪️🔴";
-const NFA = "_Not financial advice. My own position._";
+const NFA = "_My position, not advice. Education and entertainment only._";
+const IDEA = "_💡 Idea, not a position I'm in. Not advice. Education and entertainment only._";
+const PLAN = "_My plan, not a position yet. Not advice. Education and entertainment only._";
 
 // ---------------- Worker entry ----------------
 export default {
@@ -214,7 +216,7 @@ export class TradeStore extends DurableObject {
       if (s.armed && (dist <= 0.0005 || crossed)) {
         const other = Object.entries(lines).filter(([k]) => k !== name).map(([k, w]) => `${k} ${w.toFixed(2)}`).join(" · ");
         const how = crossed ? (side === "above" ? "crossed UP through" : "crossed DOWN through") : `tagged (from ${side === "above" ? "above" : "below"})`;
-        out.push(`🎯 **QQQ ${how} the daily ${name}** at **${v.toFixed(2)}** · price ${p.toFixed(2)} · ${other} · ${fmtTime(now)}`);
+        out.push(`🎯 **QQQ ${how} the daily ${name}** at **${v.toFixed(2)}** · price ${p.toFixed(2)} · ${other} · ${fmtTime(now)}\n${IDEA}`);
         s.armed = false;
       }
       if (dist >= 0.001) s.armed = true;
@@ -568,9 +570,9 @@ export class TradeStore extends DurableObject {
   entryAlert(p, plan, ts) {
     const isCall = p.right === "C";
     const lines = [];
-    if (p.paper) lines.push("📄📄 **PAPER ALERT** 📄📄");
-    if (p.route === "free") lines.push("🆓 **FREE ALERT** 🆓");
-    lines.push(`🚨🌪️ **ENTRY** 🌪️🚨`);
+    if (p.paper) lines.push("📄📄 **PAPER IDEA** (not a real position) 📄📄");
+    if (p.route === "free") lines.push(`🆓 **FREE ${p.paper ? "IDEA" : "ALERT"}** 🆓`);
+    lines.push(p.paper ? `💡🌪️ **IDEA: ENTRY** 🌪️💡` : `🚨🌪️ **ENTRY** 🌪️🚨`);
     lines.push(`${isCall ? "🟢" : "🔴"} **${tradeLine(p, p.entry)}**${p.qty > 1 ? ` x${p.qty}` : ""} ${isCall ? "📈" : "📉"}`);
     if (p.long_strike) {
       const kind = `${isCall ? "call" : "put"} ${p.spread_type || "debit"} spread`;
@@ -580,7 +582,7 @@ export class TradeStore extends DurableObject {
     if (plan && plan.stop) lines.push(`🛑 Stop: **${plan.stop}**`);
     if (p.note) lines.push(`📝 ${p.note}`);
     lines.push(`⏰ ${fmtTime(ts)}`);
-    lines.push("", NFA, SIGN_OFF);
+    lines.push("", p.paper ? IDEA : NFA, SIGN_OFF);
     return lines.join("\n");
   }
 
@@ -588,8 +590,8 @@ export class TradeStore extends DurableObject {
     const gain = p.spread_type === "credit" ? (p.entry - f.price) / p.entry * 100 : pct(f.price, p.entry);
     const win = gain >= 0;
     const lines = [];
-    if (p.paper) lines.push("📄📄 **PAPER ALERT** 📄📄");
-    if (p.route === "free") lines.push("🆓 **FREE ALERT** 🆓");
+    if (p.paper) lines.push("📄📄 **PAPER IDEA** (not a real position) 📄📄");
+    if (p.route === "free") lines.push(`🆓 **FREE ${p.paper ? "IDEA" : "ALERT"}** 🆓`);
     if (left > 0) lines.push(`💰💰 **SOLD ${wasHalf ? "HALF" : f.qty}** 💰💰`);
     else lines.push(win ? "✅🔥 **CLOSED** 🔥✅" : "❌ **CLOSED** ❌");
     lines.push(`${p.right === "C" ? "🟢" : "🔴"} **${contractLabel(p)}**`);
@@ -597,7 +599,7 @@ export class TradeStore extends DurableObject {
     if (left > 0) lines.push(`🏃 ${left} runner${left === 1 ? "" : "s"} left`);
     if (f.note) lines.push(`📝 ${f.note}`);
     lines.push(`⏰ ${fmtTime(f.ts)}`);
-    lines.push("", SIGN_OFF);
+    lines.push("", p.paper ? IDEA : NFA, SIGN_OFF);
     return lines.join("\n");
   }
 
@@ -830,7 +832,7 @@ export class TradeStore extends DurableObject {
       `🎯 **${c.ticker}**`,
       `📌 ${c.text}`,
       "⏰ At 9:30 the only move is placing this order. No trigger = no trade.",
-      "", NFA, SIGN_OFF,
+      "", PLAN, SIGN_OFF,
     ];
     const pub = await this.publish(c.route, lines.join("\n"), [`📒 Plan #${pid} saved for ${td}.`]);
     if (pub.id) this.sql.exec("UPDATE plans SET msg_channel=?, msg_id=? WHERE id=?", pub.ch, pub.id, pid);

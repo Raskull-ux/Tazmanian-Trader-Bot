@@ -198,7 +198,7 @@ def main():
         L += ["", f"⚠️ Strength, no broken clue (don't short): {', '.join(flagged[:15])}"]
     L += ["", "Legend: 🔴 = broken clue (monthly red = last month and this month red; 3 weekly lower highs; 10-day chart 10 EMA under 10 SMA; "
           "4h cliff diver in 10 days), his puts won more with these. ⚠️ = strength (3h RSI 90 in 10 days, MACD plateau, within 1 ATR of the "
-          "20-day high), his puts lost more shorting these.", backtest_line(), "Candidates, not signals. Pattern. Process. Paid. 🌪️🔴"]
+          "20-day high), his puts lost more shorting these.", backtest_line(), "Candidates, not signals. 💡 Idea, not a position I'm in. Not advice. Education and entertainment only.", "Pattern. Process. Paid. 🌪️🔴"]
     text = "\n".join(L)
     open(f"{OUT}/latest.md", "w").write(text + "\n")
     print(f"::notice::clue board: {len(B)} names, top: " + ", ".join(top.sym))

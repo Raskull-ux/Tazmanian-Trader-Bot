@@ -43,6 +43,7 @@ const ok = (c, m) => { assert.ok(c, m); n++; };
 
 // 1) the three word orders log the same trade
 let r = await say("aapl 345p 10/30 .39 in"); ok(r.includes("AAPL 345P 10/30 @ 0.39"), r);
+ok(r.includes("My position, not advice. Education and entertainment only."), "footer on entry alerts");
 r = await say("in .39 aapl 10/30 345p"); ok(pos(2).ticker === "AAPL" && pos(2).strike === "345" && pos(2).entry === 0.39, "order 2");
 r = await say("345 put aapl 10/30 @ .39"); ok(pos(3).exp === "2026-10-30" && pos(3).right === "P", "order 3");
 ok(openN() === 3, "3 open");
@@ -83,6 +84,9 @@ r = await say("bear put aapl 345 340 11/13 .79"); ok(r.includes("AAPL 345/340P 1
 const sp = S.one("SELECT * FROM positions WHERE strike='345/340'");
 ok(sp.long_strike === "345" && sp.short_strike === "340" && sp.spread_type === "debit", "legs");
 r = await say("out spread 1.20"); ok(S.one("SELECT * FROM positions WHERE id=?", sp.id).status === "closed", r);
+ok(r.includes("My position, not advice."), "footer on exit alerts");
+await say("paper"); r = await say("in amd 230p 11/13 1.05"); ok(r.includes("PAPER IDEA") && r.includes("Idea, not a position") && !r.includes("PAPER ALERT"), "paper = Idea");
+await say("undo"); await say("paper off");
 
 // 9) half / trim / sold half (only one open, so no ticker needed)
 for (const o of S.all("SELECT id FROM positions WHERE status='open'")) await say(`delete ${o.id}`);

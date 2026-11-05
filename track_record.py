@@ -113,7 +113,7 @@ def summary(T):
             L.append(f"**{src}** {lab}: {y.list_date.nunique()} lists · {len(y)} names · {len(t)} triggered · {int(t.hit.sum())} hit · "
                      f"{int(t.stopped.sum())} stopped" + (f" · avg {t.result.mean():+.2f} {unit}" if t.result.notna().any() else ""))
     L += ["", "Hit/stopped: gray box = half off / full stop; watchlist = target / stop; clue board = next day 0.5 ATR down / up.",
-          "Pattern. Process. Paid. 🌪️🔴"]
+          "Not advice. Education and entertainment only.", "Pattern. Process. Paid. 🌪️🔴"]
     return "\n".join(L)
 
 

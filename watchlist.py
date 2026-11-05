@@ -333,7 +333,7 @@ def evening():
 
     # 3) post
     q5 = q.r5.iloc[-1] * 100
-    L = [f"🌙🌪️ **WATCHLIST · {last:%a %b %d} close** · QQQ {q.c.iloc[-1]:.2f} ({q5:+.1f}% over 5 days)", ""]
+    L = [f"🌙🌪️ **WATCHLIST IDEAS · {last:%a %b %d} close** · QQQ {q.c.iloc[-1]:.2f} ({q5:+.1f}% over 5 days)", ""]
     real_new = [r for r in report_new if not r.split(" ", 2)[1] == "NONE"]
     if real_new or report_open:
         L.append("📊 **HOW THE LAST LISTS DID**")
@@ -347,7 +347,7 @@ def evening():
         L.append("Nothing clean tomorrow. No setup, no trade. 🚫")
     L += ["", "Clues: 🔴 = broken-trend clues from tonight's clue board (2+ moves a name up), ⚠️ = strength warning (moves it down).",
           "Puts side only. Expirations a week or more out. Stop set at entry. 2 losses = done.",
-          "Pre-market check at 9:15 AM: LIVE / WAIT / SKIP for each name.", "", "Pattern. Process. Paid. 🌪️🔴"]
+          "Pre-market check at 9:15 AM: LIVE / WAIT / SKIP for each name.", "", "💡 Idea, not a position I'm in. Not advice. Education and entertainment only.", "Pattern. Process. Paid. 🌪️🔴"]
     post("\n".join(L))
 
 
@@ -378,7 +378,7 @@ def morning():
             tag, why = ("✅ **LIVE**", f"already under the trigger {it.trigger:.2f}") if price < it.trigger else \
                        ("⏳ **WAIT**", f"needs a break under {it.trigger:.2f}")
         L.append(f"{tag} **{it.sym}** {price:.2f} ({g:+.1f}% vs close): {why} · stop {it.stop:.2f} · target {it.target:.2f}")
-    L += ["", "No chasing 9:30. Stop set at entry. Pattern. Process. Paid. 🌪️🔴"]
+    L += ["", "No chasing 9:30. Stop set at entry.", "💡 Idea, not a position I'm in. Not advice. Education and entertainment only.", "Pattern. Process. Paid. 🌪️🔴"]
     post("\n".join(L))
 
 
