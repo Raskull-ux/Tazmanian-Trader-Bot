@@ -1,0 +1,43 @@
+name: Clue board
+on:
+  schedule:
+    - cron: "25 21 * * 1-5"   # same time as the Gray Box Fade used: 5:25 PM ET in summer, 4:25 PM ET in winter
+  repository_dispatch:
+    types: [clue_board]
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Post even if already posted for this date or Yahoo's latest bar is not today (1 = yes)"
+        default: ""
+  push:
+    branches: [main]
+    paths: [clue_board.py, .github/workflows/clue_board.yml]
+permissions:
+  contents: write
+concurrency:
+  group: clue-board
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas numpy requests
+      - name: Build and post the board
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.DISCORD_TOKEN || secrets.DISCORD_BOT_API || secrets.DISCORD_BOT_API_KEY || secrets.DISCORD_BOT || secrets.BOT_TOKEN || secrets.DISCORD_API_TOKEN || secrets.DISCORD_API }}
+          PRIVATE_CHANNEL_ID: "1562327911866830949"
+          FORCE: ${{ github.event.inputs.force || github.event.client_payload.force || '' }}
+        run: python clue_board.py
+      - name: Save the board
+        run: |
+          git config user.name "taz-bot"; git config user.email "taz-bot@users.noreply.github.com"
+          git add -f results/clue_board || true
+          git diff --cached --quiet && exit 0
+          git commit -m "Clue board"
+          ok=0; for i in 1 2 3; do if git pull --rebase -X theirs && git push; then ok=1; break; fi; sleep 5; done
+          [ $ok = 1 ] || { echo "::error::push failed"; exit 1; }
