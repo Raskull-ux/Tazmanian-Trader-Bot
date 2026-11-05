@@ -7,8 +7,8 @@ import { DurableObject } from "cloudflare:workers";
 import { fetchMeter, getBars } from "./meter.js";
 import { fetchGrade } from "./grade.js";
 import {
-  parseCommand, etParts, fmtTime, planTradeDate, daysBetween,
-  pct, fmtPct, money, contractLabel, fmtPx,
+  parseCommand, parseFragment, mergeEntry, matchExit, looksLikeTrade, hasCommandWord, etParts, fmtTime, planTradeDate, daysBetween,
+  pct, fmtPct, money, contractLabel, fmtPx, fmtDate, tradeLine,
 } from "./parse.js";
 
 const SIGN_OFF = "Pattern. Process. Paid. 🌪️🔴";
@@ -134,7 +134,9 @@ export class TradeStore extends DurableObject {
       );
       CREATE TABLE IF NOT EXISTS settings (k TEXT PRIMARY KEY, v TEXT);
     `);
-    try { this.sql.exec("ALTER TABLE positions ADD COLUMN grade TEXT"); } catch (_) { /* already there */ }
+    for (const col of ["grade TEXT", "spread_type TEXT", "long_strike TEXT", "short_strike TEXT"]) {
+      try { this.sql.exec(`ALTER TABLE positions ADD COLUMN ${col}`); } catch (_) { /* already there */ }
+    }
   }
 
 
@@ -264,11 +266,33 @@ export class TradeStore extends DurableObject {
       if (!m.author || m.author.bot) continue;
       await this.onMessage(m);
     }
+    await this.cleanupAsk(Date.now()).catch(() => {});
+  }
+
+  // One-time: the old parser left positions #2, #3, #7, #8 stuck open. List them in the private channel
+  // and remove them only after a "y". Asked again at most every 6 hours until answered.
+  async cleanupAsk(now, force = false) {
+    const st = this.getSetting("cleanup_v1", "");
+    if (st === "done" && !force) return null;
+    const rows = this.all("SELECT * FROM positions WHERE id IN (2,3,7,8) AND status='open' ORDER BY id");
+    if (!rows.length) { this.setSetting("cleanup_v1", "done"); return force ? "No stuck positions from the old bug are open." : null; }
+    const last = +this.getSetting("cleanup_v1_asked", "0");
+    const pend = this.getPending(now);
+    if (!force && (now - last < 6 * 3600000 || (pend && pend.kind !== "cleanup"))) return null;
+    const text = ["🧹 **Stuck open positions from the old parser bug**",
+      ...rows.map((p) => `#${p.id} ${contractLabel(p)} in ${fmtPx(p.entry)} x${p.open_qty} open (logged ${p.trade_date})`),
+      "", "Reply **y** to remove these from the log (only these, nothing else is touched), or **n** to keep them."].join("\n");
+    this.setPending({ kind: "cleanup", ids: rows.map((r) => r.id) }, now);
+    this.setSetting("cleanup_v1_asked", String(now));
+    if (force) return text;
+    await this.api("POST", `/channels/${this.env.PRIVATE_CHANNEL_ID}/messages`, { content: text, allowed_mentions: { parse: [] } });
+    return text;
   }
 
   async onMessage(m) {
     const text = (m.content || "").trim();
-    if (!text || !isTradeLine(text)) return;
+    const pend = this.getPending(Date.now());
+    if (!text || !looksLikeTrade(text, pend ? pend.kind : false)) return;
     let out;
     try {
       out = await this.handle(text, Date.now());
@@ -276,10 +300,11 @@ export class TradeStore extends DurableObject {
       out = { reply: `⚠️ Bot error, nothing was logged: ${String(e && e.message || e).slice(0, 300)}` };
     }
     // Plain chat that only looked like a command (no numbers, didn't parse) stays ignored.
+    if (out.silent) return;
     const failed = out.reply.startsWith("⚠️") && out.reply.includes("Nothing was logged");
     if (failed && !/\d/.test(text) && text.trim().split(/\s+/).length > 1) return;
     await this.replyTo(m, out);
-    const emoji = failed ? "⚠️" : out.reply.startsWith("🔒") ? "🔒" : "✅";
+    const emoji = failed ? "⚠️" : out.ask ? "❓" : out.reply.startsWith("🔒") ? "🔒" : "✅";
     await this.api("PUT", `/channels/${m.channel_id}/messages/${m.id}/reactions/${encodeURIComponent(emoji)}/@me`).catch(() => {});
   }
 
@@ -321,15 +346,27 @@ export class TradeStore extends DurableObject {
   getSetting(k, d) { const r = this.one("SELECT v FROM settings WHERE k=?", k); return r ? r.v : d; }
   setSetting(k, v) { this.sql.exec("INSERT INTO settings(k,v) VALUES(?,?) ON CONFLICT(k) DO UPDATE SET v=excluded.v", k, String(v)); }
   mode() { return this.getSetting("mode", "test"); }
+  getPending(now) {
+    try {
+      const p = JSON.parse(this.getSetting("pending", "null"));
+      if (!p) return null;
+      if (p.kind !== "cleanup" && now - p.ts > 30 * 60000) return null; // a question goes stale after 30 minutes
+      return p;
+    } catch (_) { return null; }
+  }
+  setPending(obj, now) { this.setSetting("pending", JSON.stringify({ ...obj, ts: now })); }
+  clearPending() { this.setSetting("pending", "null"); }
+  lastTicker() { const r = this.one("SELECT ticker FROM positions ORDER BY id DESC LIMIT 1"); return r ? r.ticker : null; }
   paper() { return this.getSetting("paper", "0") === "1"; }
 
   realized(posId) {
     const p = this.one("SELECT * FROM positions WHERE id=?", posId);
     const sells = this.all("SELECT price, qty FROM fills WHERE position_id=? AND side='sell'", posId);
     let dollars = 0, q = 0, wsum = 0;
-    for (const s of sells) { dollars += (s.price - p.entry) * 100 * s.qty; q += s.qty; wsum += s.price * s.qty; }
+    const credit = p.spread_type === "credit";
+    for (const s of sells) { dollars += (credit ? p.entry - s.price : s.price - p.entry) * 100 * s.qty; q += s.qty; wsum += s.price * s.qty; }
     const avgExit = q ? wsum / q : null;
-    return { dollars, soldQty: q, avgExit, pct: avgExit ? pct(avgExit, p.entry) : null };
+    return { dollars, soldQty: q, avgExit, pct: avgExit ? (credit ? (p.entry - avgExit) / p.entry * 100 : pct(avgExit, p.entry)) : null };
   }
 
   lossesOn(dateIso) {
@@ -401,15 +438,40 @@ export class TradeStore extends DurableObject {
   // ---- command router ----
   async handle(text, now, opts = {}) {
     this.meterTimeout = opts.meterTimeout || 9000;
-    const c = parseCommand(text, now);
+    const pend = this.getPending(now);
+    const c = parseCommand(text, now, { lastTicker: this.lastTicker() });
     const e = etParts(now);
     const today = e.date;
+
+    // A question is waiting: y / n / a number / the missing piece.
+    if (pend) {
+      if (c.cmd === "yes") return this.resolvePending(pend, { yes: true }, now, today, e);
+      if (c.cmd === "no") {
+        this.clearPending();
+        if (pend.kind === "cleanup") { this.setSetting("cleanup_v1", "done"); return { reply: "👍 Kept them. Nothing was removed." }; }
+        return { reply: "👍 Cancelled. Nothing was logged." };
+      }
+      if (c.cmd === "pick" && (pend.kind === "choose" || pend.kind === "cleanup")) return this.resolvePending(pend, { pick: c.n }, now, today, e);
+      const fresh = ["in", "out", "trim"].includes(c.cmd) && (hasCommandWord(text) || (!(c.missing || []).length && !(c.guesses || []).length));
+      const other = !["in", "out", "trim", "error", "pick", "yes", "no"].includes(c.cmd);
+      if (!fresh && !other && (pend.kind === "entry" || pend.kind === "exitPrice")) {
+        const frag = parseFragment(text, now);
+        if (c.cmd === "pick") frag.price = c.n; // "1" while waiting on a price = 1.00
+        if (Object.keys(frag).length) return this.resolvePending(pend, { frag }, now, today, e);
+        if (c.cmd === "error") return { reply: "", silent: true };
+      }
+      if (fresh || other) { if (pend.kind !== "cleanup") this.clearPending(); }
+    }
+
     switch (c.cmd) {
       case "error": return { reply: `⚠️ ${c.msg}\nNothing was logged.` };
+      case "yes": case "no": case "pick": return { reply: "Nothing is waiting on an answer right now.", silent: true };
       case "help": return { reply: HELP };
       case "in": return this.cmdIn(c, now, today, e);
       case "trim": return this.cmdExit(c, now, today, true);
       case "out": return this.cmdExit(c, now, today, false);
+      case "fix": return this.cmdFix(c, now);
+      case "delete": return this.cmdDelete(c.id);
       case "plan": return this.cmdPlan(c, now);
       case "recap": return { reply: this.recap(today) };
       case "grade": {
@@ -421,6 +483,7 @@ export class TradeStore extends DurableObject {
         return { reply: m ? `🔎 **${c.ticker}** ${c.side === "C" ? "calls" : "puts"} @ ${m.px.toFixed(2)}\n${m.text}\n_Nothing logged._` : `⚠️ Couldn't get ${c.ticker} data right now. Nothing logged.` };
       }
       case "open": return { reply: this.openList() };
+      case "cleanup": { const t = await this.cleanupAsk(now, true); return { reply: t, ask: true }; }
       case "paper": {
         const v = c.value === null ? !this.paper() : c.value;
         this.setSetting("paper", v ? "1" : "0");
@@ -445,11 +508,108 @@ export class TradeStore extends DurableObject {
     }
   }
 
+  async resolvePending(pend, ans, now, today, e) {
+    if (pend.kind === "cleanup") {
+      if (!ans.yes) return { reply: "Reply **y** to remove the stuck positions or **n** to keep them." , ask: true };
+      const ids = pend.ids.filter((id) => this.one("SELECT id FROM positions WHERE id=? AND status='open'", id));
+      for (const id of ids) {
+        this.sql.exec("DELETE FROM fills WHERE position_id=?", id);
+        this.sql.exec("DELETE FROM positions WHERE id=?", id);
+      }
+      this.clearPending(); this.setSetting("cleanup_v1", "done");
+      return { reply: `🧹 Removed ${ids.map((i) => "#" + i).join(", ") || "nothing (already gone)"} from the log. Old Discord posts were left as they are.` };
+    }
+    if (pend.kind === "entry") {
+      let c = pend.c;
+      if (ans.frag) c = mergeEntry(c, ans.frag, pend.asked || []);
+      if (ans.yes) c = { ...c, guesses: [] };
+      if (c.missing.length || c.guesses.length) return this.askEntry(c, now);
+      this.clearPending();
+      return this.cmdIn({ ...c, missing: [], guesses: [] }, now, today, e);
+    }
+    if (pend.kind === "choose") {
+      const id = ans.pick ? pend.ids[ans.pick - 1] : pend.ids.length === 1 && ans.yes ? pend.ids[0] : null;
+      if (!id) return { reply: `Reply with a number from 1 to ${pend.ids.length}.`, ask: true };
+      this.clearPending();
+      return this.cmdExit({ ...pend.c, posId: id }, now, today, pend.isTrim);
+    }
+    if (pend.kind === "exitPrice") {
+      const price = ans.frag && ans.frag.price !== undefined ? ans.frag.price : ans.frag && ans.frag.strikeGuess ? +ans.frag.strikeGuess : null;
+      if (!(price > 0)) return { reply: "Send the price, like `1.22`.", ask: true };
+      this.clearPending();
+      return this.cmdExit({ ...pend.c, price, posId: pend.posId }, now, today, pend.isTrim);
+    }
+    this.clearPending();
+    return { reply: "Nothing is waiting on an answer right now." };
+  }
+
+  // Never just fail: show the best read and ask for the one missing piece.
+  askEntry(c, now) {
+    const show = (v, ph) => (v === null || v === undefined || v === "" ? ph : v);
+    const label = `${show(c.ticker, "???")} ${show(c.strike, "???")}${c.right || ""} ${c.exp ? fmtDate(c.exp) : "?/?"}` +
+      `${c.price !== null && c.price !== undefined ? " @ " + fmtPx(c.price) : ""}${c.qty > 1 ? " x" + c.qty : ""}`;
+    const notes = [];
+    if (c.guesses.includes("exp")) notes.push(`no expiry, so I used the nearest Friday a week out: **${fmtDate(c.exp)}**`);
+    if (c.guesses.includes("right")) notes.push("no put/call, so I read it as a **PUT** (reply `c` if it was a call)");
+    if (c.guesses.includes("ticker")) notes.push(`no ticker, so I used your last one: **${c.ticker}**`);
+    const need = [];
+    if (c.missing.includes("ticker")) need.push("the ticker (like `aapl`)");
+    if (c.missing.includes("strike")) need.push("the strike (like `345p`)");
+    if (c.missing.includes("price")) need.push("the price (like `.45`)");
+    const asked = [...c.missing];
+    this.setPending({ kind: "entry", c, asked }, now);
+    const lines = [`❓ Got **${label}**${notes.length ? ": " + notes.join("; ") : ""}.`];
+    if (need.length) lines.push(`Send ${need.join(" and ")} and I'll log it.${notes.length ? " Or send a fix for anything above." : ""}`);
+    else lines.push("Reply **y** to log it, or send the fix (like `11/13`).");
+    lines.push("_Nothing logged yet._");
+    return { reply: lines.join("\n"), ask: true };
+  }
+
+  entryAlert(p, plan, ts) {
+    const isCall = p.right === "C";
+    const lines = [];
+    if (p.paper) lines.push("📄📄 **PAPER ALERT** 📄📄");
+    if (p.route === "free") lines.push("🆓 **FREE ALERT** 🆓");
+    lines.push(`🚨🌪️ **ENTRY** 🌪️🚨`);
+    lines.push(`${isCall ? "🟢" : "🔴"} **${tradeLine(p, p.entry)}**${p.qty > 1 ? ` x${p.qty}` : ""} ${isCall ? "📈" : "📉"}`);
+    if (p.long_strike) {
+      const kind = `${isCall ? "call" : "put"} ${p.spread_type || "debit"} spread`;
+      lines.push(`🧩 ${kind}: long ${p.long_strike}${p.right} / short ${p.short_strike}${p.right}, net ${p.spread_type === "credit" ? "credit" : "debit"} ${fmtPx(p.entry)}`);
+    }
+    if (p.spread_type !== "credit") lines.push(`🎯 Half at 2x: **${fmtPx(p.entry * 2)}**`);
+    if (plan && plan.stop) lines.push(`🛑 Stop: **${plan.stop}**`);
+    if (p.note) lines.push(`📝 ${p.note}`);
+    lines.push(`⏰ ${fmtTime(ts)}`);
+    lines.push("", NFA, SIGN_OFF);
+    return lines.join("\n");
+  }
+
+  exitAlert(p, f, left, wasHalf) {
+    const gain = p.spread_type === "credit" ? (p.entry - f.price) / p.entry * 100 : pct(f.price, p.entry);
+    const win = gain >= 0;
+    const lines = [];
+    if (p.paper) lines.push("📄📄 **PAPER ALERT** 📄📄");
+    if (p.route === "free") lines.push("🆓 **FREE ALERT** 🆓");
+    if (left > 0) lines.push(`💰💰 **SOLD ${wasHalf ? "HALF" : f.qty}** 💰💰`);
+    else lines.push(win ? "✅🔥 **CLOSED** 🔥✅" : "❌ **CLOSED** ❌");
+    lines.push(`${p.right === "C" ? "🟢" : "🔴"} **${contractLabel(p)}**`);
+    lines.push(`💵 ${fmtPx(p.entry)} ➡️ **${fmtPx(f.price)}** (${fmtPct(gain)}) ${win ? (gain >= 100 ? "🔥🔥🔥" : "🔥") : "🩸"}`);
+    if (left > 0) lines.push(`🏃 ${left} runner${left === 1 ? "" : "s"} left`);
+    if (f.note) lines.push(`📝 ${f.note}`);
+    lines.push(`⏰ ${fmtTime(f.ts)}`);
+    lines.push("", SIGN_OFF);
+    return lines.join("\n");
+  }
+
   async cmdIn(c, now, today, e) {
+    if ((c.missing && c.missing.length) || (c.guesses && c.guesses.length)) return this.askEntry(c, now);
     const paper = this.paper();
     const dte = daysBetween(today, c.exp);
     const flags = [];
-    if (dte < 0) return { reply: "⚠️ That expiration is in the past. Nothing was logged." };
+    if (dte < 0) {
+      this.setPending({ kind: "entry", c: { ...c, missing: [], guesses: ["exp"] }, asked: [] }, now);
+      return { reply: `❓ Expiry ${fmtDate(c.exp)} is in the past. Send the right date (like \`11/13\`).\n_Nothing logged yet._`, ask: true };
+    }
     if (dte === 0) flags.push("⚠️ **0DTE.** Standalone 0DTE breaks your rules.");
     else if (dte < 7) flags.push(`⚠️ Expires in ${dte} day${dte === 1 ? "" : "s"}. Your rule is a week or more out.`);
     if (c.price * 100 > 500) flags.push(`⚠️ **Contract over $500** (${money(c.price * 100)} each).`);
@@ -464,9 +624,10 @@ export class TradeStore extends DurableObject {
 
     const res = this.sql.exec(
       `INSERT INTO positions (opened_at, trade_date, ticker, strike, right, exp, entry, qty, open_qty, status,
-         paper, route, note, flags, rule_break) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) RETURNING id`,
+         paper, route, note, flags, rule_break, spread_type, long_strike, short_strike) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) RETURNING id`,
       now, today, c.ticker, c.strike, c.right, c.exp, c.price, c.qty, c.qty, "open",
-      paper ? 1 : 0, c.route, c.note || "", flags.join(" | "), locked ? 1 : 0,
+      paper ? 1 : 0, c.route || "main", c.note || "", flags.join(" | "), locked ? 1 : 0,
+      c.spread ? c.spreadType : null, c.spread ? c.long : null, c.spread ? c.short : null,
     ).toArray();
     const id = res[0].id;
     this.sql.exec("INSERT INTO fills (position_id, ts, trade_date, side, price, qty) VALUES (?,?,?,?,?,?)",
@@ -479,56 +640,69 @@ export class TradeStore extends DurableObject {
           (flags.length ? "\n" + flags.join("\n") : ""),
       };
     }
-
-    const isCall = c.right === "C";
-    const lines = [];
-    if (paper) lines.push("📄📄 **PAPER ALERT** 📄📄");
-    if (c.route === "free") lines.push("🆓 **FREE ALERT** 🆓");
-    lines.push(`🚨🌪️ **ENTRY** 🌪️🚨`);
-    lines.push(`${isCall ? "🟢" : "🔴"} **${contractLabel(p)}** ${isCall ? "📈" : "📉"}`);
-    lines.push(`💵 In at **${fmtPx(c.price)}**${c.qty > 1 ? ` x${c.qty}` : ""}`);
-    lines.push(`🎯 Half at 2x: **${fmtPx(c.price * 2)}**`);
-    if (plan && plan.stop) lines.push(`🛑 Stop: **${plan.stop}**`);
-    if (c.note) lines.push(`📝 ${c.note}`);
-    lines.push(`⏰ ${fmtTime(now)}`);
-    lines.push("", NFA, SIGN_OFF);
-    const alert = lines.join("\n");
-
+    const alert = this.entryAlert(p, plan, now);
     const [mt, gr] = await Promise.all([this.meter(c.ticker, c.right), this.grade(c.ticker, c.right)]);
     if (gr && gr.g) this.sql.exec("UPDATE positions SET grade=? WHERE id=?", `${gr.g.letter} (${gr.g.score}/6)`, id);
     const extras = [
-      `📒 Logged #${id}. Cost ${money(c.price * 100 * c.qty)} from your price.`,
+      `📒 Logged #${id}: ${tradeLine(p, p.entry)}${p.qty > 1 ? " x" + p.qty : ""}. Wrong? \`fix price 1.22\` / \`fix strike 345\` / \`fix exp 11/13\` / \`fix qty 2\` / \`undo\``,
       mt ? mt.text : "⏱️ EARLY meter: no data right now",
       gr ? gr.text : "📊 Grade: no data right now",
       plan ? `🗺️ Plan on file: ${plan.text}` : null,
       ...flags,
     ];
-    const pub = await this.publish(c.route, alert, extras);
+    const pub = await this.publish(p.route, alert, extras);
     if (pub.id) this.sql.exec("UPDATE positions SET msg_channel=?, msg_id=? WHERE id=?", pub.ch, pub.id, id);
     return { reply: pub.reply };
   }
 
   async cmdExit(c, now, today, isTrim) {
+    const rows = this.all("SELECT * FROM positions WHERE status='open' ORDER BY id");
     let p;
-    if (c.ticker) p = this.one("SELECT * FROM positions WHERE status='open' AND ticker=? ORDER BY id DESC LIMIT 1", c.ticker);
-    else p = this.one("SELECT * FROM positions WHERE status='open' ORDER BY id DESC LIMIT 1");
-    if (!p) return { reply: `⚠️ No open ${c.ticker ? c.ticker + " " : ""}trade to ${isTrim ? "trim" : "close"}. Check \`open\`.` };
+    if (c.posId) p = rows.find((r) => r.id === c.posId);
+    let qty = c.qty || null;
+    if (!p) {
+      if (!rows.length) return { reply: "⚠️ No open trades to close. Check `open`.\nNothing was logged." };
+      const mt = matchExit(c, rows);
+      qty = mt.qty;
+      let list = mt.matches;
+      const gave = [c.ticker, c.strike, c.right === "C" ? "call" : c.right === "P" ? "put" : null, c.exp ? fmtDate(c.exp) : null, c.spread ? "spread" : null]
+        .filter(Boolean).join(" ");
+      if (list.length === 1) p = list[0];
+      else {
+        const none = list.length === 0;
+        if (none) list = rows;
+        if (none && rows.length === 1 && !c.ticker) p = rows[0];
+        else {
+          const ids = list.map((r) => r.id);
+          this.setPending({ kind: "choose", c: { ...c, qty }, ids, isTrim }, now);
+          const head = none ? `❓ No open trade matches **${gave}**. Which one did you mean?` : `❓ ${list.length} open trades match${gave ? " **" + gave + "**" : ""}. Which one?`;
+          return { reply: [head, ...list.map((r, k) => `**${k + 1}**) #${r.id} ${contractLabel(r)} in ${fmtPx(r.entry)}, ${r.open_qty} open`),
+            `Reply with the number.${c.price === null ? "" : ` Price ${fmtPx(c.price)} is saved.`}`, "_Nothing logged yet._"].join("\n"), ask: true };
+        }
+      }
+    }
+    if (c.price === null || c.price === undefined) {
+      this.setPending({ kind: "exitPrice", c: { ...c, qty }, posId: p.id, isTrim }, now);
+      return { reply: `❓ ${isTrim ? "Trimming" : "Closing"} #${p.id} **${contractLabel(p)}** (in ${fmtPx(p.entry)}). At what price? Send it like \`1.22\`.\n_Nothing logged yet._`, ask: true };
+    }
 
     let sellQty, flags = [], forcedFull = false;
     if (isTrim) {
-      sellQty = c.qty || Math.floor(p.open_qty / 2);
+      sellQty = qty || (c.pct && c.pct !== 50 ? Math.max(1, Math.round(p.open_qty * c.pct / 100)) : Math.floor(p.open_qty / 2));
       if (sellQty < 1) { sellQty = p.open_qty; forcedFull = true; }
     } else {
-      sellQty = c.qty || p.open_qty;
+      sellQty = qty || p.open_qty;
     }
-    if (sellQty > p.open_qty) return { reply: `⚠️ You only have ${p.open_qty} open on #${p.id}. Nothing was logged.` };
+    if (sellQty > p.open_qty) return { reply: `⚠️ You only have ${p.open_qty} open on #${p.id} ${contractLabel(p)}. Nothing was logged.` };
 
-    const gain = pct(c.price, p.entry);
-    if (isTrim && !forcedFull && c.price > p.entry && c.price < p.entry * 2) {
+    const credit = p.spread_type === "credit";
+    const gain = credit ? (p.entry - c.price) / p.entry * 100 : pct(c.price, p.entry);
+    if (isTrim && !forcedFull && !credit && c.price > p.entry && c.price < p.entry * 2) {
       flags.push(`⚠️ Trimmed at ${fmtPct(gain)}. Your rule is half at 2x (${fmtPx(p.entry * 2)}). Cutting winners early is a known leak.`);
     }
     if (forcedFull) flags.push("ℹ️ Only 1 contract, so this was logged as a full exit.");
 
+    const wasHalf = sellQty === Math.floor(p.open_qty / 2);
     const left = p.open_qty - sellQty;
     const closing = left === 0;
     this.sql.exec("INSERT INTO fills (position_id, ts, trade_date, side, price, qty, note) VALUES (?,?,?,?,?,?,?)",
@@ -539,25 +713,9 @@ export class TradeStore extends DurableObject {
     if (c.note) this.sql.exec("UPDATE positions SET note=? WHERE id=?", p.note ? `${p.note} / ${c.note}` : c.note, p.id);
 
     const r = this.realized(p.id);
-    const lines = [];
-    if (p.paper) lines.push("📄📄 **PAPER ALERT** 📄📄");
-    if (p.route === "free") lines.push("🆓 **FREE ALERT** 🆓");
-    const win = gain >= 0;
-    if (!closing) {
-      lines.push(`💰💰 **SOLD ${sellQty === Math.floor(p.open_qty / 2) ? "HALF" : sellQty}** 💰💰`);
-    } else {
-      lines.push(win ? "✅🔥 **CLOSED** 🔥✅" : "❌ **CLOSED** ❌");
-    }
-    lines.push(`${p.right === "C" ? "🟢" : "🔴"} **${contractLabel(p)}**`);
-    lines.push(`💵 ${fmtPx(p.entry)} ➡️ **${fmtPx(c.price)}** (${fmtPct(gain)}) ${win ? (gain >= 100 ? "🔥🔥🔥" : "🔥") : "🩸"}`);
-    if (!closing) lines.push(`🏃 ${left} runner${left === 1 ? "" : "s"} left`);
-    if (c.note) lines.push(`📝 ${c.note}`);
-    lines.push(`⏰ ${fmtTime(now)}`);
-    lines.push("", SIGN_OFF);
-    const alert = lines.join("\n");
-
+    const alert = this.exitAlert(p, { price: c.price, qty: sellQty, note: c.note, ts: now }, left, wasHalf);
     const extras = [
-      `📒 Logged on #${p.id}.${closing ? ` Trade result from your prices: **${money(r.dollars)}** (${fmtPct(r.pct)} avg).` : ""}`,
+      `📒 Logged on #${p.id} ${contractLabel(p)}: sold ${sellQty} at ${fmtPx(c.price)}.${closing ? ` Trade result from your prices: **${money(r.dollars)}** (${fmtPct(r.pct)} avg).` : ""} Wrong? \`fix price 1.25\` / \`undo\``,
       ...flags,
     ];
     if (closing && r.dollars < 0) {
@@ -570,6 +728,94 @@ export class TradeStore extends DurableObject {
     const pub = await this.publish(p.route, alert, extras);
     if (pub.id) this.sql.exec("UPDATE fills SET msg_channel=?, msg_id=? WHERE id=?", pub.ch, pub.id, fillId);
     return { reply: pub.reply };
+  }
+
+  // The last thing logged: an entry or a sell, whichever is newer.
+  lastAction() {
+    const pos = this.one("SELECT * FROM positions ORDER BY opened_at DESC, id DESC LIMIT 1");
+    const sell = this.one("SELECT * FROM fills WHERE side='sell' ORDER BY ts DESC, id DESC LIMIT 1");
+    if (!pos && !sell) return null;
+    if (sell && (!pos || sell.ts > pos.opened_at || (sell.ts === pos.opened_at && sell.position_id === pos.id))) return { kind: "sell", fill: sell };
+    return { kind: "entry", pos };
+  }
+
+  async editPost(ch, id, content) {
+    if (!ch || !id) return false;
+    const r = await this.api("PATCH", `/channels/${ch}/messages/${id}`, { content: content.slice(0, 1990) }).catch(() => null);
+    return !!(r && r.ok);
+  }
+
+  async cmdFix(c, now) {
+    const la = this.lastAction();
+    if (!la) return { reply: "⚠️ Nothing logged yet to fix." };
+    const posId = la.kind === "entry" ? la.pos.id : la.fill.position_id;
+    const before = this.one("SELECT * FROM positions WHERE id=?", posId);
+    let what = "";
+    if (c.field === "price") {
+      if (la.kind === "entry") {
+        this.sql.exec("UPDATE positions SET entry=? WHERE id=?", c.value, posId);
+        this.sql.exec("UPDATE fills SET price=? WHERE position_id=? AND side='buy'", c.value, posId);
+        what = `entry price ${fmtPx(before.entry)} ➡️ **${fmtPx(c.value)}**`;
+      } else {
+        this.sql.exec("UPDATE fills SET price=? WHERE id=?", c.value, la.fill.id);
+        what = `sell price ${fmtPx(la.fill.price)} ➡️ **${fmtPx(c.value)}**`;
+      }
+    } else if (c.field === "qty") {
+      if (la.kind === "entry") {
+        const sold = before.qty - before.open_qty;
+        if (c.value < sold) return { reply: `⚠️ ${sold} already sold on #${posId}, so qty can't be ${c.value}.` };
+        this.sql.exec("UPDATE positions SET qty=?, open_qty=?, status=? WHERE id=?", c.value, c.value - sold, c.value - sold > 0 ? "open" : "closed", posId);
+        this.sql.exec("UPDATE fills SET qty=? WHERE position_id=? AND side='buy'", c.value, posId);
+        what = `qty ${before.qty} ➡️ **${c.value}**`;
+      } else {
+        const room = before.open_qty + la.fill.qty;
+        if (c.value > room) return { reply: `⚠️ Only ${room} were open before that sell.` };
+        const left = room - c.value;
+        this.sql.exec("UPDATE fills SET qty=? WHERE id=?", c.value, la.fill.id);
+        this.sql.exec("UPDATE positions SET open_qty=?, status=?, closed_at=?, close_date=? WHERE id=?", left, left ? "open" : "closed",
+          left ? null : la.fill.ts, left ? null : la.fill.trade_date, posId);
+        what = `sold qty ${la.fill.qty} ➡️ **${c.value}**`;
+      }
+    } else if (c.field === "strike") {
+      const right = c.right || before.right;
+      if (c.spread) this.sql.exec("UPDATE positions SET strike=?, right=?, long_strike=?, short_strike=?, spread_type=COALESCE(spread_type,'debit') WHERE id=?", c.value, right, c.long, c.short, posId);
+      else this.sql.exec("UPDATE positions SET strike=?, right=?, long_strike=NULL, short_strike=NULL, spread_type=NULL WHERE id=?", c.value, right, posId);
+      what = `strike ${before.strike}${before.right} ➡️ **${c.value}${right}**`;
+    } else if (c.field === "exp") {
+      this.sql.exec("UPDATE positions SET exp=? WHERE id=?", c.value, posId);
+      what = `expiry ${fmtDate(before.exp)} ➡️ **${fmtDate(c.value)}**`;
+    } else if (c.field === "right") {
+      this.sql.exec("UPDATE positions SET right=? WHERE id=?", c.value, posId);
+      what = `${before.right === "C" ? "call" : "put"} ➡️ **${c.value === "C" ? "call" : "put"}**`;
+    } else if (c.field === "ticker") {
+      this.sql.exec("UPDATE positions SET ticker=? WHERE id=?", c.value, posId);
+      what = `ticker ${before.ticker} ➡️ **${c.value}**`;
+    }
+    // Rewrite the Discord post(s) so the room sees the corrected numbers.
+    const p = this.one("SELECT * FROM positions WHERE id=?", posId);
+    let edited = 0;
+    if (la.kind === "entry" || ["strike", "exp", "right", "ticker"].includes(c.field)) {
+      if (await this.editPost(p.msg_channel, p.msg_id, this.entryAlert(p, this.activePlan(p.ticker, p.trade_date), p.opened_at))) edited++;
+    }
+    if (la.kind === "sell") {
+      const f = this.one("SELECT * FROM fills WHERE id=?", la.fill.id);
+      const prevOpen = p.open_qty + f.qty;
+      if (await this.editPost(f.msg_channel, f.msg_id, this.exitAlert(p, f, p.open_qty, f.qty === Math.floor(prevOpen / 2) && p.open_qty > 0))) edited++;
+    }
+    const hadPost = p.msg_id || (la.kind === "sell" && la.fill.msg_id);
+    return { reply: `✏️ Fixed #${posId} ${contractLabel(p)}: ${what}.${edited ? " Updated the Discord post too." : hadPost ? " ⚠️ Couldn't edit the Discord post, fix it by hand." : ""}` };
+  }
+
+  async cmdDelete(id) {
+    const p = this.one("SELECT * FROM positions WHERE id=?", id);
+    if (!p) return { reply: `⚠️ No trade #${id} in the log. Check \`recap\` or \`log\`.` };
+    const fills = this.all("SELECT * FROM fills WHERE position_id=?", id);
+    this.sql.exec("DELETE FROM fills WHERE position_id=?", id);
+    this.sql.exec("DELETE FROM positions WHERE id=?", id);
+    let gone = 0;
+    if (p.msg_id) { await this.unpost(p.msg_channel, p.msg_id); gone++; }
+    for (const f of fills) if (f.msg_id) { await this.unpost(f.msg_channel, f.msg_id); gone++; }
+    return { reply: `🗑️ Deleted trade #${id} ${contractLabel(p)} (${fills.length} fill${fills.length === 1 ? "" : "s"}).${gone ? ` Removed ${gone} Discord post${gone === 1 ? "" : "s"} too.` : ""}` };
   }
 
   async cmdPlan(c, now) {
@@ -592,6 +838,8 @@ export class TradeStore extends DurableObject {
   }
 
   async cmdUndo() {
+    const pend = this.getPending(Date.now());
+    if (pend && pend.kind !== "cleanup") { this.clearPending(); return { reply: "↩️ Dropped the question I was waiting on. Nothing was logged for it." }; }
     const lastPos = this.one("SELECT id, opened_at FROM positions ORDER BY id DESC LIMIT 1");
     const lastSell = this.one("SELECT * FROM fills WHERE side='sell' ORDER BY id DESC LIMIT 1");
     const lastPlan = this.one("SELECT * FROM plans ORDER BY id DESC LIMIT 1");
@@ -671,27 +919,17 @@ export class TradeStore extends DurableObject {
 }
 
 const HELP = [
-  "🌪️ **Trade bot**: just type these in this channel. No slash needed. ✅ means logged.",
-  "`in qqq 717p 10/23 .45 x2`  entry (add `| your read` to save a note)",
-  "`half .90`  sell half of the latest open trade",
-  "`out .70`  close the rest (`out qqq .70` if more than one is open)",
+  "🌪️ **Trade bot**: just type it like a text, any order, typos are fine. ✅ = logged, ❓ = I need one thing.",
+  "`in aapl 345p 10/30 .39 x2`  (also `aapl 345 put fri @ .39`, `in .39 aapl oct30 345p 2 contracts`)",
+  "`in aapl 345/340p 11/13 .79`  spreads (`bear put 345 340`, `345p 340p`, `345-340 p`)",
+  "`out 1.22` / `out aapl 1.22` / `out aapl 345 10/26 put 1.22`  closes (the price is the money number)",
+  "`half .80` / `trim 50% .80` / `sold half at .8`  sells half",
+  "`y` confirms my guess, a number picks from a list, or just send the missing piece (`11/13`, `.45`, `c`)",
+  "`fix price 1.22` / `fix strike 345` / `fix exp 11/13` / `fix qty 2`  edits the last trade and its post",
+  "`undo`  removes the last thing logged   `delete 8`  removes trade #8",
   "`plan qqq puts 727-733 rejection stop 733`  tomorrow's setup",
   "`note 1h 10 SMA close target`  add your read to the latest trade",
-  "`check qqq`  EARLY meter for puts (`check qqq c` for calls), nothing logged",
-  "`grade hood`  daily setup grade A to D with each piece (`grade hood c` for calls)",
+  "`check qqq`  EARLY meter (`check qqq c` for calls)   `grade hood`  daily grade A to D",
   "`open`  open trades   `recap`  today   `log`  spreadsheet file",
-  "`undo`  remove the last thing you logged (and its post)",
-  "`paper` / `paper off`  label everything PAPER",
-  "`live` / `test`  post to VIP, or only show here",
-  "`free in ...`  send that alert to the free channel",
+  "`paper` / `paper off`   `live` / `test`   `free in ...`  send that alert to the free channel",
 ].join("\n");
-
-// Which messages in the private channel are meant for the bot. Everything else is ignored chat.
-const SOLO = new Set(["recap", "today", "status", "open", "positions", "log", "export", "undo", "help",
-  "commands", "live", "test", "paper", "paper on", "paper off"]);
-const LEAD = /^(free\s+)?(in|buy|bto|long|entry|half|trim|partial|out|sell|close|exit|stc|stopped|plan|setup|note|check|early|meter|grade|score)\s+\S/i;
-const BARE_CONTRACT = /^\$?[a-z]{1,5}\s+\d+(\.\d+)?(\/\d+(\.\d+)?)?\s*(c|p|call|calls|put|puts)\b/i;
-function isTradeLine(text) {
-  const t = text.trim().toLowerCase().replace(/\s+/g, " ");
-  return SOLO.has(t) || LEAD.test(t) || BARE_CONTRACT.test(t);
-}

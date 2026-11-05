@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node test/parse.test.mjs"
+    "test": "node test/parse.test.mjs && node --disable-warning=ExperimentalWarning --import ./test/register.mjs test/bot.test.mjs"
   },
   "devDependencies": {
     "wrangler": "4.42.0"
