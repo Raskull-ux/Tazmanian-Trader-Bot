@@ -15,3 +15,4 @@ list_date,sym,setup,star,trigger,stop,target,close,atr,grade,pts
 2026-11-04,IQV,STAIR,False,260.44,282.68,244.9,263.79,9.45,A-,5
 2026-11-04,NTSK,STAIR,False,21.54,25.77,19.77,22.77,1.5,B,4
 2026-11-04,RBRK,STAIR,False,114.93,133.88,104.1,118.99,7.44,B,4
+2026-11-05,NONE,NONE,False,0.0,0.0,0.0,0.0,0.0,,0
