@@ -238,10 +238,27 @@ def read_csv(p):
         return pd.DataFrame()
 
 
+def load_clues(day):
+    """Tonight's clue board (results/clue_board/<date>.csv, written by clue_board.py at 4:25 PM ET), if it ran."""
+    f = f"results/clue_board/{day}.csv"
+    try:
+        b = pd.read_csv(f)
+        return {r.sym: (int(r.n_broken), int(r.n_strong)) for r in b.itertuples()}
+    except Exception:
+        return {}
+
+
+def clue_tag(it):
+    c = it.get("clues")
+    if not c: return " · clues n/a"
+    nb, ns = c
+    return f" · clues 🔴{nb}" + (f" ⚠️{ns} don't-short" if ns else "")
+
+
 def fmt_item(n, it):
     star = "⭐ " if it["star"] else ""
     lines = [f"**{n}. {star}🔴 {it['sym']} PUTS** · {it['close']:.2f} · daily grade **{it['letter']}** ({it['pts']}/6)"
-             + (" · your name" if it["sym"] in MINE else ""),
+             + (" · your name" if it["sym"] in MINE else "") + clue_tag(it),
              f"   Why: {NAMES[it['setup']]}. {it['why']}"]
     if it["setup"] == "LAG":
         lines.append(f"   Entry: the open, or a pop back to **{it['trigger']:.2f}**")
@@ -294,7 +311,11 @@ def evening():
         for hh in find(s, x, q):
             hh["pts"], hh["letter"] = grade(x, q); hits.append(hh)
     order = {"STAIR": 0, "LONG": 1, "LAG": 2}
-    hits.sort(key=lambda z: (not z["star"], -z["pts"], z["sym"] not in MINE, order[z["setup"]], z["sym"]))
+    clues = load_clues(str(last.date()))
+    for hh in hits: hh["clues"] = clues.get(hh["sym"])
+    # clue board: 2+ broken clues moves a name up, any strength warning moves it down (inside the star tier)
+    adj = lambda z: (1 if z["clues"] and z["clues"][1] >= 1 else 0) - (1 if z["clues"] and z["clues"][0] >= 2 else 0)
+    hits.sort(key=lambda z: (not z["star"], adj(z), -z["pts"], z["sym"] not in MINE, order[z["setup"]], z["sym"]))
     seen, picks = set(), []
     for hh in hits:
         if hh["sym"] in seen: continue
@@ -302,7 +323,8 @@ def evening():
         if len(picks) == MAX_NAMES: break
     new = pd.DataFrame([dict(list_date=str(last.date()), sym=p["sym"], setup=p["setup"], star=p["star"], trigger=round(p["trigger"], 2),
                              stop=round(p["stop"], 2), target=round(p["target"], 2), close=round(p["close"], 2),
-                             atr=round(p["atr"], 2), grade=p["letter"], pts=p["pts"]) for p in picks])
+                             atr=round(p["atr"], 2), grade=p["letter"], pts=p["pts"],
+                             broken=p["clues"][0] if p.get("clues") else "", strength=p["clues"][1] if p.get("clues") else "") for p in picks])
     if not len(new):
         new = pd.DataFrame([dict(list_date=str(last.date()), sym="NONE", setup="NONE", star=False, trigger=0, stop=0, target=0,
                                  close=0, atr=0, grade="", pts=0)])
@@ -323,7 +345,8 @@ def evening():
         for n, p in enumerate(picks, 1): L += ["", fmt_item(n, p)]
     else:
         L.append("Nothing clean tomorrow. No setup, no trade. 🚫")
-    L += ["", "Puts side only. Expirations a week or more out. Stop set at entry. 2 losses = done.",
+    L += ["", "Clues: 🔴 = broken-trend clues from tonight's clue board (2+ moves a name up), ⚠️ = strength warning (moves it down).",
+          "Puts side only. Expirations a week or more out. Stop set at entry. 2 losses = done.",
           "Pre-market check at 9:15 AM: LIVE / WAIT / SKIP for each name.", "", "Pattern. Process. Paid. 🌪️🔴"]
     post("\n".join(L))
 
