@@ -5,7 +5,7 @@ Rules followed: free data only, no secrets or Discord messages in commits, no em
 | Task | Status | Result / where |
 |---|---|---|
 | 0 Taz deep dive | done | results/taz_deep_dive/REPORT.md. Broken-trend clues + 5m lower high held in both halves; A+ checklist at the end |
-| 1 Broken vs strength, 860 names | rerunning in Actions (fallback) | results/broken_vs_strength/REPORT.md when the job finishes |
+| 1 Broken vs strength, 860 names | done | results/broken_vs_strength/REPORT.md. Market-wide the broken clues are slightly WORSE for puts (stacked 3+: 26.1% vs 30.7% in 2022-26) and strength slightly better. Only the 4h cliff diver held for puts on your 75 (+7.1 / +5.3 pts). 4h/3h clues cover 80 names in this run |
 | 2 Gap-up 9:45 | done | results/gap_up_945/REPORT.md. First 15m back under prior close = red day 77%/74%, but from the 9:45 price it is a coin flip |
 | 3 Forgiving trade bot | done, deployed | trade-bot/ (203 parser + 39 end-to-end tests) |
 | 4 Clue board | done | clue_board.py + .github/workflows/clue_board.yml, weekdays 21:25 UTC, private channel, results/clue_board/ |

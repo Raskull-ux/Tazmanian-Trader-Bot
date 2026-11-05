@@ -4,6 +4,15 @@
 Fit period = 2016-2021, judged period = 2022-2026. Nothing below was tuned; the definitions were set before running.
 4h and 3h clues need hourly bars: 80 names had them (Alpaca, extended hours). Days without hourly data count the 4h/3h clue as off. The first full run (4-hour limit) timed out while pulling hourly bars; this run caps the hourly pull at 45 minutes, so the 4h cliff and 3h RSI clues cover only the names above.
 
+## Plain-English answer
+
+Market-wide, the broken-trend clues do NOT make puts better, and shorting strength does NOT make them worse. It is the reverse, by a little:
+- Monthly red, 3 weekly lower highs and the 10-day cross were 1 to 3 points WORSE than any random day for a put (2 ATR down before 2 ATR up in 10 days). Stacking them made it worse: 3+ broken clues won 26.1% in 2022-26 vs 30.7% baseline (your 75: 23.3% vs 31.6%). After a trend breaks, stocks tend to bounce before they fall another 2 ATR.
+- The strength clues (3h RSI 90, MACD plateau, near the 20-day high) were slightly BETTER for puts, about +1 point; 2+ strength clues with no broken clue: +1.1 / +2.9 pts.
+- The one clue that held for puts in both halves is the 4h cliff diver on your 75 names: 36.5% vs 29.4% (2016-21) and 36.9% vs 31.6% (2022-26); first day it fires: +5.5 and +14.9 pts (63 and 71 days). On all 860 it was +1.6 / +0.7, but only 80 names had hourly bars in this run.
+
+What this means with your own trades (results/taz_deep_dive): your puts won more when the trend had broken, but the market as a whole does not. The clues are not the edge by themselves; your timing (shorting the actual top of the day, out the same session) is. Use the broken clues as a filter on your setups, and give the 4h cliff diver the most weight.
+
 ## All 860 names
 
 | Clue | Side | 2016-21 n | 2016-21 win | vs baseline | 2022-26 n | 2022-26 win | vs baseline | Held? |
