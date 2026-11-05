@@ -4,7 +4,7 @@
 // It NEVER places orders. Robinhood has no official API; this only posts and logs.
 
 import { DurableObject } from "cloudflare:workers";
-import { fetchMeter } from "./meter.js";
+import { fetchMeter, getBars } from "./meter.js";
 import { fetchGrade } from "./grade.js";
 import {
   parseCommand, etParts, fmtTime, planTradeDate, daysBetween,
@@ -18,7 +18,9 @@ const NFA = "_Not financial advice. My own position._";
 export default {
   // Every minute: make sure the channel watcher is running.
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(env.STORE.get(env.STORE.idFromName("taz")).ensureAlarm());
+    const stub = env.STORE.get(env.STORE.idFromName("taz"));
+    ctx.waitUntil(stub.ensureAlarm());
+    ctx.waitUntil(stub.maTag().catch(() => {}));
   },
 
   async fetch(request, env) {
@@ -167,6 +169,59 @@ export class TradeStore extends DurableObject {
       last_ok: ok ? new Date(+ok).toISOString() : null, last_error: g("last_poll_error"),
       trades: this.one("SELECT COUNT(*) n FROM positions").n,
     };
+  }
+
+  // ---- QQQ 8-day EMA / SMA tag alert (every minute, 9:30-4:00 ET weekdays) ----
+  async maTag(now = Date.now()) {
+    const e = etParts(now);
+    const mins = e.hour * 60 + e.minute;
+    if (["Sat", "Sun"].includes(e.weekday) || mins < 570 || mins >= 960) return "closed";
+    const day = e.date;
+    let base = null;
+    try { base = JSON.parse(this.getSetting("ma8_base", "null")); } catch (_) {}
+    if (!base || base.day !== day) {
+      const start = new Date(now - 40 * 86400000).toISOString();
+      const bars = await getBars(this.env, "QQQ", { timeframe: "1Day", start, end: new Date(now - 16 * 60000).toISOString(), feed: "sip", adjustment: "raw" });
+      const done = bars.filter((b) => etParts(Date.parse(b.t)).date < day).map((b) => b.c);
+      if (done.length < 20) return "no bars";
+      let ema = done[0];
+      for (let i = 1; i < done.length; i++) ema += (2 / 9) * (done[i] - ema);
+      base = { day, ema, last7: done.slice(-7) };
+      this.setSetting("ma8_base", JSON.stringify(base));
+    }
+    const r = await fetch("https://data.alpaca.markets/v2/stocks/QQQ/trades/latest?feed=iex", {
+      headers: { "APCA-API-KEY-ID": this.env.ALPACA_KEY_ID, "APCA-API-SECRET-KEY": this.env.ALPACA_SECRET },
+      signal: AbortSignal.timeout(4000),
+    });
+    if (!r.ok) return `quote ${r.status}`;
+    const p = (await r.json())?.trade?.p;
+    if (!p) return "no price";
+    const lines = {
+      "8 EMA": base.ema + (2 / 9) * (p - base.ema),
+      "8 SMA": (base.last7.reduce((a, b) => a + b, 0) + p) / 8,
+    };
+    let st = {};
+    try { st = JSON.parse(this.getSetting("ma8_state", "{}")); } catch (_) {}
+    if (st.day !== day) st = { day };
+    const out = [];
+    for (const [name, v] of Object.entries(lines)) {
+      const side = p >= v ? "above" : "below";
+      const dist = Math.abs(p - v) / v;
+      const s = st[name] || { side, armed: true };
+      const crossed = s.side && s.side !== side;
+      if (s.armed && (dist <= 0.0005 || crossed)) {
+        const other = Object.entries(lines).filter(([k]) => k !== name).map(([k, w]) => `${k} ${w.toFixed(2)}`).join(" · ");
+        const how = crossed ? (side === "above" ? "crossed UP through" : "crossed DOWN through") : `tagged (from ${side === "above" ? "above" : "below"})`;
+        out.push(`🎯 **QQQ ${how} the daily ${name}** at **${v.toFixed(2)}** · price ${p.toFixed(2)} · ${other} · ${fmtTime(now)}`);
+        s.armed = false;
+      }
+      if (dist >= 0.001) s.armed = true;
+      s.side = side;
+      st[name] = s;
+    }
+    this.setSetting("ma8_state", JSON.stringify(st));
+    if (out.length) await this.api("POST", `/channels/${this.env.PRIVATE_CHANNEL_ID}/messages`, { content: out.join("\n"), allowed_mentions: { parse: [] } });
+    return out.length ? out.join("\n") : `ok ${p}`;
   }
 
   async ensureAlarm() {
