@@ -204,24 +204,23 @@ def main():
     D = daily_all(SYMS + ["QQQ"])
     print(f"daily done: {len(D)} names in {time.time() - t0:.0f}s", flush=True)
     names = [s for s in SYMS if s in D]
-    H = {}
-    if KEY:
-        def job(s):
-            try:
-                return s, hourly(s)
-            except Exception as e:
-                print("hourly fail", s, e); return s, None
-        with ThreadPoolExecutor(6) as ex:
-            for i, (s, h1) in enumerate(ex.map(job, names)):
-                H[s] = None if h1 is None else h1
-                if i % 50 == 0: print(f"hourly {i}/{len(names)} {time.time() - t0:.0f}s", flush=True)
-    rows = []
-    for s in names:
+    budget = float(os.environ.get("BUDGET", "12000"))
+    rows, got = [], [0]
+    def job(s):
+        h1 = None
+        if KEY and time.time() - t0 < budget:      # time guard: past the budget, names count the 4h/3h clues as off
+            try: h1 = hourly(s)
+            except Exception as e: print("hourly fail", s, e)
         try:
-            rows.append(features(s, D[s], H.get(s)))
+            f = features(s, D[s], h1)              # features right away, so hourly bars never pile up in memory
+            if h1 is not None: got[0] += 1
+            return f
         except Exception as e:
-            print("feature fail", s, e)
-        H.pop(s, None)
+            print("feature fail", s, e); return None
+    with ThreadPoolExecutor(int(os.environ.get("THREADS", "16"))) as ex:
+        for i, f in enumerate(ex.map(job, names)):
+            if f is not None: rows.append(f)
+            if i % 50 == 0: print(f"names {i}/{len(names)} with hourly {got[0]} at {time.time() - t0:.0f}s", flush=True)
     X = pd.concat(rows)
     X["period"] = np.where(X.index < "2022-01-01", "2016-21", "2022-26")
     X["mine"] = X.sym.isin(MINE)
@@ -243,7 +242,8 @@ def write(X, secs):
          "within 10 trading days (a same-day tie counts as a loss). Baseline = every day of every name in that period.",
          "Fit period = 2016-2021, judged period = 2022-2026. Nothing below was tuned; the definitions were set before running.",
          f"4h and 3h clues need hourly bars: {X[X.has_intraday].sym.nunique()} names had them (Alpaca, extended hours). "
-         "Days without hourly data count the 4h/3h clue as off.", ""]
+         "Days without hourly data count the 4h/3h clue as off. The first full run (4-hour limit) timed out while pulling hourly bars; "
+         "this run caps the hourly pull at 45 minutes, so the 4h cliff and 3h RSI clues cover only the names above.", ""]
     for grp, G in (("All 860 names", X), ("His 75 names", X[X.mine])):
         L += [f"## {grp}", ""]
         base = {p: G[G.period == p].win.mean() for p in ("2016-21", "2022-26")}

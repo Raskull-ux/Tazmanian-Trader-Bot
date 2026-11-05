@@ -5,7 +5,7 @@ Rules followed: free data only, no secrets or Discord messages in commits, no em
 | Task | Status | Result / where |
 |---|---|---|
 | 0 Taz deep dive | done | results/taz_deep_dive/REPORT.md. Broken-trend clues + 5m lower high held in both halves; A+ checklist at the end |
-| 1 Broken vs strength, 860 names | running in Actions | results/broken_vs_strength/REPORT.md when the job finishes |
+| 1 Broken vs strength, 860 names | rerunning in Actions (fallback) | results/broken_vs_strength/REPORT.md when the job finishes |
 | 2 Gap-up 9:45 | done | results/gap_up_945/REPORT.md. First 15m back under prior close = red day 77%/74%, but from the 9:45 price it is a coin flip |
 | 3 Forgiving trade bot | done, deployed | trade-bot/ (203 parser + 39 end-to-end tests) |
 | 4 Clue board | done | clue_board.py + .github/workflows/clue_board.yml, weekdays 21:25 UTC, private channel, results/clue_board/ |
@@ -37,3 +37,4 @@ Rules followed: free data only, no secrets or Discord messages in commits, no em
 - Task 1 (860-name broken vs strength) is still running in Actions (started 02:52 UTC, 4-hour limit at 06:52 UTC). If it times out, the fix is to cache the hourly pull per name and split the job; not started yet because a second run would share the same Alpaca rate limit and slow the first.
 - Big picture from tonight: almost nothing mechanical held in both halves (gap-back, flip the six, 3h retest, gray box v2, filled edges, clue ranking). What held was in YOUR trades: shorting after the trend broke and at the actual top, out the same session. The edge is your selection; the bots are filters and record keepers, not signal generators.
 - Worth your eyes: TSLA flip-the-six 2022-26 (76% vs 60% by noon, 33 days) and the Task 5 K1 question (Oct 23 list levels were built at 0.5).
+- Task 1: the first run was still pulling hourly bars after 3h41m and would hit its 4-hour limit with nothing written (I could not cancel it: 403). Pushed a fallback at 1:35 AM ET: 16 parallel pulls, features computed per name as it goes, and a 45-minute cap on the hourly pull. Daily clues cover all 860; the 4h cliff and 3h RSI clues cover whatever names finished in 45 minutes (the report states how many).

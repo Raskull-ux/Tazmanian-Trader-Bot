@@ -9,7 +9,7 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 80
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,6 +19,8 @@ jobs:
       - env:
           APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
           APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
+          BUDGET: "2700"
+          THREADS: "16"
         run: set -o pipefail; python broken_vs_strength.py 2>&1 | tail -150
       - name: Commit results
         if: always()
