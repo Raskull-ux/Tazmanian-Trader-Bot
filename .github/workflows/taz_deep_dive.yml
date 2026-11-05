@@ -1,6 +1,9 @@
 name: Taz deep dive
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [taz_deep_dive.py]
 permissions:
   contents: write
 jobs:

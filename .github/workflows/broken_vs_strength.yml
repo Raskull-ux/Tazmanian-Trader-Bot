@@ -1,0 +1,31 @@
+name: Broken vs strength
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [broken_vs_strength.py, .github/workflows/broken_vs_strength.yml]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas numpy requests
+      - env:
+          APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID || secrets.ALPACA_API_KEY_ID || secrets.ALPACA_API_KEY }}
+          APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY || secrets.ALPACA_API_SECRET_KEY || secrets.ALPACA_SECRET_KEY }}
+        run: set -o pipefail; python broken_vs_strength.py 2>&1 | tail -150
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "taz-bot"; git config user.email "taz-bot@users.noreply.github.com"
+          [ -d results/broken_vs_strength ] || exit 0
+          git add results/broken_vs_strength
+          git diff --cached --quiet && exit 0
+          git commit -m "Broken vs strength results"
+          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
