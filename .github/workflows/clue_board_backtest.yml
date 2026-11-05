@@ -1,0 +1,28 @@
+name: Clue board backtest (860 names)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [clue_board_backtest.py, .github/workflows/clue_board_backtest.yml]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance pandas numpy requests
+      - run: python clue_board_backtest.py | tail -30
+        env:
+          MODE: all860
+      - name: Commit results
+        run: |
+          git config user.name "taz-bot"; git config user.email "taz-bot@users.noreply.github.com"
+          git add results/clue_board
+          git diff --cached --quiet && exit 0
+          git commit -m "Clue board backtest (860 names)"
+          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
