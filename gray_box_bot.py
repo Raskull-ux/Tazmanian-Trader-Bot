@@ -178,6 +178,7 @@ def nightly():
     if r.empty: post(f"📦 Gray Box Fade: no setups within range for the next session ({last})."); return
     r = r.sort_values(["score", "dist"], ascending=[False, True]).reset_index(drop=True)
     top = r.head(N_TOP).copy(); top["rank"] = range(1, len(top) + 1); top["asof"] = str(last)
+    top["k1"], top["k2"], top["ks"] = K1, K2, KS          # the exit settings this list was built with, for grading
     os.makedirs(f"{OUT}/lists", exist_ok=True)
     top.to_csv(f"{OUT}/lists/{last}.csv", index=False); r.to_csv(f"{OUT}/candidates_latest.csv", index=False)
     L = [f"📦🌪️ **Gray Box Fade: best {len(top)} for the next session** (boxes as of {last:%a %b %d} close · {len(uni)} stocks scanned · {len(r)} setups found)", "",
@@ -195,8 +196,29 @@ def nightly():
     post("\n".join(L))
 
 
-def walk(z, x):
-    """Grade one setup on one session of 5m bars."""
+K1_OLD_DEFAULT, K1_OLD_CUTOFF = 0.1, "2026-10-26"   # lists saved without K1 and dated on/before the cutoff used 0.1
+
+
+def list_k1(df, path):
+    """The K1 a saved list was built with: its own k1 column, else 0.1 if dated Oct 26 or earlier, else today's K1."""
+    if "k1" in df.columns and df.k1.notna().any():
+        return float(df.k1.dropna().iloc[0])
+    day = os.path.basename(path)[:10]
+    return K1_OLD_DEFAULT if day <= K1_OLD_CUTOFF else K1
+
+
+def rerange(result, rr, k1_new, k1_old):
+    """Recompute a logged result_range for a different K1 (only the half-off outcomes depend on it)."""
+    if rr != rr or not isinstance(result, str): return rr
+    if result.startswith("HALF + RUNNER HIT"): return round((k1_new + K2) / 2, 3)
+    if result.startswith("HALF, runner out at entry"): return round(k1_new / 2, 3)
+    if result.startswith("HALF, runner closed at the bell"): return round((k1_new + (2 * rr - k1_old)) / 2, 3)
+    return rr
+
+
+def walk(z, x, k1=K1):
+    """Grade one setup on one session of 5m bars, scoring the half-off at the list's own K1."""
+    K1 = k1
     put = z.side == "PUT"
     if len(x) == 0: return "no data", "", np.nan
     o0 = x.o.iloc[0]
@@ -224,6 +246,17 @@ def walk(z, x):
     return "TRIGGERED, closed at the bell", x.index[j].strftime("%H:%M"), mv
 
 
+def fix_log_k1(log):
+    """Older log rows were scored with the K1 constant (0.5). Re-score them with their own list's K1, once."""
+    if "k1" not in log.columns: log["k1"] = np.nan
+    for i in log.index[log.k1.isna()]:
+        f = f"{OUT}/lists/{log.at[i, 'asof']}.csv"
+        k1 = list_k1(pd.read_csv(f), f) if os.path.exists(f) else (K1_OLD_DEFAULT if str(log.at[i, "asof"]) <= K1_OLD_CUTOFF else K1)
+        log.at[i, "result_range"] = rerange(log.at[i, "result"], log.at[i, "result_range"], k1, 0.5)
+        log.at[i, "k1"] = k1
+    return log
+
+
 def grade():
     files = sorted(glob.glob(f"{OUT}/lists/*.csv"))
     if not files: print("no lists yet"); return
@@ -231,18 +264,21 @@ def grade():
     lst = [f for f in files if os.path.basename(f)[:-4] < today]
     if not lst: print("no list before", today); return
     L0 = pd.read_csv(lst[-1])
+    k1 = list_k1(L0, lst[-1])
     bars = pull_5m(sorted(L0.sym.unique()), today)
     if not bars and not FORCE:
         print(f"::notice::no 5m bars for {today}; nothing graded"); return
     rows = []
     for z in L0.itertuples():
-        res, when, r = walk(z, bars.get(z.sym, pd.DataFrame(columns=["o", "h", "l", "c"])))
+        res, when, r = walk(z, bars.get(z.sym, pd.DataFrame(columns=["o", "h", "l", "c"])), k1)
         rows.append(dict(day=today, asof=z.asof, rank=z.rank, sym=z.sym, side=z.side, trigger=z.trigger, stop=z.stop,
-                         half=z.half, runner=z.runner, result=res, entry_time=when, result_range=None if r != r else round(r, 3)))
+                         half=z.half, runner=z.runner, result=res, entry_time=when, result_range=None if r != r else round(r, 3), k1=k1))
     g = pd.DataFrame(rows)
     os.makedirs(OUT, exist_ok=True); logf = f"{OUT}/log.csv"
     if os.path.exists(logf):
-        old = pd.read_csv(logf); old = old[old.day != today]; g_all = pd.concat([old, g])
+        old = pd.read_csv(logf); old = old[old.day != today]
+        old = fix_log_k1(old)
+        g_all = pd.concat([old, g])
     else: g_all = g
     g_all.to_csv(logf, index=False)
     trig = g[g.result_range.notna()]
@@ -254,7 +290,7 @@ def grade():
     L += ["", f"Triggered {len(trig)} of {len(g)} · half off {hit} · stopped {stp}" + (f" · avg {trig.result_range.mean():+.2f} range" if len(trig) else "")]
     allt = g_all[g_all.result_range.notna()]
     if len(allt): L.append(f"Running total since start: {len(allt)} triggered · half off {allt.result.str.contains('HALF').sum()} · stopped {allt.result.str.contains('STOPPED').sum()} · avg {allt.result_range.mean():+.3f} range")
-    L.append("Stock moves only, no option P&L. Pattern. Process. Paid. 🌪️🔴")
+    L.append(f"Half off scored at {k1:g} range (this list's K1). Stock moves only, no option P&L. Pattern. Process. Paid. 🌪️🔴")
     post("\n".join(L))
 
 
