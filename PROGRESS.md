@@ -11,8 +11,10 @@ Rules followed: free data only, no secrets or Discord messages in commits, no em
 | 4 Clue board | done | clue_board.py + .github/workflows/clue_board.yml, weekdays 21:25 UTC, private channel, results/clue_board/ |
 | 5 Gray box K1 fix | done | gray_box_bot.py saves k1/k2/ks in each list; grading uses the list's K1; log re-scored |
 | 6 Filled box edges | done | results/gray_box/filled_edges.md. Filled edges no worse than open boxes; neither has an edge (all within 0.01 range of zero) |
+| 7 30m gap-back rejection | done, NOT added to watchlist | results/gap_back/REPORT.md. Reached the 30m 200 first 35.9% vs 29.7% baseline (2022-24), 31.0% vs 30.0% (2025-26): did not hold in both halves |
 
 ## Choices made (no questions asked, per instructions)
 - Task 5: the only list dated Oct 26 or earlier (Oct 23) actually has half-off levels at 0.5 range in the file, not 0.1. Implemented your rule as written (0.1). If you want it scored at 0.5, change K1_OLD_DEFAULT in gray_box_bot.py to 0.5. Also: grading always takes the newest saved list, and the Oct 23 list was re-graded every day Oct 26-30 because no newer lists were saved after the nightly schedule was removed.
 - Task 4: "monthly red" = last month's candle red AND this month red so far (the same definition the trade study used). The 10-day candles are counted back from today so the latest one ends at today's close. The first push-run at 12:19 AM ET skipped because it compared to the calendar date; fixed to compare with the last closed session.
 - Task 6 used the data_ext branch (Alpaca 5m bars already pulled, 75 names, 2016 to Oct 14 2026) instead of a new pull.
+- Task 7 used the data_ext Alpaca 5m bars (extended hours) resampled to 30m instead of a new Alpaca pull (same source, ends Oct 14 2026). Gap down = open 0.3%+ under the prior close. 'Stalls at the 50' = pattern high within 0.1 daily ATR of the 30m 50 (or over it) but under the prior close, last candle closes back under the 50. Pass bar set before running: 5+ points over baseline in each half, 40+ signals.
