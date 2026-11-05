@@ -1,0 +1,18 @@
+# Progress (overnight run, Nov 4-5 2026)
+
+Rules followed: free data only, no secrets or Discord messages in commits, no em dashes, push to main after every task.
+
+| Task | Status | Result / where |
+|---|---|---|
+| 0 Taz deep dive | done | results/taz_deep_dive/REPORT.md. Broken-trend clues + 5m lower high held in both halves; A+ checklist at the end |
+| 1 Broken vs strength, 860 names | running in Actions | results/broken_vs_strength/REPORT.md when the job finishes |
+| 2 Gap-up 9:45 | done | results/gap_up_945/REPORT.md. First 15m back under prior close = red day 77%/74%, but from the 9:45 price it is a coin flip |
+| 3 Forgiving trade bot | done, deployed | trade-bot/ (203 parser + 39 end-to-end tests) |
+| 4 Clue board | done | clue_board.py + .github/workflows/clue_board.yml, weekdays 21:25 UTC, private channel, results/clue_board/ |
+| 5 Gray box K1 fix | done | gray_box_bot.py saves k1/k2/ks in each list; grading uses the list's K1; log re-scored |
+| 6 Filled box edges | done | results/gray_box/filled_edges.md. Filled edges no worse than open boxes; neither has an edge (all within 0.01 range of zero) |
+
+## Choices made (no questions asked, per instructions)
+- Task 5: the only list dated Oct 26 or earlier (Oct 23) actually has half-off levels at 0.5 range in the file, not 0.1. Implemented your rule as written (0.1). If you want it scored at 0.5, change K1_OLD_DEFAULT in gray_box_bot.py to 0.5. Also: grading always takes the newest saved list, and the Oct 23 list was re-graded every day Oct 26-30 because no newer lists were saved after the nightly schedule was removed.
+- Task 4: "monthly red" = last month's candle red AND this month red so far (the same definition the trade study used). The 10-day candles are counted back from today so the latest one ends at today's close. The first push-run at 12:19 AM ET skipped because it compared to the calendar date; fixed to compare with the last closed session.
+- Task 6 used the data_ext branch (Alpaca 5m bars already pulled, 75 names, 2016 to Oct 14 2026) instead of a new pull.
