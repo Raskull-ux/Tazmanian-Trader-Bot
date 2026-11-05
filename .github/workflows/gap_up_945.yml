@@ -1,0 +1,32 @@
+name: Gap up 9:45
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [gap_up_945.py]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: data_ext
+          path: data_ext
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy pyarrow
+      - run: python gap_up_945.py | tail -5
+        env:
+          DATA_DIR: data_ext
+      - name: Commit results
+        run: |
+          git config user.name "taz-bot"; git config user.email "taz-bot@users.noreply.github.com"
+          git add results/gap_up_945
+          git diff --cached --quiet && exit 0
+          git commit -m "Gap up 9:45 results"
+          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
