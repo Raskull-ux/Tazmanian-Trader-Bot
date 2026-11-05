@@ -138,9 +138,11 @@ def main():
         print("::error::no daily data from Yahoo"); return
     last = max(x.index[-1] for x in D.values())
     last = pd.Timestamp(last).tz_localize(None).normalize() if pd.Timestamp(last).tzinfo else pd.Timestamp(last).normalize()
-    today_et = pd.Timestamp(dt.datetime.now(dt.timezone.utc)).tz_convert("America/New_York").tz_localize(None).normalize()
-    if last != today_et and not FORCE and not os.environ.get("ASOF"):
-        print(f"::notice::latest daily bar {last.date()} is not today {today_et.date()}; nothing posted"); return
+    now_et = pd.Timestamp(dt.datetime.now(dt.timezone.utc)).tz_convert("America/New_York").tz_localize(None)
+    want = now_et.normalize() if now_et.hour >= 16 else now_et.normalize() - pd.Timedelta(days=1)
+    while want.weekday() >= 5: want -= pd.Timedelta(days=1)       # last weekday session that has closed
+    if last != want and not FORCE and not os.environ.get("ASOF"):
+        print(f"::notice::latest daily bar {last.date()} is not the last closed session {want.date()}; nothing posted"); return
     os.makedirs(OUT, exist_ok=True)
     out_csv = f"{OUT}/{last.date()}.csv"
     if os.path.exists(out_csv) and not FORCE:
