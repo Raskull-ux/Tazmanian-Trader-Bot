@@ -24,6 +24,7 @@ jobs:
           SYMS: ${{ github.event.client_payload.syms }}
           TFS: ${{ github.event.client_payload.tfs || '15Min,30Min,1Hour' }}
           START: ${{ github.event.client_payload.start || '2024-01-01' }}
+          FEED: ${{ github.event.client_payload.feed || 'sip' }}
         run: python research_bars.py
       - name: Commit
         run: |

@@ -6,18 +6,20 @@ H={"APCA-API-KEY-ID":K,"APCA-API-SECRET-KEY":S}
 syms=[s.strip().upper() for s in os.environ.get("SYMS","HOOD").split(",") if s.strip()]
 tfs=os.environ.get("TFS","15Min,30Min,1Hour").split(",")
 start=os.environ.get("START","2024-01-01")+"T00:00:00Z"
+feed=os.environ.get("FEED","sip") or "sip"; suf="" if feed=="sip" else "_"+feed
 os.makedirs("results/research",exist_ok=True)
 for sym in syms:
     for tf in tfs:
         rows=[]; tok=None
         while True:
-            p={"timeframe":tf,"start":start,"feed":"sip","limit":10000,"adjustment":"split"}
+            p={"timeframe":tf,"start":start,"feed":feed,"limit":10000,"adjustment":"split"}
             if tok: p["page_token"]=tok
             r=requests.get(f"https://data.alpaca.markets/v2/stocks/{sym}/bars",headers=H,params=p,timeout=60)
             if r.status_code==429: time.sleep(3); continue
+            if r.status_code>=400: print("error",sym,tf,r.status_code,r.text[:200]); break
             r.raise_for_status(); j=r.json(); rows+=j.get("bars") or []; tok=j.get("next_page_token")
             if not tok: break
         df=pd.DataFrame(rows)
         if df.empty: print("none",sym,tf); continue
         df=df.rename(columns={"t":"t","o":"o","h":"h","l":"l","c":"c","v":"v"})[["t","o","h","l","c","v"]]
-        df.to_csv(f"results/research/{sym}_{tf}.csv.gz",index=False); print(sym,tf,len(df),df.t.iloc[0],df.t.iloc[-1])
+        df.to_csv(f"results/research/{sym}_{tf}{suf}.csv.gz",index=False); print(sym,tf,len(df),df.t.iloc[0],df.t.iloc[-1])
