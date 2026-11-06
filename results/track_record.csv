@@ -9,29 +9,29 @@ gray box,2026-10-23,2026-10-26,QQQ,PUT,box fade,"TRIGGERED, closed at the bell",
 gray box,2026-10-23,2026-10-26,PLTR,PUT,box fade,"armed, never triggered",False,False,False,,range,
 gray box,2026-10-23,2026-10-26,PLTR,CALL,box fade,"armed, never triggered",False,False,False,,range,
 gray box,2026-10-23,2026-10-26,TSLA,PUT,box fade,skipped: opened past the trigger,False,False,False,,range,
-watchlist,2026-10-30,,GWRE,PUT,LONG,open,True,False,False,,ATR,"in at 159.20, now 170.62 (day 3 of 5)"
-watchlist,2026-10-30,,IOT,PUT,STAIR,open,True,False,False,,ATR,"in at 40.70, now 42.81 (day 3 of 5)"
-watchlist,2026-10-30,,CTSH,PUT,STAIR,open,True,False,False,,ATR,"in at 63.44, now 65.78 (day 3 of 5)"
-watchlist,2026-11-02,,GWRE,PUT,STAIR,open,True,False,False,,ATR,"in at 159.20, now 170.62 (day 2 of 5)"
-watchlist,2026-11-02,,NOW,PUT,LONG,open,True,False,False,,ATR,"in at 104.38, now 108.81 (day 2 of 5)"
-watchlist,2026-11-02,,FIG,PUT,STAIR,open,True,False,False,,ATR,"in at 21.27, now 22.13 (day 2 of 5)"
-watchlist,2026-11-02,,WEX,PUT,STAIR,open,True,False,False,,ATR,"in at 182.15, now 180.11 (day 2 of 5)"
-watchlist,2026-11-02,,PINS,PUT,STAIR,open,False,False,False,,ATR,"not triggered yet (low 19.64, trigger 19.12)"
-watchlist,2026-11-03,,RBLX,PUT,STAIR,open,False,False,False,,ATR,"not triggered yet (low 46.10, trigger 43.28)"
-watchlist,2026-11-03,,EXE,PUT,LONG,open,True,False,False,,ATR,"in at 88.71, now 87.31 (day 1 of 5)"
-watchlist,2026-11-03,,ORCL,PUT,STAIR,open,False,False,False,,ATR,"not triggered yet (low 121.78, trigger 121.35)"
-watchlist,2026-11-04,,GTLB,PUT,STAIR,open,False,False,False,,ATR,not traded yet
-watchlist,2026-11-04,,ZS,PUT,STAIR,open,False,False,False,,ATR,not traded yet
-watchlist,2026-11-04,,IQV,PUT,STAIR,open,False,False,False,,ATR,not traded yet
-watchlist,2026-11-04,,NTSK,PUT,STAIR,open,False,False,False,,ATR,not traded yet
-watchlist,2026-11-04,,RBRK,PUT,STAIR,open,False,False,False,,ATR,not traded yet
-clue board,2026-11-04,,QQQ,PUT,4 broken,open,False,False,False,,ATR,next session not done
-clue board,2026-11-04,,CRWV,PUT,3 broken,open,False,False,False,,ATR,next session not done
-clue board,2026-11-04,,NVDA,PUT,3 broken,open,False,False,False,,ATR,next session not done
-clue board,2026-11-04,,PANW,PUT,3 broken,open,False,False,False,,ATR,next session not done
-clue board,2026-11-04,,SNOW,PUT,3 broken,open,False,False,False,,ATR,next session not done
-clue board,2026-11-04,,SPY,PUT,3 broken,open,False,False,False,,ATR,next session not done
-clue board,2026-11-04,,AMD,PUT,3 broken,open,False,False,False,,ATR,next session not done
-clue board,2026-11-04,,ARM,PUT,2 broken,open,False,False,False,,ATR,next session not done
-clue board,2026-11-04,,AVGO,PUT,2 broken,open,False,False,False,,ATR,next session not done
-clue board,2026-11-04,,CRM,PUT,2 broken,open,False,False,False,,ATR,next session not done
+watchlist,2026-10-30,,GWRE,PUT,LONG,open,True,False,False,,ATR,"in at 159.20, now 167.35 (day 4 of 5)"
+watchlist,2026-10-30,,IOT,PUT,STAIR,open,True,False,False,,ATR,"in at 40.70, now 41.09 (day 4 of 5)"
+watchlist,2026-10-30,,CTSH,PUT,STAIR,open,True,False,False,,ATR,"in at 63.44, now 66.54 (day 4 of 5)"
+watchlist,2026-11-02,,GWRE,PUT,STAIR,open,True,False,False,,ATR,"in at 159.20, now 167.35 (day 3 of 5)"
+watchlist,2026-11-02,,NOW,PUT,LONG,open,True,False,False,,ATR,"in at 104.38, now 102.36 (day 3 of 5)"
+watchlist,2026-11-02,2026-11-06,FIG,PUT,STAIR,target,True,True,False,1.2357723577235769,ATR,target 19.75 hit Thu 11/05 (in at 21.27)
+watchlist,2026-11-02,,WEX,PUT,STAIR,open,True,False,False,,ATR,"in at 182.15, now 179.78 (day 3 of 5)"
+watchlist,2026-11-02,,PINS,PUT,STAIR,open,False,False,False,,ATR,"not triggered yet (low 19.53, trigger 19.12)"
+watchlist,2026-11-03,,RBLX,PUT,STAIR,open,False,False,False,,ATR,"not triggered yet (low 45.57, trigger 43.28)"
+watchlist,2026-11-03,2026-11-06,EXE,PUT,LONG,target,True,True,False,1.4831932773109189,ATR,target 85.18 hit Thu 11/05 (in at 88.71)
+watchlist,2026-11-03,,ORCL,PUT,STAIR,open,True,False,False,,ATR,"in at 121.35, now 115.16 (day 2 of 5)"
+watchlist,2026-11-04,,GTLB,PUT,STAIR,open,True,False,False,,ATR,"in at 51.17, now 48.99 (day 1 of 5)"
+watchlist,2026-11-04,,ZS,PUT,STAIR,open,True,False,False,,ATR,"in at 216.62, now 203.88 (day 1 of 5)"
+watchlist,2026-11-04,,IQV,PUT,STAIR,open,False,False,False,,ATR,"not triggered yet (low 261.00, trigger 260.44)"
+watchlist,2026-11-04,,NTSK,PUT,STAIR,open,True,False,False,,ATR,"in at 21.54, now 21.67 (day 1 of 5)"
+watchlist,2026-11-04,,RBRK,PUT,STAIR,open,True,False,False,,ATR,"in at 113.59, now 105.74 (day 1 of 5)"
+clue board,2026-11-04,2026-11-05,QQQ,PUT,4 broken,graded,True,True,False,3.448830158349234,ATR,next close 647.05 vs 691.95
+clue board,2026-11-04,2026-11-05,CRWV,PUT,3 broken,graded,True,True,False,0.8258583709868506,ATR,next close 43.66 vs 48.42
+clue board,2026-11-04,2026-11-05,NVDA,PUT,3 broken,graded,True,True,False,2.8633026583858556,ATR,next close 181.60 vs 200.13
+clue board,2026-11-04,2026-11-05,PANW,PUT,3 broken,graded,True,True,False,1.7450288922071562,ATR,next close 314.67 vs 348.04
+clue board,2026-11-04,2026-11-05,SNOW,PUT,3 broken,graded,True,True,False,1.2939782014129744,ATR,next close 269.54 vs 290.60
+clue board,2026-11-04,2026-11-05,SPY,PUT,3 broken,graded,True,True,False,3.848821070610893,ATR,next close 733.00 vs 766.81
+clue board,2026-11-04,2026-11-05,AMD,PUT,3 broken,graded,True,True,False,2.7045047904790405,ATR,next close 404.40 vs 488.78
+clue board,2026-11-04,2026-11-05,ARM,PUT,2 broken,graded,True,True,False,1.6620581115943551,ATR,next close 166.72 vs 191.80
+clue board,2026-11-04,2026-11-05,AVGO,PUT,2 broken,graded,True,True,False,2.698986434464447,ATR,next close 291.53 vs 325.48
+clue board,2026-11-04,2026-11-05,CRM,PUT,2 broken,graded,True,True,False,0.5049991734643897,ATR,next close 222.41 vs 227.11
