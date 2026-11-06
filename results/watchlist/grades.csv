@@ -1,3 +1,8 @@
 key,list_date,sym,setup,star,status,detail,graded
 2026-11-02|FIG|STAIR,2026-11-02,FIG,STAIR,False,target,target 19.75 hit Thu 11/05 (in at 21.27),2026-11-05
 2026-11-03|EXE|LONG,2026-11-03,EXE,LONG,True,target,target 85.18 hit Thu 11/05 (in at 88.71),2026-11-05
+2026-10-30|GWRE|LONG,2026-10-30,GWRE,LONG,True,expired,"no target or stop in 5 days, closed 161.41, stock +1.4% from the 159.20 entry (bad for puts)",2026-11-06
+2026-10-30|IOT|STAIR,2026-10-30,IOT,STAIR,False,expired,"no target or stop in 5 days, closed 40.98, stock +0.7% from the 40.70 entry (bad for puts)",2026-11-06
+2026-10-30|CTSH|STAIR,2026-10-30,CTSH,STAIR,False,expired,"no target or stop in 5 days, closed 64.72, stock +2.0% from the 63.44 entry (bad for puts)",2026-11-06
+2026-11-03|ORCL|STAIR,2026-11-03,ORCL,STAIR,False,target,target 110.13 hit Fri 11/06 (in at 121.35),2026-11-06
+2026-11-04|ZS|STAIR,2026-11-04,ZS,STAIR,True,target,target 199.57 hit Fri 11/06 (in at 216.62),2026-11-06
